@@ -510,41 +510,193 @@ tailwind.config = {
 
 
 <script>
+const CARD_BG = [
+  'linear-gradient(135deg,#F5E8F0,#EEE8F5)',
+  'linear-gradient(135deg,#EEE8F5,#E8EEF5)',
+  'linear-gradient(135deg,#FFF0E8,#FAEEE8)',
+  'linear-gradient(135deg,#E8F5E8,#EAF5E8)',
+  'linear-gradient(135deg,#E8EEF5,#EEE8F5)',
+  'linear-gradient(135deg,#FAEEE8,#FFF0E8)',
+];
+const THEME_LABELS = { ramadan:'Ramadan', aid:'Aïd', prophetes:'Prophètes', valeurs:'Valeurs', famille:'Famille', arabe:'Arabe', coran:'Coran', nature:'Nature', aventure:'Aventure', priere:'Prière' };
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function cardBg(slug) {
+  let n = 0;
+  for (let i = 0; i < (slug||'').length; i++) n += slug.charCodeAt(i);
+  return CARD_BG[n % CARD_BG.length];
+}
+
+function starsHtml(avg) {
+  const r = Math.round(avg || 0);
+  return '★'.repeat(r) + '☆'.repeat(5 - r);
+}
+
+function renderFeaturedCard(book) {
+  const author = book.authors?.name || '';
+  const age = book.age_min != null ? `${book.age_min}–${book.age_max} ans` : '';
+  const theme = book.themes?.[0] || '';
+  const bg = cardBg(book.slug);
+  const cover = book.cover_url
+    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-cover" loading="lazy">`
+    : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms" style="font-size:52px;color:#C96B8A;opacity:0.25;">auto_stories</span></div>`;
+  return `
+    <a href="livre.html?slug=${escHtml(book.slug)}" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block">
+      <div class="aspect-[3/4] relative overflow-hidden" style="background:${bg};">
+        ${cover}
+        ${age ? `<div class="absolute top-2 right-2"><span class="badge badge-age">${age}</span></div>` : ''}
+      </div>
+      <div class="p-3">
+        <div class="stars mb-1" style="font-size:13px;">${starsHtml(book.rating_avg)}</div>
+        <h3 class="font-display font-semibold text-sm leading-snug mb-1 text-text">${escHtml(book.title)}</h3>
+        <p class="text-xs text-muted mb-2">${escHtml(author)}</p>
+        ${theme ? `<div class="flex flex-wrap gap-1 mb-2"><span class="badge badge-theme">${escHtml(THEME_LABELS[theme]||theme)}</span></div>` : ''}
+        <p class="text-xs font-medium text-primary">Voir le livre →</p>
+      </div>
+    </a>`;
+}
+
+function renderScrollCard(book) {
+  const author = book.authors?.name || '';
+  const bg = cardBg(book.slug);
+  const cover = book.cover_url
+    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-cover" loading="lazy">`
+    : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms text-5xl" style="color:#C96B8A;opacity:0.35;">auto_stories</span></div>`;
+  return `
+    <a href="livre.html?slug=${escHtml(book.slug)}" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
+      <div class="relative overflow-hidden" style="height:200px;background:${bg};">${cover}</div>
+      <div class="p-3">
+        <div class="stars text-xs mb-1">${starsHtml(book.rating_avg)}</div>
+        <h3 class="font-semibold text-xs leading-snug text-text mb-1">${escHtml(book.title)}</h3>
+        <p class="text-xs text-muted">${escHtml(author)}</p>
+      </div>
+    </a>`;
+}
+
+function renderAuthorCard(author, bookCount) {
+  const initial = (author.name || '?')[0].toUpperCase();
+  const bg = cardBg(author.slug);
+  const photo = author.photo_url
+    ? `<img src="${escHtml(author.photo_url)}" alt="${escHtml(author.name)}" class="w-full h-full object-cover rounded-full">`
+    : `<span class="text-2xl font-bold font-display" style="color:#C96B8A;">${initial}</span>`;
+  return `
+    <a href="auteur.html?slug=${escHtml(author.slug)}" class="author-card bg-card rounded-2xl p-4 text-center no-underline block border border-border">
+      <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center overflow-hidden" style="background:${bg};">${photo}</div>
+      <h3 class="font-semibold text-sm text-text mb-1">${escHtml(author.name)}</h3>
+      <p class="text-xs text-muted mb-2">${bookCount} livre${bookCount > 1 ? 's' : ''}</p>
+      <span class="badge ${author.is_self_published ? 'badge-theme' : 'badge-age'}">${author.is_self_published ? 'Auto-édité·e' : 'Maison éd.'}</span>
+    </a>`;
+}
+
+async function loadFeaturedBooks() {
+  const { data } = await _supabase
+    .from('books')
+    .select('*, authors(name, slug)')
+    .eq('status', 'approved')
+    .order('rating_avg', { ascending: false })
+    .order('rating_count', { ascending: false })
+    .limit(4);
+  const el = document.getElementById('featured-books');
+  if (!data || data.length === 0) {
+    el.innerHTML = `<div class="col-span-4 text-center py-10 text-muted text-sm">Le catalogue arrive bientôt ✦</div>`;
+    return;
+  }
+  el.innerHTML = data.map(renderFeaturedCard).join('');
+  animateCards(el.querySelectorAll('.book-card'));
+}
+
+async function loadRecentBooks() {
+  const { data } = await _supabase
+    .from('books')
+    .select('*, authors(name, slug)')
+    .eq('status', 'approved')
+    .order('created_at', { ascending: false })
+    .limit(6);
+  const el = document.getElementById('recent-books');
+  if (!data || data.length === 0) {
+    el.innerHTML = `<p class="text-muted text-sm px-2">Aucun livre pour l'instant.</p>`;
+    return;
+  }
+  el.innerHTML = data.map(renderScrollCard).join('');
+}
+
+async function loadFeaturedAuthors() {
+  const { data: books } = await _supabase
+    .from('books')
+    .select('author_id')
+    .eq('status', 'approved');
+
+  const counts = {};
+  (books || []).forEach(b => { if (b.author_id) counts[b.author_id] = (counts[b.author_id] || 0) + 1; });
+  const topIds = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,4).map(e => e[0]);
+
+  const el = document.getElementById('featured-authors');
+  if (topIds.length === 0) {
+    el.innerHTML = `<div class="col-span-4 text-center py-8 text-muted text-sm">Les auteurs arrivent bientôt ✦</div>`;
+    return;
+  }
+
+  const { data: authors } = await _supabase
+    .from('authors')
+    .select('*')
+    .in('id', topIds);
+
+  el.innerHTML = (authors || []).map(a => renderAuthorCard(a, counts[a.id] || 0)).join('');
+  animateCards(el.querySelectorAll('.author-card'));
+}
+
+async function loadStats() {
+  const [{ count: bookCount }, { count: authorCount }, { data: ratingData }] = await Promise.all([
+    _supabase.from('books').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
+    _supabase.from('authors').select('*', { count: 'exact', head: true }),
+    _supabase.from('books').select('rating_avg').eq('status', 'approved').not('rating_avg', 'is', null),
+  ]);
+
+  document.getElementById('stat-books').textContent = bookCount ? bookCount + '+' : '0';
+  document.getElementById('stat-authors').textContent = authorCount ? authorCount + '+' : '0';
+
+  if (ratingData && ratingData.length > 0) {
+    const avg = ratingData.reduce((s, b) => s + (b.rating_avg || 0), 0) / ratingData.length;
+    document.getElementById('stat-rating').textContent = '★ ' + avg.toFixed(1);
+  } else {
+    document.getElementById('stat-rating').textContent = '—';
+  }
+}
+
+function animateCards(cards) {
+  cards.forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    el.style.transitionDelay = (i * 0.07) + 's';
+    setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, 50);
+  });
+}
+
 function toggleMenu() {
-  const menu = document.getElementById('mobile-menu');
-  menu.classList.toggle('hidden');
+  document.getElementById('mobile-menu').classList.toggle('hidden');
 }
 
 function filterByTheme(theme, btn) {
   document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  // Ici on appellera l'API Supabase pour filtrer
-  console.log('Filtre:', theme);
+  window.location.href = theme === 'tous' ? 'catalogue.html' : `catalogue.html?theme=${theme}`;
 }
 
 function handleSearch(val) {
   if (val.length > 2) {
-    // Ici on appellera l'API Supabase pour la recherche
-    console.log('Recherche:', val);
+    window.location.href = `catalogue.html?q=${encodeURIComponent(val)}`;
   }
 }
 
-// Animation au scroll
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.book-card, .author-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(16px)';
-  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-  observer.observe(el);
-});
+// Lancement
+loadFeaturedBooks();
+loadRecentBooks();
+loadFeaturedAuthors();
+loadStats();
 </script>
 
 </body>

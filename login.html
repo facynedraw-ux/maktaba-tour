@@ -252,15 +252,7 @@ tailwind.config = {
 
 
 <script>
-const SUPABASE_URL = 'https://VOTRE_URL.supabase.co';
-const SUPABASE_ANON_KEY = 'VOTRE_CLE_ANON';
-
-let _supabase;
-try {
-  _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-} catch(e) {
-  console.warn('Supabase non configuré — mode démo');
-}
+// _supabase est déjà initialisé dans supabase-client.js
 
 let userEmail = '';
 let countdownInterval = null;
@@ -269,7 +261,6 @@ let resendSeconds = 60;
 
 // ── Redirection si déjà connecté ──
 async function checkSession() {
-  if (!_supabase) return;
   try {
     const { data: { session } } = await _supabase.auth.getSession();
     if (session) {
@@ -303,14 +294,11 @@ async function sendOtp() {
   btn.innerHTML = '<div class="spinner"></div> Envoi en cours…';
 
   try {
-    if (_supabase) {
-      const { error } = await _supabase.auth.signInWithOtp({
-        email,
-        options: { shouldCreateUser: true }
-      });
-      if (error) throw error;
-    }
-    // Démo sans Supabase : on passe quand même
+    const { error } = await _supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: true }
+    });
+    if (error) throw error;
     userEmail = email;
     showStep2();
   } catch(err) {
@@ -403,14 +391,12 @@ async function verifyOtp() {
   document.querySelectorAll('.otp-input').forEach(el => el.classList.remove('error'));
 
   try {
-    if (_supabase) {
-      const { data, error } = await _supabase.auth.verifyOtp({
-        email: userEmail,
-        token: code,
-        type: 'email'
-      });
-      if (error) throw error;
-    }
+    const { error } = await _supabase.auth.verifyOtp({
+      email: userEmail,
+      token: code,
+      type: 'email'
+    });
+    if (error) throw error;
 
     // Succès — animation
     labelEl.innerHTML = '<span class="ms" style="font-size:18px;">check_circle</span> Connexion réussie !';
@@ -443,9 +429,7 @@ async function verifyOtp() {
 async function resendOtp() {
   document.getElementById('btn-resend').disabled = true;
   try {
-    if (_supabase) {
-      await _supabase.auth.signInWithOtp({ email: userEmail });
-    }
+    await _supabase.auth.signInWithOtp({ email: userEmail });
     document.getElementById('resend-info').textContent = 'Code renvoyé !';
     startResendTimer();
     // Reset cases
