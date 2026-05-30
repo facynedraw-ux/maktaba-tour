@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Fond cercle -->
+  <circle cx="100" cy="100" r="100" fill="#C96B8A"/>
+
+  <!-- Livre ouvert -->
+  <rect x="42" y="72" width="52" height="64" rx="5" fill="white" opacity="0.95"/>
+  <rect x="106" y="72" width="52" height="64" rx="5" fill="white" opacity="0.85"/>
+  <rect x="94" y="70" width="12" height="68" rx="4" fill="#9B7FA6"/>
+
+  <!-- Lignes texte gauche -->
+  <rect x="52" y="90" width="32" height="4" rx="2" fill="#E8D5DC"/>
+  <rect x="52" y="100" width="28" height="4" rx="2" fill="#E8D5DC"/>
+  <rect x="52" y="110" width="30" height="4" rx="2" fill="#E8D5DC"/>
+  <rect x="52" y="120" width="24" height="4" rx="2" fill="#E8D5DC"/>
+
+  <!-- Lignes texte droite -->
+  <rect x="116" y="90" width="32" height="4" rx="2" fill="#F0D0D8"/>
+  <rect x="116" y="100" width="28" height="4" rx="2" fill="#F0D0D8"/>
+  <rect x="116" y="110" width="30" height="4" rx="2" fill="#F0D0D8"/>
+  <rect x="116" y="120" width="24" height="4" rx="2" fill="#F0D0D8"/>
+
+  <!-- Étoile décorative -->
+  <text x="100" y="62" text-anchor="middle" font-size="18" fill="#F0A87A">✦</text>
+
+  <!-- Texte MAKTABA -->
+  <text x="100" y="158" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-weight="bold" fill="white" letter-spacing="2">MAKTABA</text>
+  <text x="100" y="174" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="rgba(255,255,255,0.8)" letter-spacing="1.5">TOUR</text>
+</svg>

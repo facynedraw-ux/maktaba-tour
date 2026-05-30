@@ -40,6 +40,8 @@ tailwind.config = {
   }
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body { font-family: 'DM Sans', sans-serif; background: #FFF5F7; color: #3D1F2D; margin: 0; }
@@ -212,15 +214,15 @@ tailwind.config = {
     <!-- Stats flottantes -->
     <div class="absolute bottom-0 right-0 hidden lg:flex gap-4 fade-up delay-5">
       <div class="bg-white/80 backdrop-blur-sm rounded-2xl px-5 py-4 border border-border shadow-sm text-center">
-        <div class="font-display text-2xl font-bold text-primary">500+</div>
+        <div id="stat-books" class="font-display text-2xl font-bold text-primary">…</div>
         <div class="text-xs text-muted font-medium mt-0.5">livres référencés</div>
       </div>
       <div class="bg-white/80 backdrop-blur-sm rounded-2xl px-5 py-4 border border-border shadow-sm text-center">
-        <div class="font-display text-2xl font-bold text-secondary">100+</div>
+        <div id="stat-authors" class="font-display text-2xl font-bold text-secondary">…</div>
         <div class="text-xs text-muted font-medium mt-0.5">auteurs</div>
       </div>
       <div class="bg-white/80 backdrop-blur-sm rounded-2xl px-5 py-4 border border-border shadow-sm text-center">
-        <div class="font-display text-2xl font-bold text-accent" style="color:#d4956a;">★ 4.8</div>
+        <div id="stat-rating" class="font-display text-2xl font-bold" style="color:#d4956a;">…</div>
         <div class="text-xs text-muted font-medium mt-0.5">note moyenne</div>
       </div>
     </div>
@@ -268,92 +270,11 @@ tailwind.config = {
 
     <!-- Grille livres vedette -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="featured-books">
-
-      <!-- Livre 1 -->
-      <a href="livre.html?slug=yassine-apprend-a-faire-la-priere" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block">
-        <div class="aspect-[3/4] relative overflow-hidden" style="background: linear-gradient(135deg, #F5E8F0, #EEE8F5);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-6xl" style="color:#C96B8A; opacity:0.3;">auto_stories</span>
-          </div>
-          <div class="absolute top-2 right-2">
-            <span class="badge badge-age">3–6 ans</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars mb-1">★★★★★</div>
-          <h3 class="font-display font-semibold text-sm leading-snug mb-1 text-text">Yassine apprend à faire la prière</h3>
-          <p class="text-xs text-muted mb-2">Leila Abou Saleh</p>
-          <div class="flex flex-wrap gap-1 mb-2">
-            <span class="badge badge-theme">Prière</span>
-          </div>
-          <p class="text-xs font-medium text-primary">Voir le livre →</p>
-        </div>
-      </a>
-
-      <!-- Livre 2 -->
-      <a href="livre.html?slug=les-aventures-de-nour" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block">
-        <div class="aspect-[3/4] relative overflow-hidden" style="background: linear-gradient(135deg, #E8EEF5, #E8F5EE);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-6xl" style="color:#9B7FA6; opacity:0.3;">auto_stories</span>
-          </div>
-          <div class="absolute top-2 right-2">
-            <span class="badge badge-age">6–9 ans</span>
-          </div>
-          <div class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">Nouveau</div>
-        </div>
-        <div class="p-3">
-          <div class="stars mb-1">★★★★☆</div>
-          <h3 class="font-display font-semibold text-sm leading-snug mb-1 text-text">Les aventures de Nour</h3>
-          <p class="text-xs text-muted mb-2">Amina Bouchentouf</p>
-          <div class="flex flex-wrap gap-1 mb-2">
-            <span class="badge badge-theme">Aventure</span>
-          </div>
-          <p class="text-xs font-medium text-primary">Voir le livre →</p>
-        </div>
-      </a>
-
-      <!-- Livre 3 -->
-      <a href="livre.html?slug=ramadan-avec-mes-enfants" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block">
-        <div class="aspect-[3/4] relative overflow-hidden" style="background: linear-gradient(135deg, #FFF0E8, #F5E8F0);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-6xl" style="color:#F0A87A; opacity:0.3;">auto_stories</span>
-          </div>
-          <div class="absolute top-2 right-2">
-            <span class="badge badge-age">3–6 ans</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars mb-1">★★★★★</div>
-          <h3 class="font-display font-semibold text-sm leading-snug mb-1 text-text">Ramadan avec mes enfants</h3>
-          <p class="text-xs text-muted mb-2">Fatima Ez-Zouaoui</p>
-          <div class="flex flex-wrap gap-1 mb-2">
-            <span class="badge badge-theme">Ramadan</span>
-          </div>
-          <p class="text-xs font-medium text-primary">Voir le livre →</p>
-        </div>
-      </a>
-
-      <!-- Livre 4 -->
-      <a href="livre.html?slug=mon-premier-aleph-ba" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block">
-        <div class="aspect-[3/4] relative overflow-hidden" style="background: linear-gradient(135deg, #E8F5E8, #EEF5E8);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-6xl" style="color:#5B8A5F; opacity:0.3;">auto_stories</span>
-          </div>
-          <div class="absolute top-2 right-2">
-            <span class="badge badge-age">0–3 ans</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars mb-1">★★★★★</div>
-          <h3 class="font-display font-semibold text-sm leading-snug mb-1 text-text">Mon premier Aleph-Ba</h3>
-          <p class="text-xs text-muted mb-2">Rania Al-Masri</p>
-          <div class="flex flex-wrap gap-1 mb-2">
-            <span class="badge badge-lang">Bilingue</span>
-          </div>
-          <p class="text-xs font-medium text-primary">Voir le livre →</p>
-        </div>
-      </a>
-
+      <!-- rempli par JS -->
+      <div class="skeleton rounded-2xl aspect-[3/4]"></div>
+      <div class="skeleton rounded-2xl aspect-[3/4]"></div>
+      <div class="skeleton rounded-2xl aspect-[3/4]"></div>
+      <div class="skeleton rounded-2xl aspect-[3/4]"></div>
     </div>
   </div>
 </section>
@@ -375,92 +296,14 @@ tailwind.config = {
       </a>
     </div>
 
-    <div class="books-scroll">
-
-      <!-- Livre nouveau 1 -->
-      <a href="livre.html?slug=ibrahim-le-corageux" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
-        <div class="relative overflow-hidden" style="height:200px; background: linear-gradient(135deg, #EEE8F5, #F5E8F0);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-5xl" style="color:#9B7FA6; opacity:0.35;">auto_stories</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars text-xs mb-1">★★★★☆</div>
-          <h3 class="font-semibold text-xs leading-snug text-text mb-1">Ibrahim le Courageux</h3>
-          <p class="text-xs text-muted">S. Benali</p>
-        </div>
-      </a>
-
-      <!-- Livre nouveau 2 -->
-      <a href="livre.html?slug=laiD-de-safiya" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
-        <div class="relative overflow-hidden" style="height:200px; background: linear-gradient(135deg, #FFF0E8, #FAEEE8);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-5xl" style="color:#F0A87A; opacity:0.35;">auto_stories</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars text-xs mb-1">★★★★★</div>
-          <h3 class="font-semibold text-xs leading-snug text-text mb-1">L'Aïd de Safiya</h3>
-          <p class="text-xs text-muted">N. Hamidi</p>
-        </div>
-      </a>
-
-      <!-- Livre nouveau 3 -->
-      <a href="livre.html?slug=je-suis-musulman" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
-        <div class="relative overflow-hidden" style="height:200px; background: linear-gradient(135deg, #E8F5EE, #EAF5E8);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-5xl" style="color:#5B8A5F; opacity:0.35;">auto_stories</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars text-xs mb-1">★★★★☆</div>
-          <h3 class="font-semibold text-xs leading-snug text-text mb-1">Je suis musulman(e)</h3>
-          <p class="text-xs text-muted">K. Moussa</p>
-        </div>
-      </a>
-
-      <!-- Livre nouveau 4 -->
-      <a href="livre.html?slug=la-nuit-du-destin" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
-        <div class="relative overflow-hidden" style="height:200px; background: linear-gradient(135deg, #E8EEF5, #EEE8F5);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-5xl" style="color:#7A8FA6; opacity:0.35;">auto_stories</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars text-xs mb-1">★★★★★</div>
-          <h3 class="font-semibold text-xs leading-snug text-text mb-1">La Nuit du Destin</h3>
-          <p class="text-xs text-muted">A. Rachidi</p>
-        </div>
-      </a>
-
-      <!-- Livre nouveau 5 -->
-      <a href="livre.html?slug=mariam-et-les-etoiles" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
-        <div class="relative overflow-hidden" style="height:200px; background: linear-gradient(135deg, #F5E8F0, #FAE8F5);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-5xl" style="color:#C96B8A; opacity:0.35;">auto_stories</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars text-xs mb-1">★★★★☆</div>
-          <h3 class="font-semibold text-xs leading-snug text-text mb-1">Mariam et les étoiles</h3>
-          <p class="text-xs text-muted">F. Diallo</p>
-        </div>
-      </a>
-
-      <!-- Livre nouveau 6 -->
-      <a href="livre.html?slug=apprendre-bismillah" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
-        <div class="relative overflow-hidden" style="height:200px; background: linear-gradient(135deg, #FAEEE8, #FFF0E8);">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <span class="ms text-5xl" style="color:#D4A06A; opacity:0.35;">auto_stories</span>
-          </div>
-        </div>
-        <div class="p-3">
-          <div class="stars text-xs mb-1">★★★★★</div>
-          <h3 class="font-semibold text-xs leading-snug text-text mb-1">J'apprends Bismillah</h3>
-          <p class="text-xs text-muted">M. Bensalem</p>
-        </div>
-      </a>
-
+    <div class="books-scroll" id="recent-books">
+      <!-- rempli par JS -->
+      <div class="skeleton rounded-2xl flex-shrink-0" style="width:160px;height:260px;"></div>
+      <div class="skeleton rounded-2xl flex-shrink-0" style="width:160px;height:260px;"></div>
+      <div class="skeleton rounded-2xl flex-shrink-0" style="width:160px;height:260px;"></div>
+      <div class="skeleton rounded-2xl flex-shrink-0" style="width:160px;height:260px;"></div>
+      <div class="skeleton rounded-2xl flex-shrink-0" style="width:160px;height:260px;"></div>
+      <div class="skeleton rounded-2xl flex-shrink-0" style="width:160px;height:260px;"></div>
     </div>
   </div>
 </section>
@@ -479,40 +322,12 @@ tailwind.config = {
       </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-
-      <!-- Auteur 1 -->
-      <a href="auteur.html?slug=leila-abou-saleh" class="author-card bg-card rounded-2xl p-4 text-center no-underline block border border-border">
-        <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl font-bold font-display" style="background: linear-gradient(135deg, #F5E8F0, #EEE8F5); color:#C96B8A;">L</div>
-        <h3 class="font-semibold text-sm text-text mb-1">Leila Abou Saleh</h3>
-        <p class="text-xs text-muted mb-2">8 livres</p>
-        <span class="badge badge-theme">Auto-éditée</span>
-      </a>
-
-      <!-- Auteur 2 -->
-      <a href="auteur.html?slug=amina-bouchentouf" class="author-card bg-card rounded-2xl p-4 text-center no-underline block border border-border">
-        <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl font-bold font-display" style="background: linear-gradient(135deg, #EEE8F5, #E8EEF5); color:#9B7FA6;">A</div>
-        <h3 class="font-semibold text-sm text-text mb-1">Amina Bouchentouf</h3>
-        <p class="text-xs text-muted mb-2">5 livres</p>
-        <span class="badge badge-lang">Bilingue</span>
-      </a>
-
-      <!-- Auteur 3 -->
-      <a href="auteur.html?slug=fatima-ez-zouaoui" class="author-card bg-card rounded-2xl p-4 text-center no-underline block border border-border">
-        <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl font-bold font-display" style="background: linear-gradient(135deg, #FFF0E8, #FAEEE8); color:#F0A87A;">F</div>
-        <h3 class="font-semibold text-sm text-text mb-1">Fatima Ez-Zouaoui</h3>
-        <p class="text-xs text-muted mb-2">12 livres</p>
-        <span class="badge badge-age">Maison éd.</span>
-      </a>
-
-      <!-- Auteur 4 -->
-      <a href="auteur.html?slug=rania-al-masri" class="author-card bg-card rounded-2xl p-4 text-center no-underline block border border-border">
-        <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl font-bold font-display" style="background: linear-gradient(135deg, #E8F5E8, #EAF5E8); color:#5B8A5F;">R</div>
-        <h3 class="font-semibold text-sm text-text mb-1">Rania Al-Masri</h3>
-        <p class="text-xs text-muted mb-2">3 livres</p>
-        <span class="badge badge-theme">Auto-éditée</span>
-      </a>
-
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="featured-authors">
+      <!-- rempli par JS -->
+      <div class="skeleton rounded-2xl h-36"></div>
+      <div class="skeleton rounded-2xl h-36"></div>
+      <div class="skeleton rounded-2xl h-36"></div>
+      <div class="skeleton rounded-2xl h-36"></div>
     </div>
   </div>
 </section>
