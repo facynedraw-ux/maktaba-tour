@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Connexion — Maktaba Tour</title>
+<meta name="description" content="Connectez-vous à Maktaba Tour pour accéder à vos favoris et laisser des avis.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#C96B8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary:   '#C96B8A',
+        secondary: '#9B7FA6',
+        accent:    '#F0A87A',
+        bg:        '#FFF5F7',
+        card:      '#F5F0FA',
+        text:      '#3D1F2D',
+        muted:     '#8A6A7A',
+        border:    '#E8D5DC',
+      },
+      fontFamily: {
+        display: ['Playfair Display', 'serif'],
+        body:    ['DM Sans', 'sans-serif'],
+      },
+    }
+  }
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #FFF5F7; color: #3D1F2D; margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+  .ms { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 20px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; }
+
+  /* Blob déco */
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.2; pointer-events: none; }
+
+  /* Carte centrale */
+  .login-card { background: white; border: 1px solid #E8D5DC; border-radius: 24px; padding: 40px 36px; width: 100%; max-width: 420px; position: relative; z-index: 1; }
+
+  /* Input email */
+  .email-input { width: 100%; padding: 14px 16px 14px 46px; border: 1.5px solid #E8D5DC; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: #3D1F2D; background: white; outline: none; transition: border-color 0.2s; }
+  .email-input:focus { border-color: #C96B8A; box-shadow: 0 0 0 3px rgba(201,107,138,0.1); }
+  .email-input::placeholder { color: #B09AAA; }
+  .email-input.error { border-color: #E05050; }
+
+  /* Inputs OTP — 6 cases */
+  .otp-container { display: flex; gap: 8px; justify-content: center; }
+  .otp-input {
+    width: 48px; height: 56px;
+    border: 1.5px solid #E8D5DC; border-radius: 12px;
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600;
+    color: #3D1F2D; text-align: center; background: white;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    caret-color: #C96B8A;
+  }
+  .otp-input:focus { border-color: #C96B8A; box-shadow: 0 0 0 3px rgba(201,107,138,0.12); }
+  .otp-input.filled { border-color: #C96B8A; background: #FFF5F7; }
+  .otp-input.error { border-color: #E05050; animation: shake 0.4s ease; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%,60% { transform: translateX(-4px); }
+    40%,80% { transform: translateX(4px); }
+  }
+
+  /* Boutons */
+  .btn-primary { width: 100%; background: #C96B8A; color: white; border: none; border-radius: 12px; padding: 14px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s, transform 0.1s, opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-primary:hover:not(:disabled) { background: #b55a78; }
+  .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #8A6A7A; cursor: pointer; padding: 4px; text-decoration: underline; }
+  .btn-ghost:hover { color: #C96B8A; }
+
+  /* Message erreur */
+  .error-msg { color: #E05050; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap-4px; }
+
+  /* Message succès */
+  .success-box { background: #E8F0E8; border: 1px solid #A8C8A8; border-radius: 12px; padding: 14px 16px; font-size: 13px; color: #3A6A3A; display: flex; align-items: flex-start; gap: 8px; }
+
+  /* Loader spinner */
+  .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Étapes */
+  .step { display: none; }
+  .step.active { display: block; }
+
+  /* Animation */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .fade-up { animation: fadeUp 0.5s ease both; }
+
+  /* Progress dots */
+  .progress-dot { width: 6px; height: 6px; border-radius: 50%; background: #E8D5DC; transition: background 0.3s; }
+  .progress-dot.active { background: #C96B8A; }
+
+  /* Separator */
+  .separator { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .separator::before, .separator::after { content: ''; flex: 1; height: 1px; background: #E8D5DC; }
+  .separator span { font-size: 12px; color: #B09AAA; white-space: nowrap; }
+</style>
+</head>
+<body class="bg-bg font-body text-text">
+
+<!-- Blobs décoratifs fond -->
+<div class="blob w-80 h-80 bg-primary fixed" style="top:-60px;right:-80px;z-index:0;"></div>
+<div class="blob w-60 h-60 bg-secondary fixed" style="bottom:-40px;left:-60px;z-index:0;"></div>
+<div class="blob w-40 h-40 bg-accent fixed" style="top:50%;left:60%;z-index:0;"></div>
+
+<!-- Header minimal -->
+<header class="relative z-10 px-4 pt-6 pb-2">
+  <a href="index.html" class="inline-flex items-center gap-2 no-underline">
+    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+      <span class="text-white text-sm font-bold" style="font-family:'Playfair Display',serif;">M</span>
+    </div>
+    <span class="font-display font-bold text-text">Maktaba Tour</span>
+  </a>
+</header>
+
+<!-- Contenu centré -->
+<div class="flex-1 flex items-center justify-center px-4 py-8 relative z-10">
+  <div class="login-card fade-up">
+
+    <!-- Logo + titre -->
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 rounded-2xl bg-primary mx-auto mb-4 flex items-center justify-center" style="background:linear-gradient(135deg,#C96B8A,#9B7FA6);">
+        <span class="ms text-white" style="font-size:28px;">auto_stories</span>
+      </div>
+      <h1 class="font-display text-2xl font-bold mb-1">Bienvenue !</h1>
+      <p class="text-sm text-muted">Connectez-vous pour accéder à vos favoris,<br>vos listes et laisser des avis.</p>
+    </div>
+
+    <!-- Progress dots -->
+    <div class="flex justify-center gap-2 mb-8">
+      <div class="progress-dot active" id="dot-1"></div>
+      <div class="progress-dot" id="dot-2"></div>
+    </div>
+
+
+    <!-- ── ÉTAPE 1 : Saisie email ── -->
+    <div class="step active" id="step-email">
+
+      <label class="block text-sm font-medium mb-2" for="email-input">Votre adresse email</label>
+      <div class="relative mb-1">
+        <span class="ms absolute left-3 top-1/2 -translate-y-1/2 text-muted" style="font-size:18px;">mail</span>
+        <input
+          type="email"
+          id="email-input"
+          class="email-input"
+          placeholder="vous@exemple.com"
+          autocomplete="email"
+          inputmode="email"
+          onkeydown="if(event.key==='Enter') sendOtp()"
+        >
+      </div>
+      <p id="email-error" class="error-msg hidden">
+        <span class="ms" style="font-size:14px;color:#E05050;vertical-align:-2px;">error</span>
+        Veuillez saisir une adresse email valide.
+      </p>
+
+      <div class="separator"><span>Pas de mot de passe à retenir</span></div>
+
+      <!-- Explication -->
+      <div class="bg-card rounded-xl p-4 mb-6 flex gap-3">
+        <span class="ms text-secondary flex-shrink-0" style="font-size:20px;margin-top:1px;">info</span>
+        <p class="text-xs text-muted leading-relaxed">
+          Nous vous enverrons un <strong>code à 6 chiffres</strong> par email.
+          Aucun mot de passe à créer ni à retenir — simple et sécurisé.
+        </p>
+      </div>
+
+      <button class="btn-primary" id="btn-send-otp" onclick="sendOtp()">
+        <span class="ms" style="font-size:18px;">send</span>
+        Recevoir mon code
+      </button>
+
+      <p class="text-center text-xs text-muted mt-4">
+        En continuant, vous acceptez nos
+        <a href="confidentialite.html" class="text-primary no-underline hover:underline">conditions d'utilisation</a>.
+      </p>
+
+    </div>
+
+
+    <!-- ── ÉTAPE 2 : Saisie OTP ── -->
+    <div class="step" id="step-otp">
+
+      <!-- Info email envoyé -->
+      <div class="success-box mb-6">
+        <span class="ms flex-shrink-0" style="font-size:20px;color:#5B8A5F;">mark_email_read</span>
+        <div>
+          <p class="font-medium text-sm">Code envoyé !</p>
+          <p class="mt-0.5">Vérifiez votre boîte <strong id="email-display"></strong>.<br>Le code expire dans <strong id="countdown">10:00</strong>.</p>
+        </div>
+      </div>
+
+      <label class="block text-sm font-medium mb-3 text-center">Entrez votre code à 6 chiffres</label>
+
+      <!-- 6 cases OTP -->
+      <div class="otp-container mb-2" id="otp-container">
+        <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" id="otp-0" oninput="otpInput(this,0)" onkeydown="otpKeydown(event,0)" onpaste="otpPaste(event)">
+        <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="otp-1" oninput="otpInput(this,1)" onkeydown="otpKeydown(event,1)">
+        <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="otp-2" oninput="otpInput(this,2)" onkeydown="otpKeydown(event,2)">
+        <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="otp-3" oninput="otpInput(this,3)" onkeydown="otpKeydown(event,3)">
+        <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="otp-4" oninput="otpInput(this,4)" onkeydown="otpKeydown(event,4)">
+        <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="otp-5" oninput="otpInput(this,5)" onkeydown="otpKeydown(event,5)">
+      </div>
+
+      <p id="otp-error" class="text-center error-msg justify-center hidden">
+        <span class="ms" style="font-size:14px;color:#E05050;">error</span>
+        Code incorrect. Veuillez réessayer.
+      </p>
+
+      <button class="btn-primary mt-6" id="btn-verify" onclick="verifyOtp()" disabled>
+        <span id="verify-label" class="flex items-center gap-2 justify-center w-full">
+          <span class="ms" style="font-size:18px;">verified</span>
+          Vérifier le code
+        </span>
+      </button>
+
+      <!-- Renvoyer le code -->
+      <div class="flex items-center justify-between mt-5 pt-4 border-t border-border">
+        <button class="btn-ghost" onclick="goBack()">
+          ← Changer d'email
+        </button>
+        <div class="text-right">
+          <p class="text-xs text-muted mb-1" id="resend-info">Pas reçu le code ?</p>
+          <button class="btn-ghost" id="btn-resend" onclick="resendOtp()" disabled>
+            Renvoyer <span id="resend-timer"></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer minimal -->
+<footer class="relative z-10 text-center py-4">
+  <p class="text-xs text-muted">© 2026 Maktaba Tour · <a href="confidentialite.html" class="text-muted hover:text-primary no-underline">Confidentialité</a></p>
+</footer>
+
+
+<script>
+const SUPABASE_URL = 'https://VOTRE_URL.supabase.co';
+const SUPABASE_ANON_KEY = 'VOTRE_CLE_ANON';
+
+let _supabase;
+try {
+  _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch(e) {
+  console.warn('Supabase non configuré — mode démo');
+}
+
+let userEmail = '';
+let countdownInterval = null;
+let resendInterval = null;
+let resendSeconds = 60;
+
+// ── Redirection si déjà connecté ──
+async function checkSession() {
+  if (!_supabase) return;
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (session) {
+      const next = new URLSearchParams(window.location.search).get('next') || 'compte.html';
+      window.location.href = next;
+    }
+  } catch(e) {}
+}
+checkSession();
+
+
+// ── ÉTAPE 1 : Envoyer l'OTP ──
+async function sendOtp() {
+  const emailEl = document.getElementById('email-input');
+  const email = emailEl.value.trim().toLowerCase();
+  const errEl = document.getElementById('email-error');
+  const btn = document.getElementById('btn-send-otp');
+
+  // Validation
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    emailEl.classList.add('error');
+    errEl.classList.remove('hidden');
+    emailEl.focus();
+    return;
+  }
+  emailEl.classList.remove('error');
+  errEl.classList.add('hidden');
+
+  // Loading
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Envoi en cours…';
+
+  try {
+    if (_supabase) {
+      const { error } = await _supabase.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: true }
+      });
+      if (error) throw error;
+    }
+    // Démo sans Supabase : on passe quand même
+    userEmail = email;
+    showStep2();
+  } catch(err) {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="ms" style="font-size:18px;">send</span> Recevoir mon code';
+    emailEl.classList.add('error');
+    errEl.textContent = 'Erreur : ' + (err.message || 'Réessayez dans un instant.');
+    errEl.classList.remove('hidden');
+  }
+}
+
+function showStep2() {
+  document.getElementById('step-email').classList.remove('active');
+  document.getElementById('step-otp').classList.add('active');
+  document.getElementById('email-display').textContent = userEmail;
+  document.getElementById('dot-1').classList.remove('active');
+  document.getElementById('dot-2').classList.add('active');
+  // Focus première case
+  setTimeout(() => document.getElementById('otp-0').focus(), 100);
+  // Démarrer countdown 10 min
+  startCountdown(600);
+  // Démarrer timer renvoyer (60s)
+  startResendTimer();
+}
+
+
+// ── ÉTAPE 2 : Gestion cases OTP ──
+function otpInput(el, idx) {
+  const val = el.value.replace(/[^0-9]/g, '');
+  el.value = val;
+  el.classList.toggle('filled', val.length > 0);
+
+  if (val && idx < 5) {
+    document.getElementById('otp-' + (idx + 1)).focus();
+  }
+  checkOtpComplete();
+}
+
+function otpKeydown(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('otp-' + idx).value && idx > 0) {
+    const prev = document.getElementById('otp-' + (idx - 1));
+    prev.value = '';
+    prev.classList.remove('filled');
+    prev.focus();
+  }
+  if (e.key === 'ArrowLeft' && idx > 0) document.getElementById('otp-' + (idx - 1)).focus();
+  if (e.key === 'ArrowRight' && idx < 5) document.getElementById('otp-' + (idx + 1)).focus();
+  if (e.key === 'Enter') verifyOtp();
+}
+
+function otpPaste(e) {
+  e.preventDefault();
+  const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+  paste.split('').forEach((char, i) => {
+    const el = document.getElementById('otp-' + i);
+    if (el) { el.value = char; el.classList.add('filled'); }
+  });
+  const lastFilled = Math.min(paste.length, 5);
+  document.getElementById('otp-' + lastFilled).focus();
+  checkOtpComplete();
+}
+
+function checkOtpComplete() {
+  const code = getOtpValue();
+  const btn = document.getElementById('btn-verify');
+  btn.disabled = code.length < 6;
+  // Vérification auto si 6 chiffres
+  if (code.length === 6) setTimeout(verifyOtp, 200);
+}
+
+function getOtpValue() {
+  return [0,1,2,3,4,5].map(i => document.getElementById('otp-' + i).value).join('');
+}
+
+
+// ── Vérifier l'OTP ──
+async function verifyOtp() {
+  const code = getOtpValue();
+  if (code.length < 6) return;
+
+  const btn = document.getElementById('btn-verify');
+  const labelEl = document.getElementById('verify-label');
+  const errEl = document.getElementById('otp-error');
+
+  btn.disabled = true;
+  labelEl.innerHTML = '<div class="spinner"></div> Vérification…';
+  errEl.classList.add('hidden');
+
+  // Effacer shake
+  document.querySelectorAll('.otp-input').forEach(el => el.classList.remove('error'));
+
+  try {
+    if (_supabase) {
+      const { data, error } = await _supabase.auth.verifyOtp({
+        email: userEmail,
+        token: code,
+        type: 'email'
+      });
+      if (error) throw error;
+    }
+
+    // Succès — animation
+    labelEl.innerHTML = '<span class="ms" style="font-size:18px;">check_circle</span> Connexion réussie !';
+    btn.style.background = '#5B8A5F';
+    clearInterval(countdownInterval);
+
+    // Redirection
+    const next = new URLSearchParams(window.location.search).get('next') || 'compte.html';
+    setTimeout(() => { window.location.href = next; }, 800);
+
+  } catch(err) {
+    // Erreur code
+    btn.disabled = false;
+    labelEl.innerHTML = '<span class="ms" style="font-size:18px;">verified</span> Vérifier le code';
+    errEl.classList.remove('hidden');
+    document.querySelectorAll('.otp-input').forEach(el => {
+      el.classList.add('error');
+      el.value = '';
+      el.classList.remove('filled');
+    });
+    setTimeout(() => {
+      document.querySelectorAll('.otp-input').forEach(el => el.classList.remove('error'));
+    }, 600);
+    document.getElementById('otp-0').focus();
+  }
+}
+
+
+// ── Renvoyer le code ──
+async function resendOtp() {
+  document.getElementById('btn-resend').disabled = true;
+  try {
+    if (_supabase) {
+      await _supabase.auth.signInWithOtp({ email: userEmail });
+    }
+    document.getElementById('resend-info').textContent = 'Code renvoyé !';
+    startResendTimer();
+    // Reset cases
+    [0,1,2,3,4,5].forEach(i => {
+      const el = document.getElementById('otp-' + i);
+      el.value = ''; el.classList.remove('filled', 'error');
+    });
+    document.getElementById('otp-0').focus();
+    startCountdown(600);
+  } catch(e) {
+    document.getElementById('resend-info').textContent = 'Erreur, réessayez.';
+    document.getElementById('btn-resend').disabled = false;
+  }
+}
+
+function startResendTimer() {
+  resendSeconds = 60;
+  clearInterval(resendInterval);
+  const btn = document.getElementById('btn-resend');
+  const timerEl = document.getElementById('resend-timer');
+  btn.disabled = true;
+  timerEl.textContent = '(' + resendSeconds + 's)';
+  resendInterval = setInterval(() => {
+    resendSeconds--;
+    if (resendSeconds <= 0) {
+      clearInterval(resendInterval);
+      btn.disabled = false;
+      timerEl.textContent = '';
+    } else {
+      timerEl.textContent = '(' + resendSeconds + 's)';
+    }
+  }, 1000);
+}
+
+
+// ── Countdown expiration ──
+function startCountdown(seconds) {
+  clearInterval(countdownInterval);
+  let remaining = seconds;
+  const el = document.getElementById('countdown');
+  const update = () => {
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    el.textContent = m + ':' + String(s).padStart(2, '0');
+    if (remaining <= 0) {
+      clearInterval(countdownInterval);
+      el.textContent = 'expiré';
+      el.style.color = '#E05050';
+    }
+    remaining--;
+  };
+  update();
+  countdownInterval = setInterval(update, 1000);
+}
+
+
+// ── Retour étape 1 ──
+function goBack() {
+  clearInterval(countdownInterval);
+  clearInterval(resendInterval);
+  document.getElementById('step-otp').classList.remove('active');
+  document.getElementById('step-email').classList.add('active');
+  document.getElementById('dot-2').classList.remove('active');
+  document.getElementById('dot-1').classList.add('active');
+  const btn = document.getElementById('btn-send-otp');
+  btn.disabled = false;
+  btn.innerHTML = '<span class="ms" style="font-size:18px;">send</span> Recevoir mon code';
+  [0,1,2,3,4,5].forEach(i => {
+    const el = document.getElementById('otp-' + i);
+    el.value = ''; el.classList.remove('filled','error');
+  });
+  document.getElementById('otp-error').classList.add('hidden');
+  setTimeout(() => document.getElementById('email-input').focus(), 100);
+}
+
+
+// ── Focus auto au load ──
+window.addEventListener('load', () => {
+  document.getElementById('email-input').focus();
+});
+</script>
+
+</body>
+</html>

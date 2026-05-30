@@ -298,6 +298,163 @@ OTP length dans Supabase Dashboard : 6 chiffres.
 
 ---
 
+## Système de recherche intelligente
+
+La recherche est la force différenciatrice de Maktaba Tour. Elle doit être pertinente, rapide et compréhensive.
+
+### Champs indexés (colonne `search_vector` de type `tsvector` dans Supabase)
+Tous ces champs sont combinés dans un index de recherche full-text PostgreSQL :
+- `title` — titre du livre (poids A, priorité maximale)
+- `author_name` — nom de l'auteur (poids A)
+- `description` — résumé du livre (poids B)
+- `keywords` — mots-clés enrichis cachés, non affichés (poids A)
+- `themes` — tableau de thèmes (poids B)
+- `publisher` — maison d'édition (poids C)
+
+### Champ `keywords` — enrichissement sémantique
+Chaque livre a un champ `keywords text[]` rempli à la soumission et complété par l'admin.
+Exemples de synonymes et termes associés à indexer :
+
+| Thème | Mots-clés à inclure |
+|---|---|
+| Prière | salat, prière, woudou, ablutions, mosquée, tapis, rak'a, imama |
+| Ramadan | ramadan, jeûne, suhour, iftar, laylat al qadr, croissant, mois béni |
+| Aïd | aïd, fête, cadeau, sacrifice, mouton, eid al adha, eid al fitr |
+| Prophètes | prophète, nabi, ibrahim, youssef, moussa, issa, mohammed, souleymane |
+| Arabe | arabe, aleph, lettres, alphabet, calligraphie, écriture, aleph-ba |
+| Coran | coran, sourate, verset, fatiha, bismillah, tajwid, récitation, quran |
+| Valeurs | gentillesse, partage, respect, honnêteté, patience, générosité, courage |
+| Famille | famille, maman, papa, frère, sœur, grands-parents, foyer |
+| Nature | nature, animaux, plantes, création, jardin, forêt, oiseaux |
+| Aventure | aventure, voyage, découverte, héros, quête, amitié |
+
+### Synonymes gérés côté JS (avant envoi à Supabase)
+```js
+const SYNONYMS = {
+  'salat': 'prière', 'prayer': 'prière',
+  'eid': 'aïd', 'aid': 'aïd',
+  'quran': 'coran', "qu'ran": 'coran',
+  'nabi': 'prophète', 'rasoul': 'prophète',
+  'aleph': 'arabe', 'alphabet arabe': 'arabe',
+  'wudu': 'woudou', 'ablution': 'woudou',
+  'ramadhan': 'ramadan',
+  'hadith': 'coran',
+  'dua': 'prière',
+};
+
+function normalizeQuery(q) {
+  let normalized = q.toLowerCase().trim();
+  Object.entries(SYNONYMS).forEach(([k, v]) => {
+    normalized = normalized.replace(new RegExp(k, 'gi'), v);
+  });
+  return normalized;
+}
+```
+
+### Requête Supabase full-text
+```js
+async function searchBooks(query) {
+  const normalized = normalizeQuery(query);
+  const { data, error } = await _supabase
+    .from('books')
+    .select('*')
+    .eq('status', 'approved')
+    .textSearch('search_vector', normalized, {
+      type: 'websearch',
+      config: 'french'
+    })
+    .limit(50);
+  return data;
+}
+```
+
+### Index PostgreSQL à créer dans Supabase
+```sql
+-- Colonne vecteur de recherche
+ALTER TABLE books ADD COLUMN search_vector tsvector;
+
+-- Mise à jour automatique du vecteur
+CREATE OR REPLACE FUNCTION books_search_vector_update() RETURNS trigger AS $$
+BEGIN
+  NEW.search_vector :=
+    setweight(to_tsvector('french', coalesce(NEW.title, '')), 'A') ||
+    setweight(to_tsvector('french', coalesce(array_to_string(NEW.keywords, ' '), '')), 'A') ||
+    setweight(to_tsvector('french', coalesce(NEW.description, '')), 'B') ||
+    setweight(to_tsvector('french', coalesce(array_to_string(NEW.themes, ' '), '')), 'B') ||
+    setweight(to_tsvector('french', coalesce(NEW.publisher, '')), 'C');
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER books_search_vector_trigger
+BEFORE INSERT OR UPDATE ON books
+FOR EACH ROW EXECUTE FUNCTION books_search_vector_update();
+
+-- Index GIN pour performance
+CREATE INDEX books_search_idx ON books USING GIN(search_vector);
+```
+
+---
+
+## Système de badges IA / Humain
+
+**Contexte :** Les mamans veulent savoir si le texte et les illustrations d'un livre ont été créés par un humain ou générés par IA. C'est une attente éthique croissante et un vrai différenciateur de la plateforme.
+
+### Champs dans la table `books`
+```sql
+text_origin      text   -- 'human' | 'ai' | 'mixed'
+illus_origin     text   -- 'human' | 'ai' | 'mixed'
+```
+
+### Badges d'affichage
+| Valeur | Texte badge | Icône | Couleur |
+|---|---|---|---|
+| `human` (texte) | Texte humain | ✍️ | Vert `#5B8A5F` / fond `#E8F0E8` |
+| `ai` (texte) | Texte IA | 🤖 | Violet `#7A5F9A` / fond `#EEE8F5` |
+| `mixed` (texte) | Texte mixte | 🔀 | Orange `#C07040` / fond `#FFF0E8` |
+| `human` (illus) | Illus. humaines | 🎨 | Rose `#C96B8A` / fond `#F5E8F0` |
+| `ai` (illus) | Illus. IA | 🖼️ | Violet `#7A5F9A` / fond `#EEE8F5` |
+| `mixed` (illus) | Illus. mixtes | 🔀 | Orange `#C07040` / fond `#FFF0E8` |
+
+### Affichage sur les fiches
+- Sur la **carte catalogue** : icône discrète en bas à gauche (🎨 ou 🤖)
+- Sur la **fiche livre** : badges complets dans la section infos pratiques
+- Dans le **formulaire de soumission** : 2 selects obligatoires (texte + illustrations)
+- Dans les **filtres catalogue** : section "Création" avec 3 options (humain uniquement / IA / tous)
+
+### Composant badge HTML réutilisable
+```html
+<!-- Texte humain -->
+<span class="badge-origin" style="background:#E8F0E8;color:#4A7A4A;">✍️ Texte humain</span>
+
+<!-- Illustrations IA -->
+<span class="badge-origin" style="background:#EEE8F5;color:#7A5F9A;">🖼️ Illus. IA</span>
+
+<!-- CSS commun -->
+<style>
+.badge-origin {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 500;
+}
+</style>
+```
+
+### Filtre catalogue
+```js
+// Ajout aux filtres existants
+const AI_FILTERS = {
+  text_origin: null,   // null = tous | 'human' | 'ai' | 'mixed'
+  illus_origin: null,
+};
+
+// Dans la requête Supabase
+if (AI_FILTERS.text_origin) query = query.eq('text_origin', AI_FILTERS.text_origin);
+if (AI_FILTERS.illus_origin) query = query.eq('illus_origin', AI_FILTERS.illus_origin);
+```
+
+---
+
 ## Système de filtres catalogue
 
 Filtres appliqués côté client sur les données chargées depuis Supabase :
