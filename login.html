@@ -391,11 +391,12 @@ async function verifyOtp() {
   document.querySelectorAll('.otp-input').forEach(el => el.classList.remove('error'));
 
   try {
-    const { error } = await _supabase.auth.verifyOtp({
-      email: userEmail,
-      token: code,
-      type: 'email'
-    });
+    // Essayer 'email' (utilisateur existant) puis 'signup' (nouvel utilisateur)
+    let error;
+    ({ error } = await _supabase.auth.verifyOtp({ email: userEmail, token: code, type: 'email' }));
+    if (error) {
+      ({ error } = await _supabase.auth.verifyOtp({ email: userEmail, token: code, type: 'signup' }));
+    }
     if (error) throw error;
 
     // Succès — animation
