@@ -48,6 +48,30 @@ tailwind.config = {
   .modal-label { font-size:11px; font-weight:700; color:#8A6A7A; text-transform:uppercase; letter-spacing:1px; margin-bottom:3px; display:block; }
   .modal-input { width:100%; padding:9px 12px; border:1.5px solid #E8D5DC; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; color:#3D1F2D; outline:none; }
   .modal-input:focus { border-color:#C96B8A; }
+
+  /* Panel édition */
+  .panel-overlay { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.4); display:flex; justify-content:flex-end; }
+  .panel-box { background:white; width:100%; max-width:520px; height:100%; overflow-y:auto; padding:24px; display:flex; flex-direction:column; }
+  .f-label { display:block; font-size:11px; font-weight:700; color:#8A6A7A; text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
+  .f-input { width:100%; padding:9px 12px; border:1.5px solid #E8D5DC; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; color:#3D1F2D; background:white; outline:none; transition:border-color 0.2s; }
+  .f-input:focus { border-color:#C96B8A; }
+  .f-textarea { width:100%; padding:9px 12px; border:1.5px solid #E8D5DC; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; color:#3D1F2D; background:white; outline:none; resize:vertical; }
+  .f-textarea:focus { border-color:#C96B8A; }
+  .f-check { display:flex; align-items:center; gap:7px; font-size:13px; cursor:pointer; }
+  .f-check input { accent-color:#C96B8A; width:14px; height:14px; cursor:pointer; }
+  .f-sep { height:1px; background:#E8D5DC; margin:16px 0; }
+  .btn-save { background:#C96B8A; color:white; border:none; border-radius:12px; padding:10px 22px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:background 0.15s; }
+  .btn-save:hover { background:#b55a78; }
+  .btn-save:disabled { opacity:0.5; cursor:not-allowed; }
+  .btn-edit { background:#F5E8F0; color:#C96B8A; border:none; border-radius:10px; padding:7px 14px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:background 0.15s; }
+  .btn-edit:hover { background:#FACDD8; }
+  .toggle-wrap { display:flex; align-items:center; gap:10px; }
+  .toggle { width:42px; height:24px; border-radius:12px; border:none; cursor:pointer; position:relative; transition:background 0.2s; flex-shrink:0; }
+  .toggle.on { background:#C96B8A; }
+  .toggle.off { background:#E8D5DC; }
+  .toggle::after { content:''; position:absolute; top:3px; width:18px; height:18px; border-radius:50%; background:white; transition:left 0.2s; }
+  .toggle.on::after { left:21px; }
+  .toggle.off::after { left:3px; }
 </style>
 </head>
 <body class="bg-bg font-body text-text">
@@ -161,6 +185,116 @@ tailwind.config = {
 </div>
 
 
+<!-- PANEL ÉDITION ILLUSTRATEUR -->
+<div id="edit-panel" class="panel-overlay hidden" onclick="closePanelOverlay(event)">
+  <div class="panel-box" onclick="event.stopPropagation()">
+
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="font-display text-lg font-bold">Modifier l'illustrateur</h2>
+      <button onclick="closePanel()" class="w-9 h-9 flex items-center justify-center rounded-xl border border-border hover:bg-card transition-colors">
+        <span class="ms" style="font-size:18px;">close</span>
+      </button>
+    </div>
+
+    <input type="hidden" id="e-id">
+
+    <div class="mb-3">
+      <label class="f-label" for="e-name">Nom</label>
+      <input type="text" id="e-name" class="f-input" placeholder="Nom affiché">
+    </div>
+    <div class="mb-3">
+      <label class="f-label" for="e-bio">Biographie</label>
+      <textarea id="e-bio" class="f-textarea" rows="3" placeholder="Courte bio…"></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="f-label" for="e-photo">URL photo de profil</label>
+      <input type="text" id="e-photo" class="f-input" placeholder="https://…">
+    </div>
+    <div class="grid grid-cols-2 gap-3 mb-3">
+      <div>
+        <label class="f-label" for="e-website">Site web</label>
+        <input type="text" id="e-website" class="f-input" placeholder="https://…">
+      </div>
+      <div>
+        <label class="f-label" for="e-instagram">Instagram (sans @)</label>
+        <input type="text" id="e-instagram" class="f-input" placeholder="compte">
+      </div>
+    </div>
+
+    <div class="f-sep"></div>
+
+    <div class="mb-3">
+      <label class="f-label">Visages</label>
+      <div class="space-y-2">
+        <label class="f-check"><input type="radio" name="e-faces" value="no"> 🚫 Ne dessine pas les visages</label>
+        <label class="f-check"><input type="radio" name="e-faces" value="yes"> ✅ Dessine les visages</label>
+        <label class="f-check"><input type="radio" name="e-faces" value="both"> 🔀 Les deux selon commande</label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="f-label">Style(s)</label>
+      <div class="grid grid-cols-2 gap-2">
+        <label class="f-check"><input type="checkbox" value="aquarelle" name="e-style"> Aquarelle</label>
+        <label class="f-check"><input type="checkbox" value="vectoriel" name="e-style"> Vectoriel</label>
+        <label class="f-check"><input type="checkbox" value="numerique" name="e-style"> Numérique</label>
+        <label class="f-check"><input type="checkbox" value="mixte" name="e-style"> Mixte</label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="f-label">Spécialités</label>
+      <div class="grid grid-cols-2 gap-2">
+        <label class="f-check"><input type="checkbox" value="jeunesse" name="e-spec"> Jeunesse</label>
+        <label class="f-check"><input type="checkbox" value="pedagogique" name="e-spec"> Pédagogique</label>
+        <label class="f-check"><input type="checkbox" value="coran" name="e-spec"> Coran</label>
+        <label class="f-check"><input type="checkbox" value="decoration" name="e-spec"> Décoration</label>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="f-label">Langues</label>
+      <div class="flex gap-4">
+        <label class="f-check"><input type="checkbox" value="fr" name="e-lang"> Français</label>
+        <label class="f-check"><input type="checkbox" value="ar" name="e-lang"> Arabe</label>
+        <label class="f-check"><input type="checkbox" value="en" name="e-lang"> Anglais</label>
+      </div>
+    </div>
+
+    <div class="f-sep"></div>
+
+    <div class="mb-3">
+      <label class="f-label">Disponible pour commandes</label>
+      <div class="toggle-wrap">
+        <button id="e-available-toggle" class="toggle off" onclick="toggleField('e-available-toggle', 'e-available')" type="button"></button>
+        <span id="e-available-label" class="text-sm text-muted">Non</span>
+        <input type="hidden" id="e-available" value="false">
+      </div>
+    </div>
+
+    <div class="mb-5">
+      <label class="f-label">✨ Badge fondatrice</label>
+      <div class="toggle-wrap">
+        <button id="e-founder-toggle" class="toggle off" onclick="toggleField('e-founder-toggle', 'e-founder')" type="button"></button>
+        <span id="e-founder-label" class="text-sm text-muted">Non</span>
+        <input type="hidden" id="e-founder" value="false">
+      </div>
+    </div>
+
+    <div class="f-sep"></div>
+
+    <div class="flex gap-3 pt-2">
+      <button id="save-btn" class="btn-save flex-1 justify-center" onclick="saveIllus()">
+        <span class="ms" style="font-size:16px;">save</span>
+        <span id="save-label">Enregistrer</span>
+      </button>
+      <button onclick="closePanel()" class="px-4 py-2 rounded-xl border border-border text-sm font-medium text-muted hover:bg-card transition-colors bg-white">Annuler</button>
+    </div>
+
+  </div>
+</div>
+
+
 <script>
 let currentTab = 'illus-pending';
 let currentSub = null;
@@ -187,6 +321,12 @@ async function loadTab(tab) {
   const emptyEl = document.getElementById('list-empty');
   area.innerHTML = '<div class="skeleton h-28 rounded-2xl"></div><div class="skeleton h-28 rounded-2xl"></div>';
   emptyEl.classList.add('hidden');
+
+  // Onglet spécial : fiches illustrateurs publiées (table illustrators)
+  if (tab === 'illus-approved') {
+    await loadApprovedIllus();
+    return;
+  }
 
   const type = tab.startsWith('illus') ? 'illustrator' : 'author';
   const status = tab.endsWith('pending') ? 'pending' : 'approved';
@@ -230,6 +370,55 @@ async function loadTab(tab) {
           <button class="btn-approve" onclick='openModal(${JSON.stringify(s).replace(/'/g,"&#39;")})'>
             <span class="ms" style="font-size:14px;">open_in_full</span> Voir & traiter
           </button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function loadApprovedIllus() {
+  const area = document.getElementById('list-area');
+  const emptyEl = document.getElementById('list-empty');
+
+  const { data: illus } = await _supabase
+    .from('illustrators')
+    .select('*')
+    .eq('status', 'approved')
+    .order('is_founder', { ascending: false })
+    .order('name');
+
+  if (!illus || illus.length === 0) {
+    area.innerHTML = '';
+    emptyEl.classList.remove('hidden');
+    return;
+  }
+
+  area.innerHTML = illus.map(i => {
+    const facesLabel = i.both_options ? '🔀 Les deux' : i.draws_faces ? '✅ Avec visages' : '🚫 Sans visages';
+    const facesBg = i.both_options ? '#FFF0E8' : i.draws_faces ? '#E8F0E8' : '#FDE8EE';
+    const facesColor = i.both_options ? '#C07040' : i.draws_faces ? '#5B8A5F' : '#C96B8A';
+    return `
+      <div class="card">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center font-display font-bold text-base" style="background:linear-gradient(135deg,#F5E8F0,#EEE8F5);color:#C96B8A;">
+            ${i.photo_url ? `<img src="${esc(i.photo_url)}" alt="" class="w-full h-full object-cover">` : (i.name||'?')[0].toUpperCase()}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <p class="font-semibold">${esc(i.name)}</p>
+              ${i.is_founder ? `<span class="badge" style="background:#FFF0E8;color:#C07040;">✨ Fondatrice</span>` : ''}
+              <span class="badge" style="background:${facesBg};color:${facesColor};">${facesLabel}</span>
+              ${i.available ? `<span class="badge" style="background:#E8F0E8;color:#5B8A5F;">🟢 Dispo</span>` : `<span class="badge" style="background:#F0F0F0;color:#8A8A8A;">⏸ Complet</span>`}
+            </div>
+            ${i.bio ? `<p class="text-xs text-muted mt-0.5 truncate" style="max-width:300px;">${esc(i.bio)}</p>` : ''}
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn-edit" onclick='openEditPanel(${JSON.stringify(i).replace(/'/g,"&#39;")})'>
+            <span class="ms" style="font-size:14px;">edit</span> Modifier
+          </button>
+          <a href="illustrateur.html?slug=${esc(i.slug)}" target="_blank" class="btn-edit no-underline">
+            <span class="ms" style="font-size:14px;">open_in_new</span> Voir la fiche
+          </a>
         </div>
       </div>`;
   }).join('');
@@ -374,6 +563,107 @@ async function toggleFounder() {
   const newVal = !illus.is_founder;
   await _supabase.from('illustrators').update({ is_founder: newVal }).eq('id', illus.id);
   showToast(newVal ? '✨ Badge fondatrice activé' : 'Badge fondatrice retiré', 'success');
+}
+
+// ── Panel édition illustrateur ──
+function openEditPanel(illus) {
+  document.getElementById('e-id').value = illus.id;
+  document.getElementById('e-name').value = illus.name || '';
+  document.getElementById('e-bio').value = illus.bio || '';
+  document.getElementById('e-photo').value = illus.photo_url || '';
+  document.getElementById('e-website').value = illus.website || '';
+  document.getElementById('e-instagram').value = illus.instagram || '';
+
+  // Visages
+  const facesVal = illus.both_options ? 'both' : illus.draws_faces ? 'yes' : 'no';
+  document.querySelectorAll('input[name="e-faces"]').forEach(r => { r.checked = r.value === facesVal; });
+
+  // Style
+  document.querySelectorAll('input[name="e-style"]').forEach(cb => {
+    cb.checked = (illus.style || []).includes(cb.value);
+  });
+
+  // Spécialités
+  document.querySelectorAll('input[name="e-spec"]').forEach(cb => {
+    cb.checked = (illus.specialties || []).includes(cb.value);
+  });
+
+  // Langues
+  document.querySelectorAll('input[name="e-lang"]').forEach(cb => {
+    cb.checked = (illus.languages || []).includes(cb.value);
+  });
+
+  // Toggles
+  setToggle('e-available-toggle', 'e-available', 'e-available-label', !!illus.available);
+  setToggle('e-founder-toggle', 'e-founder', 'e-founder-label', !!illus.is_founder);
+
+  document.getElementById('save-label').textContent = 'Enregistrer';
+  document.getElementById('save-btn').disabled = false;
+  document.getElementById('edit-panel').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function setToggle(btnId, hiddenId, labelId, val) {
+  const btn = document.getElementById(btnId);
+  const hidden = document.getElementById(hiddenId);
+  const label = document.getElementById(labelId);
+  hidden.value = val ? 'true' : 'false';
+  btn.classList.toggle('on', val);
+  btn.classList.toggle('off', !val);
+  label.textContent = val ? 'Oui' : 'Non';
+}
+
+function toggleField(btnId, hiddenId) {
+  const hidden = document.getElementById(hiddenId);
+  const labelId = btnId.replace('-toggle', '-label');
+  const val = hidden.value !== 'true';
+  setToggle(btnId, hiddenId, labelId, val);
+}
+
+function closePanel() {
+  document.getElementById('edit-panel').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function closePanelOverlay(e) {
+  if (e.target === document.getElementById('edit-panel')) closePanel();
+}
+
+async function saveIllus() {
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  document.getElementById('save-label').textContent = 'Enregistrement…';
+
+  const id = document.getElementById('e-id').value;
+  const facesVal = document.querySelector('input[name="e-faces"]:checked')?.value;
+
+  const payload = {
+    name:        document.getElementById('e-name').value.trim(),
+    bio:         document.getElementById('e-bio').value.trim() || null,
+    photo_url:   document.getElementById('e-photo').value.trim() || null,
+    website:     document.getElementById('e-website').value.trim() || null,
+    instagram:   document.getElementById('e-instagram').value.trim() || null,
+    style:       [...document.querySelectorAll('input[name="e-style"]:checked')].map(c => c.value),
+    specialties: [...document.querySelectorAll('input[name="e-spec"]:checked')].map(c => c.value),
+    languages:   [...document.querySelectorAll('input[name="e-lang"]:checked')].map(c => c.value),
+    draws_faces: facesVal === 'yes' ? true : facesVal === 'no' ? false : true,
+    both_options: facesVal === 'both',
+    available:   document.getElementById('e-available').value === 'true',
+    is_founder:  document.getElementById('e-founder').value === 'true',
+  };
+
+  const { error } = await _supabase.from('illustrators').update(payload).eq('id', id);
+
+  if (error) {
+    showToast('Erreur : ' + error.message, 'error');
+    btn.disabled = false;
+    document.getElementById('save-label').textContent = 'Enregistrer';
+    return;
+  }
+
+  showToast('Profil mis à jour ✓', 'success');
+  closePanel();
+  loadTab(currentTab);
 }
 
 function setTab(tab, btn) {
