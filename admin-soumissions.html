@@ -385,6 +385,13 @@ async function approveSubmission() {
       admin_note: authorNote || null,
     }).eq('id', sub.id);
 
+    await sendEmail('submission_approved', {
+      author_name:  sub.author_name,
+      author_email: sub.author_email,
+      title:        sub.title,
+      slug:         bookSlug,
+    });
+
     showToast('Livre créé dans le catalogue ✓', 'success');
     document.getElementById('modal').classList.add('hidden');
     document.body.style.overflow = '';
@@ -414,10 +421,27 @@ async function rejectSubmission() {
     return;
   }
 
+  await sendEmail('submission_rejected', {
+    author_name:  currentSub.author_name,
+    author_email: currentSub.author_email,
+    title:        currentSub.title,
+    admin_note:   note || null,
+  });
+
   showToast('Soumission refusée', 'info');
   document.getElementById('modal').classList.add('hidden');
   document.body.style.overflow = '';
   loadSubs(currentFilter);
+}
+
+async function sendEmail(type, data) {
+  try {
+    await fetch(`${SUPABASE_URL}/functions/v1/swift-function`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({ type, data }),
+    });
+  } catch (e) { console.warn('Email non envoyé :', e); }
 }
 
 function setFilter(f, btn) {

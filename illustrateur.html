@@ -418,18 +418,32 @@ async function sendContact(e) {
   btn.disabled = true;
   document.getElementById('c-submit-label').textContent = 'Envoi…';
 
-  const payload = {
-    to_illustrator_slug: currentIllus.slug,
-    from_name:    document.getElementById('c-name').value.trim(),
-    from_email:   document.getElementById('c-email').value.trim(),
-    subject:      document.getElementById('c-subject').value.trim(),
-    message_body: document.getElementById('c-message').value.trim(),
-  };
+  // Récupérer l'email de l'illustrateur depuis directory_submissions (jamais affiché publiquement)
+  const { data: subData } = await _supabase
+    .from('directory_submissions')
+    .select('email')
+    .eq('type', 'illustrator')
+    .ilike('name', currentIllus.name)
+    .eq('status', 'approved')
+    .maybeSingle();
 
-  // Resend sera câblé côté Supabase Edge Function ou webhook — on log pour l'instant
-  console.log('Contact form:', payload);
+  try {
+    await fetch(`${SUPABASE_URL}/functions/v1/swift-function`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({
+        type: 'contact_illustrator',
+        data: {
+          to_email:     subData?.email || null,
+          from_name:    document.getElementById('c-name').value.trim(),
+          from_email:   document.getElementById('c-email').value.trim(),
+          subject:      document.getElementById('c-subject').value.trim(),
+          message_body: document.getElementById('c-message').value.trim(),
+        },
+      }),
+    });
+  } catch (e) { console.warn('Email non envoyé :', e); }
 
-  await new Promise(r => setTimeout(r, 800));
   document.getElementById('contact-form').classList.add('hidden');
   document.getElementById('contact-success').classList.remove('hidden');
 }

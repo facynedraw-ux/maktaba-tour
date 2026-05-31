@@ -531,6 +531,15 @@ async function approveSubmission() {
     status: 'approved', admin_note: note || null,
   }).eq('id', currentSub.id);
 
+  await sendEmail('candidature_approved', {
+    name:  currentSub.name,
+    email: currentSub.email,
+    type:  currentSub.type,
+    profile_url: currentSub.type === 'illustrator'
+      ? `https://maktabatour.fr/illustrateur.html?slug=${slugify(currentSub.name)}`
+      : `https://maktabatour.fr/auteur.html?slug=${slugify(currentSub.name)}`,
+  });
+
   showToast('Candidature approuvée ✓', 'success');
   document.getElementById('modal').classList.add('hidden');
   document.body.style.overflow = '';
@@ -543,10 +552,27 @@ async function rejectSubmission() {
     status: 'rejected', admin_note: note || null,
   }).eq('id', currentSub.id);
   if (error) { showToast('Erreur : ' + error.message, 'error'); return; }
+  await sendEmail('candidature_rejected', {
+    name:       currentSub.name,
+    email:      currentSub.email,
+    type:       currentSub.type,
+    admin_note: note || null,
+  });
+
   showToast('Candidature refusée', 'info');
   document.getElementById('modal').classList.add('hidden');
   document.body.style.overflow = '';
   loadTab(currentTab);
+}
+
+async function sendEmail(type, data) {
+  try {
+    await fetch(`${SUPABASE_URL}/functions/v1/swift-function`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({ type, data }),
+    });
+  } catch (e) { console.warn('Email non envoyé :', e); }
 }
 
 async function toggleFounder() {

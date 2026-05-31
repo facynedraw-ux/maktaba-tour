@@ -1126,7 +1126,7 @@ function resetForm() {
 
 async function sendEmail(type, data) {
   try {
-    await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
+    await fetch(`${SUPABASE_URL}/functions/v1/swift-function`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
       body: JSON.stringify({ type, data }),

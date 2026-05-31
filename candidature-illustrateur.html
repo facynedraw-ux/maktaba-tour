@@ -512,6 +512,16 @@ async function submitForm() {
     showToast('Erreur : ' + (err.message || 'Réessayez dans un instant.'), 'error');
   }
 }
+
+async function sendEmail(type, data) {
+  try {
+    await fetch(`${SUPABASE_URL}/functions/v1/swift-function`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({ type, data }),
+    });
+  } catch (e) { console.warn('Email non envoyé :', e); }
+}
 </script>
 
 </body>
