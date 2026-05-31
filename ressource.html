@@ -250,8 +250,11 @@ function renderResource(r) {
   allPreviews = r.preview_url ? [r.preview_url] : [];
   if (allPreviews.length > 0) {
     const main = document.getElementById('main-preview');
-    main.innerHTML = `<img src="${esc(allPreviews[0])}" alt="${esc(r.title)}" class="w-full h-full object-cover">`;
-    document.getElementById('watermark').classList.remove('hidden');
+    main.innerHTML = `
+      <img src="${esc(allPreviews[0])}" alt="${esc(r.title)}" class="w-full h-full object-cover">
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none" style="background:rgba(255,255,255,0.05);">
+        <span class="text-white font-bold text-2xl opacity-30 select-none" style="transform:rotate(-30deg);">APERÇU</span>
+      </div>`;
   }
 
   // Badges
