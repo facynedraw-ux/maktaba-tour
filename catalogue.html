@@ -128,12 +128,28 @@ tailwind.config = {
       </div>
       <span class="font-display font-bold text-text text-lg">Maktaba Tour</span>
     </a>
-    <nav class="hidden md:flex items-center gap-6">
+    <nav class="hidden md:flex items-center gap-5">
       <a href="catalogue.html" class="text-sm font-semibold text-primary no-underline">Catalogue</a>
+      <div class="relative" id="annuaires-menu">
+        <button onclick="toggleAnnuaires()" class="text-sm font-medium text-muted hover:text-primary transition-colors flex items-center gap-0.5 bg-transparent border-none cursor-pointer font-body p-0">
+          Annuaires <span class="ms" style="font-size:16px;transition:transform 0.2s;" id="annuaires-chevron">expand_more</span>
+        </button>
+        <div id="annuaires-dropdown" class="hidden absolute top-full left-0 mt-2 bg-white border border-border rounded-xl shadow-lg py-2 z-50" style="min-width:200px;">
+          <a href="annuaire-illustrateurs.html" class="flex items-center gap-2 px-4 py-2 text-sm text-muted hover:text-primary hover:bg-card no-underline transition-colors">
+            <span class="ms" style="font-size:16px;">palette</span> Illustrateurs
+          </a>
+          <a href="annuaire-auteurs.html" class="flex items-center gap-2 px-4 py-2 text-sm text-muted hover:text-primary hover:bg-card no-underline transition-colors">
+            <span class="ms" style="font-size:16px;">edit_note</span> Auteurs
+          </a>
+        </div>
+      </div>
+      <a href="ressources.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">Ressources</a>
       <a href="a-propos.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">À propos</a>
-      <a href="soumettre.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">Soumettre un livre</a>
     </nav>
     <div class="flex items-center gap-2">
+      <a href="soumettre.html" class="hidden lg:inline-flex items-center gap-1 text-sm font-medium text-primary border border-primary/30 rounded-xl px-3 py-1.5 hover:bg-primary/5 no-underline transition-colors">
+        <span class="ms" style="font-size:15px;">add_circle</span> Soumettre
+      </a>
       <a href="login.html" class="hidden md:inline-flex items-center gap-1 text-sm font-medium text-muted hover:text-primary no-underline transition-colors">
         <span class="ms" style="font-size:18px;">person</span> Mon compte
       </a>
@@ -145,6 +161,12 @@ tailwind.config = {
   <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-white px-4 py-3">
     <a href="index.html" class="block py-2 text-sm font-medium text-muted hover:text-primary no-underline">Accueil</a>
     <a href="catalogue.html" class="block py-2 text-sm font-semibold text-primary no-underline">Catalogue</a>
+    <div class="py-1">
+      <p class="text-xs font-semibold text-muted uppercase tracking-wide pt-1 pb-1">Annuaires</p>
+      <a href="annuaire-illustrateurs.html" class="block pl-2 py-1.5 text-sm text-muted hover:text-primary no-underline">✦ Illustrateurs</a>
+      <a href="annuaire-auteurs.html" class="block pl-2 py-1.5 text-sm text-muted hover:text-primary no-underline">✦ Auteurs</a>
+    </div>
+    <a href="ressources.html" class="block py-2 text-sm font-medium text-muted hover:text-primary no-underline">Ressources</a>
     <a href="soumettre.html" class="block py-2 text-sm font-medium text-muted hover:text-primary no-underline">Soumettre un livre</a>
     <a href="login.html" class="block py-2 text-sm font-medium text-primary no-underline">Mon compte</a>
   </div>
@@ -247,6 +269,16 @@ tailwind.config = {
           <p class="filter-section-title">Édition</p>
           <label class="filter-check"><input type="checkbox" value="publisher" onchange="applyFilters()"> Maison d'édition</label>
           <label class="filter-check"><input type="checkbox" value="self" onchange="applyFilters()"> Auto-édité</label>
+        </div>
+
+        <!-- Visages -->
+        <div>
+          <p class="filter-section-title">Visages</p>
+          <div class="flex gap-1 flex-wrap">
+            <button class="filter-pill text-xs px-2 py-1 active faces-btn" style="font-size:11px;" onclick="setFaces(null, this)">Tous</button>
+            <button class="filter-pill text-xs px-2 py-1 faces-btn" style="font-size:11px;" onclick="setFaces(false, this)">🚫 Sans</button>
+            <button class="filter-pill text-xs px-2 py-1 faces-btn" style="font-size:11px;" onclick="setFaces(true, this)">✅ Avec</button>
+          </div>
         </div>
 
         <!-- Note minimum -->
@@ -368,6 +400,16 @@ tailwind.config = {
       <label class="filter-check"><input type="checkbox" value="self" class="mobile-filter" onchange="applyFilters()"> Auto-édité</label>
     </div>
 
+    <!-- Visages mobile -->
+    <div class="mb-6">
+      <p class="filter-section-title">Visages</p>
+      <div class="flex gap-2 flex-wrap">
+        <button class="filter-pill active faces-btn" style="font-size:12px;" onclick="setFaces(null, this)">Tous</button>
+        <button class="filter-pill faces-btn" style="font-size:12px;" onclick="setFaces(false, this)">🚫 Sans visages</button>
+        <button class="filter-pill faces-btn" style="font-size:12px;" onclick="setFaces(true, this)">✅ Avec visages</button>
+      </div>
+    </div>
+
     <!-- Note -->
     <div class="mb-6">
       <p class="filter-section-title">Note minimum</p>
@@ -392,22 +434,26 @@ tailwind.config = {
      BOTTOM NAV MOBILE
 ════════════════════════════════════ -->
 <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-border md:hidden z-50 bottom-nav">
-  <div class="grid grid-cols-4">
-    <a href="index.html" class="flex flex-col items-center py-3 gap-1 no-underline text-muted">
-      <span class="ms" style="font-size:22px;">home</span>
-      <span class="text-xs">Accueil</span>
+  <div class="grid grid-cols-5">
+    <a href="index.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
+      <span class="ms" style="font-size:20px;">home</span>
+      <span style="font-size:10px;">Accueil</span>
     </a>
-    <a href="catalogue.html" class="flex flex-col items-center py-3 gap-1 no-underline" style="color:#C96B8A;">
-      <span class="ms" style="font-size:22px;font-variation-settings:'FILL' 1;">auto_stories</span>
-      <span class="text-xs font-semibold">Catalogue</span>
+    <a href="catalogue.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#C96B8A;">
+      <span class="ms" style="font-size:20px;font-variation-settings:'FILL' 1;">auto_stories</span>
+      <span style="font-size:10px;font-weight:600;">Catalogue</span>
     </a>
-    <a href="compte.html" class="flex flex-col items-center py-3 gap-1 no-underline text-muted">
-      <span class="ms" style="font-size:22px;">favorite</span>
-      <span class="text-xs">Favoris</span>
+    <a href="annuaire-illustrateurs.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
+      <span class="ms" style="font-size:20px;">palette</span>
+      <span style="font-size:10px;">Annuaires</span>
     </a>
-    <a href="compte.html" class="flex flex-col items-center py-3 gap-1 no-underline text-muted">
-      <span class="ms" style="font-size:22px;">person</span>
-      <span class="text-xs">Compte</span>
+    <a href="ressources.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
+      <span class="ms" style="font-size:20px;">shopping_bag</span>
+      <span style="font-size:10px;">Ressources</span>
+    </a>
+    <a href="compte.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
+      <span class="ms" style="font-size:20px;">person</span>
+      <span style="font-size:10px;">Compte</span>
     </a>
   </div>
 </nav>
@@ -535,6 +581,10 @@ async function loadBooks() {
   // Note minimum
   if (minRating > 0) query = query.gte('rating_avg', minRating);
 
+  // Visages (auto-activé si recherche "sans visage(s)")
+  const autoFaces = /sans.?visages?/i.test(searchQuery) ? false : facesFilter;
+  if (autoFaces !== null) query = query.eq('faces_in_illustrations', autoFaces);
+
   // Tri
   switch (currentSort) {
     case 'newest':  query = query.order('created_at', { ascending: false }); break;
@@ -649,7 +699,32 @@ function setView(view) {
     btnGrid.classList.remove('bg-primary','text-white'); btnGrid.classList.add('text-muted');
   }
 }
+let facesFilter = null;
+
+function setFaces(val, btn) {
+  facesFilter = val;
+  document.querySelectorAll('.faces-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  currentPage = 1;
+  applyFilters();
+}
+
 function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
+function toggleAnnuaires() {
+  const dd = document.getElementById('annuaires-dropdown');
+  const ch = document.getElementById('annuaires-chevron');
+  dd.classList.toggle('hidden');
+  ch.style.transform = dd.classList.contains('hidden') ? '' : 'rotate(180deg)';
+}
+document.addEventListener('click', function(e) {
+  const m = document.getElementById('annuaires-menu');
+  if (m && !m.contains(e.target)) {
+    document.getElementById('annuaires-dropdown')?.classList.add('hidden');
+    const ch = document.getElementById('annuaires-chevron');
+    if (ch) ch.style.transform = '';
+  }
+});
 function openDrawer() { document.getElementById('filter-drawer').classList.add('open'); document.body.style.overflow = 'hidden'; }
 function closeDrawer() { document.getElementById('filter-drawer').classList.remove('open'); document.body.style.overflow = ''; }
 

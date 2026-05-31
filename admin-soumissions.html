@@ -273,6 +273,7 @@ function openModal(sub) {
     ['Thèmes', (sub.themes||[]).map(t => THEME_LABELS[t]||t).join(', ') || '—'],
     ['Lien achat', sub.purchase_url ? `<a href="${esc(sub.purchase_url)}" target="_blank" class="text-primary hover:underline text-sm">${esc(sub.purchase_url.slice(0,40))}…</a>` : '—'],
     ['Prix', sub.price ? sub.price + ' €' : '—'],
+    ['Visages', sub.faces_in_illustrations === true ? '✅ Avec visages' : sub.faces_in_illustrations === false ? '🚫 Sans visages' : '— Non renseigné'],
   ];
 
   document.getElementById('modal-fields').innerHTML = FIELDS.map(([label, val]) => `
@@ -372,6 +373,7 @@ async function approveSubmission() {
       language: sub.language || 'fr',
       purchase_url: sub.purchase_url || null,
       price: sub.price || null,
+      faces_in_illustrations: sub.faces_in_illustrations ?? null,
       status: 'approved',
       submitted_by: sub.author_email,
     });

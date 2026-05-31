@@ -294,6 +294,15 @@ tailwind.config = {
       </div>
 
       <div class="mb-4">
+        <label class="form-label" for="f-faces">Visages dans les illustrations</label>
+        <select id="f-faces" class="form-select">
+          <option value="">— Non renseigné —</option>
+          <option value="false">🚫 Sans visages</option>
+          <option value="true">✅ Avec visages</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
         <label class="form-label" for="f-status">Statut</label>
         <select id="f-status" class="form-select">
           <option value="pending">En attente</option>
@@ -436,6 +445,7 @@ async function editBook(id) {
   document.getElementById('f-arabic-level').value = full.arabic_level || 'none';
   document.getElementById('f-text-origin').value = full.text_origin || '';
   document.getElementById('f-illus-origin').value = full.illus_origin || '';
+  document.getElementById('f-faces').value = full.faces_in_illustrations === true ? 'true' : full.faces_in_illustrations === false ? 'false' : '';
   document.getElementById('f-status').value = full.status || 'pending';
 
   // Auteur
@@ -472,6 +482,7 @@ function openPanel(id) {
   document.getElementById('f-arabic-level').value = 'none';
   document.getElementById('f-text-origin').value = '';
   document.getElementById('f-illus-origin').value = '';
+  document.getElementById('f-faces').value = '';
   document.getElementById('f-status').value = 'approved';
   document.querySelectorAll('input[name="theme"]').forEach(cb => cb.checked = false);
 
@@ -547,6 +558,7 @@ async function saveBook() {
       arabic_level: document.getElementById('f-arabic-level').value,
       text_origin: document.getElementById('f-text-origin').value || null,
       illus_origin: document.getElementById('f-illus-origin').value || null,
+      faces_in_illustrations: document.getElementById('f-faces').value === 'true' ? true : document.getElementById('f-faces').value === 'false' ? false : null,
       themes,
       status: document.getElementById('f-status').value,
     };

@@ -61,6 +61,15 @@ const SYNONYMS = {
   'ramadhan': 'ramadan',
   'hadith': 'coran',
   'dua': 'prière',
+  'sans visage': 'pudique', 'sans visages': 'pudique',
+  'histore': 'conte', 'histoire': 'conte',
+  'maternelle': 'petits',
+  'tout petit': 'bébé', 'tout-petit': 'bébé',
+  'eveil': 'éveil',
+  'apprentissage': 'pédagogique',
+  'colorie': 'coloriage', 'colorier': 'coloriage',
+  'activite': 'activité',
+  'fiche': 'pédagogique',
 };
 
 function normalizeQuery(q) {

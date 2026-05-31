@@ -1,7 +1,7 @@
 {
   "name": "Maktaba Tour",
   "short_name": "Maktaba",
-  "description": "La bibliothèque qui fait le tour des livres jeunesse musulmans pour toi.",
+  "description": "La bibliothèque jeunesse musulmane — Un projet Jumua & Me",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
