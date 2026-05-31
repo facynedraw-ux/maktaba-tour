@@ -55,15 +55,16 @@ tailwind.config = {
   .email-input.error { border-color: #E05050; }
 
   /* Inputs OTP — 6 cases */
-  .otp-container { display: flex; gap: 8px; justify-content: center; }
+  .otp-container { display: flex; gap: 6px; justify-content: center; width: 100%; }
   .otp-input {
-    width: 48px; height: 56px;
-    border: 1.5px solid #E8D5DC; border-radius: 12px;
-    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600;
+    flex: 1 1 0; min-width: 0; max-width: 44px; height: 52px;
+    border: 1.5px solid #E8D5DC; border-radius: 10px;
+    font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600;
     color: #3D1F2D; text-align: center; background: white;
     outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    caret-color: #C96B8A;
+    caret-color: #C96B8A; padding: 0;
   }
+  @media (max-width: 380px) { .otp-container { gap: 4px; } .otp-input { height: 46px; font-size: 17px; } }
   .otp-input:focus { border-color: #C96B8A; box-shadow: 0 0 0 3px rgba(201,107,138,0.12); }
   .otp-input.filled { border-color: #C96B8A; background: #FFF5F7; }
   .otp-input.error { border-color: #E05050; animation: shake 0.4s ease; }
