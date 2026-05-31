@@ -1097,6 +1097,13 @@ async function submitForm() {
 
     if (error) throw error;
 
+    // Email confirmation auteur + notification admin
+    await sendEmail('submission_received', {
+      author_name:  document.getElementById('author-name').value.trim(),
+      author_email: document.getElementById('author-email').value.trim(),
+      title:        document.getElementById('book-title').value.trim(),
+    });
+
     showSuccess();
 
   } catch (err) {
@@ -1115,6 +1122,18 @@ function showSuccess() {
 
 function resetForm() {
   window.location.reload();
+}
+
+async function sendEmail(type, data) {
+  try {
+    await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({ type, data }),
+    });
+  } catch (e) {
+    console.warn('Email non envoyé :', e);
+  }
 }
 </script>
 

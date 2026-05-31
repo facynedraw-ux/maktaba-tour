@@ -496,6 +496,12 @@ async function submitForm() {
 
     if (error) throw error;
 
+    await sendEmail('candidature_received', {
+      name:  document.getElementById('f-name').value.trim(),
+      email,
+      type:  'illustrator',
+    });
+
     document.getElementById('form-wrapper').classList.add('hidden');
     document.getElementById('form-success').classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
