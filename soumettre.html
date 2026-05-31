@@ -994,47 +994,76 @@ async function submitForm() {
   btn.disabled = true;
   label.innerHTML = '<div class="spinner"></div> Envoi en cours…';
 
-  // Collecte des données
-  const data = {
-    title: document.getElementById('book-title').value.trim(),
-    description: document.getElementById('book-desc').value.trim(),
-    keywords: document.getElementById('book-keywords').value.split(',').map(k => k.trim()).filter(Boolean),
-    age_min: parseInt(document.getElementById('age-min').value),
-    age_max: parseInt(document.getElementById('age-max').value),
-    themes: [...document.querySelectorAll('#theme-grid input:checked')].map(i => i.value),
-    language: document.getElementById('book-lang').value,
-    arabic_level: document.getElementById('arabic-level').value,
-    pages: parseInt(document.getElementById('book-pages').value) || null,
-    year: parseInt(document.getElementById('book-year').value) || null,
-    is_self_published: document.querySelector('input[name="edition"]:checked')?.value === 'self',
-    publisher: document.getElementById('publisher-name').value.trim() || null,
-    purchase_url: document.getElementById('book-url').value.trim(),
-    text_origin: document.querySelector('input[name="text_origin"]:checked')?.value,
-    illus_origin: document.querySelector('input[name="illus_origin"]:checked')?.value,
-    author_name: document.getElementById('author-name').value.trim(),
-    author_email: document.getElementById('author-email').value.trim(),
-    author_bio: document.getElementById('author-bio').value.trim() || null,
-    author_website: document.getElementById('author-website').value.trim() || null,
-    author_instagram: document.getElementById('author-instagram').value.trim() || null,
-    message: document.getElementById('author-message').value.trim() || null,
-    status: 'pending',
-  };
-
   try {
-    // Upload couverture vers Supabase Storage
-    // const { data: coverData } = await _supabase.storage.from('submissions').upload(...)
+    // 1. Upload couverture → Supabase Storage bucket "submissions"
+    let coverUrl = null;
+    if (coverFile) {
+      const ext = coverFile.name.split('.').pop().toLowerCase();
+      const path = `covers/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const { data: storageData, error: storageErr } = await _supabase.storage
+        .from('submissions')
+        .upload(path, coverFile, { contentType: coverFile.type, upsert: false });
+      if (!storageErr && storageData) {
+        coverUrl = `${SUPABASE_URL}/storage/v1/object/public/submissions/${storageData.path}`;
+      }
+    }
 
-    // Insertion dans la table submissions
-    // const { error } = await _supabase.from('submissions').insert([data]);
-    // if (error) throw error;
+    // 2. Upload pages intérieures
+    const interiorUrls = [];
+    for (let i = 0; i < interiorFiles.length; i++) {
+      const file = interiorFiles[i];
+      const ext = file.name.split('.').pop().toLowerCase();
+      const path = `interiors/${Date.now()}-${i}.${ext}`;
+      const { data: sd, error: se } = await _supabase.storage
+        .from('submissions')
+        .upload(path, file, { contentType: file.type });
+      if (!se && sd) {
+        interiorUrls.push(`${SUPABASE_URL}/storage/v1/object/public/submissions/${sd.path}`);
+      }
+    }
 
-    // Succès (mode démo)
-    await new Promise(r => setTimeout(r, 1200));
+    // 3. Construire le champ message (infos supplémentaires non dans le schéma DB)
+    const extras = [
+      document.getElementById('author-bio').value.trim()        ? `Biographie : ${document.getElementById('author-bio').value.trim()}` : null,
+      document.getElementById('author-website').value.trim()    ? `Site web : ${document.getElementById('author-website').value.trim()}` : null,
+      document.getElementById('author-instagram').value.trim()  ? `Instagram : @${document.getElementById('author-instagram').value.trim()}` : null,
+      document.getElementById('book-keywords').value.trim()     ? `Mots-clés : ${document.getElementById('book-keywords').value.trim()}` : null,
+      document.querySelector('input[name="text_origin"]:checked')?.value ? `Origine texte : ${document.querySelector('input[name="text_origin"]:checked').value}` : null,
+      document.querySelector('input[name="illus_origin"]:checked')?.value ? `Origine illus : ${document.querySelector('input[name="illus_origin"]:checked').value}` : null,
+      document.getElementById('arabic-level').value !== 'none'  ? `Niveau arabe : ${document.getElementById('arabic-level').value}` : null,
+      document.getElementById('book-pages').value               ? `Pages : ${document.getElementById('book-pages').value}` : null,
+      document.getElementById('book-year').value                ? `Année : ${document.getElementById('book-year').value}` : null,
+      document.getElementById('author-message').value.trim()    ? `\nMessage de l'auteur :\n${document.getElementById('author-message').value.trim()}` : null,
+      coverFile && !coverUrl                                     ? '\n⚠️ Couverture sélectionnée mais upload échoué — l\'auteur doit renvoyer les visuels.' : null,
+    ].filter(Boolean).join('\n');
+
+    // 4. Insertion dans la table submissions
+    const { error } = await _supabase.from('submissions').insert([{
+      title:            document.getElementById('book-title').value.trim(),
+      description:      document.getElementById('book-desc').value.trim(),
+      author_name:      document.getElementById('author-name').value.trim(),
+      author_email:     document.getElementById('author-email').value.trim(),
+      publisher:        document.getElementById('publisher-name').value.trim() || null,
+      is_self_published: document.querySelector('input[name="edition"]:checked')?.value === 'self',
+      age_min:          parseInt(document.getElementById('age-min').value) || null,
+      age_max:          parseInt(document.getElementById('age-max').value) || null,
+      themes:           [...document.querySelectorAll('#theme-grid input:checked')].map(i => i.value),
+      language:         document.getElementById('book-lang').value,
+      purchase_url:     document.getElementById('book-url').value.trim(),
+      cover_url:        coverUrl,
+      interior_urls:    interiorUrls,
+      message:          extras || null,
+      status:           'pending',
+    }]);
+
+    if (error) throw error;
+
     showSuccess();
-  } catch(err) {
+
+  } catch (err) {
     btn.disabled = false;
     label.innerHTML = '<span class="ms" style="font-size:18px;">send</span> Soumettre mon livre';
-    alert('Erreur lors de l\'envoi : ' + (err.message || 'Réessayez dans un instant.'));
+    showToast('Erreur lors de l\'envoi : ' + (err.message || 'Réessayez dans un instant.'), 'error');
   }
 }
 
