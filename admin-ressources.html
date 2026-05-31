@@ -222,9 +222,14 @@ tailwind.config = {
     </div>
 
     <div class="mb-3">
-      <label class="f-label" for="f-file">URL fichier PDF (bucket privé)</label>
-      <input type="text" id="f-file" class="f-input" placeholder="https://… (URL Supabase Storage)">
-      <p class="text-xs text-muted mt-1">URL du PDF dans le bucket <code>resources</code> (privé). Le lien de téléchargement signé sera généré automatiquement après achat.</p>
+      <label class="f-label">Fichier PDF</label>
+      <label id="f-file-label" class="flex items-center gap-3 p-3 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-primary transition-colors" style="border-color:#E8D5DC;">
+        <span class="ms" style="font-size:22px;color:#C96B8A;">upload_file</span>
+        <span id="f-file-name" class="text-sm text-muted truncate">Sélectionner un PDF…</span>
+        <input type="file" id="f-file-input" accept=".pdf" class="hidden" onchange="onFileSelect(this)">
+      </label>
+      <input type="hidden" id="f-file">
+      <p class="text-xs text-muted mt-1">PDF uploadé dans le bucket privé — lien signé généré automatiquement après achat.</p>
     </div>
 
     <div class="mb-5">
@@ -334,6 +339,8 @@ function editResource(id) {
   document.getElementById('f-pages').value = r.page_count ?? '';
   document.getElementById('f-preview').value = r.preview_url || '';
   document.getElementById('f-file').value = r.file_url || '';
+  document.getElementById('f-file-input').value = '';
+  document.getElementById('f-file-name').textContent = r.file_url ? r.file_url.split('/').pop() : 'Sélectionner un PDF…';
   document.getElementById('f-format').value = r.format || 'PDF';
   document.getElementById('f-active').checked = r.is_active;
   document.querySelectorAll('input[name="f-theme"]').forEach(cb => {
@@ -351,6 +358,8 @@ function openPanel() {
   ['f-id','f-title','f-slug','f-desc','f-price','f-age-min','f-age-max','f-pages','f-preview','f-file'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
+  document.getElementById('f-file-input').value = '';
+  document.getElementById('f-file-name').textContent = 'Sélectionner un PDF…';
   document.getElementById('f-cat').value = '';
   document.getElementById('f-format').value = 'PDF';
   document.getElementById('f-active').checked = true;
@@ -372,12 +381,38 @@ function autoSlug() {
   document.getElementById('f-slug').value = slugify(document.getElementById('f-title').value);
 }
 
+function onFileSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('f-file-name').textContent = file.name;
+}
+
 async function saveResource() {
   const btn = document.getElementById('panel-save-btn');
   const title = document.getElementById('f-title').value.trim();
   if (!title) { showToast('Le titre est requis', 'error'); return; }
 
   btn.disabled = true;
+
+  // Upload PDF si un nouveau fichier est sélectionné
+  let fileUrl = document.getElementById('f-file').value.trim() || null;
+  const fileInput = document.getElementById('f-file-input');
+  if (fileInput.files[0]) {
+    document.getElementById('panel-save-label').textContent = 'Upload PDF…';
+    const file = fileInput.files[0];
+    const fileName = slugify(title) + '-' + Date.now().toString(36) + '.pdf';
+    const { data: uploaded, error: uploadError } = await _supabase.storage
+      .from('resources')
+      .upload(fileName, file, { contentType: 'application/pdf', upsert: false });
+    if (uploadError) {
+      showToast('Erreur upload : ' + uploadError.message, 'error');
+      btn.disabled = false;
+      document.getElementById('panel-save-label').textContent = editingId ? 'Mettre à jour' : 'Enregistrer';
+      return;
+    }
+    fileUrl = uploaded.path;
+  }
+
   document.getElementById('panel-save-label').textContent = 'Enregistrement…';
 
   const payload = {
@@ -391,7 +426,7 @@ async function saveResource() {
     page_count: parseInt(document.getElementById('f-pages').value) || null,
     themes: [...document.querySelectorAll('input[name="f-theme"]:checked')].map(c => c.value),
     preview_url: document.getElementById('f-preview').value.trim() || null,
-    file_url: document.getElementById('f-file').value.trim() || null,
+    file_url: fileUrl,
     format: document.getElementById('f-format').value.trim() || 'PDF',
     is_active: document.getElementById('f-active').checked,
   };
