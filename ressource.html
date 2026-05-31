@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
 <script>
@@ -318,11 +319,37 @@ async function loadSimilar(r) {
   }).join('');
 }
 
-function handleBuy() {
+const STRIPE_PK = 'pk_live_51Oj4bQLj722859plM930hrjtUu3xCmwS4G1Fck0qtiiN6fqhsR7SucDDTc2KOSdaMAoGUsxFmKv2tbKGfUTO9Hjr00WpYoHACD';
+
+async function handleBuy() {
   if (!currentResource) return;
-  // Stripe Checkout — sera câblé avec la clé publishable quand disponible
-  // Pour l'instant, redirection vers une page de contact ou message
-  showToast('La boutique ouvre très bientôt ! Contacte-nous sur Instagram @jumua_and_me', 'info');
+
+  const btns = ['buy-btn-desktop','buy-btn-mobile'];
+  btns.forEach(id => { const el = document.getElementById(id); if (el) { el.disabled = true; el.style.opacity = '0.7'; } });
+
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    const userEmail = session?.user?.email || null;
+
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/stripe-checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({
+        resource_slug: currentResource.slug,
+        resource_id:   currentResource.id,
+        user_email:    userEmail,
+        origin:        window.location.origin,
+      }),
+    });
+
+    const { url, error } = await res.json();
+    if (error) throw new Error(error);
+    window.location.href = url;
+
+  } catch (err) {
+    showToast('Erreur lors du paiement : ' + (err.message || 'Réessayez.'), 'error');
+    btns.forEach(id => { const el = document.getElementById(id); if (el) { el.disabled = false; el.style.opacity = '1'; } });
+  }
 }
 
 function openLightbox(url) {
