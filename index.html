@@ -233,27 +233,25 @@ tailwind.config = {
       </h1>
 
       <!-- Sous-titre -->
-      <p class="text-lg text-muted leading-relaxed mb-8 fade-up delay-2" style="max-width:500px;">
-        Découvrez, notez et achetez les meilleurs livres jeunesse musulmans.
-        Sélectionnés avec amour pour vos enfants.
+      <p class="text-lg text-muted leading-relaxed mb-6 fade-up delay-2" style="max-width:480px;">
+        Le catalogue de référence des livres jeunesse islamiques en français.
       </p>
 
-      <!-- Barre de recherche -->
-      <div class="relative mb-8 fade-up delay-3" style="max-width:480px;">
+      <!-- Barre de recherche — action principale -->
+      <div class="relative mb-4 fade-up delay-3" style="max-width:480px;">
         <label for="hero-search" class="sr-only">Rechercher un livre, un auteur ou un thème</label>
         <span class="ms absolute left-4 top-1/2 -translate-y-1/2 text-muted" style="font-size:20px;">search</span>
         <input id="hero-search" type="text" class="search-input" placeholder="Rechercher un titre, un auteur, un thème…" oninput="handleSearch(this.value)">
+        <button id="hero-search-clear" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-primary" onclick="clearHeroSearch()" aria-label="Effacer la recherche">
+          <span class="ms" style="font-size:18px;">close</span>
+        </button>
       </div>
 
-      <!-- CTA -->
-      <div class="flex flex-wrap gap-3 fade-up delay-4">
-        <a href="catalogue.html" class="btn-primary">
-          <span class="ms" style="font-size:18px;">auto_stories</span>
-          Voir le catalogue
-        </a>
-        <a href="soumettre.html" class="btn-secondary">
-          <span class="ms" style="font-size:18px;">add_circle</span>
-          Soumettre un livre
+      <!-- Lien secondaire -->
+      <div class="fade-up delay-4" style="max-width:480px;">
+        <a href="catalogue.html" class="inline-flex items-center gap-1.5 text-sm font-medium no-underline" style="color:#7A5A6A;">
+          Parcourir le catalogue
+          <span class="ms" style="font-size:16px;">arrow_forward</span>
         </a>
       </div>
 
@@ -773,9 +771,18 @@ function filterByTheme(theme, btn) {
 }
 
 function handleSearch(val) {
+  const clearBtn = document.getElementById('hero-search-clear');
+  if (clearBtn) clearBtn.classList.toggle('hidden', !val);
   if (val.length > 2) {
     window.location.href = `catalogue.html?q=${encodeURIComponent(val)}`;
   }
+}
+function clearHeroSearch() {
+  const input = document.getElementById('hero-search');
+  const clearBtn = document.getElementById('hero-search-clear');
+  if (input) input.value = '';
+  if (clearBtn) clearBtn.classList.add('hidden');
+  input?.focus();
 }
 
 loadThemePills();
