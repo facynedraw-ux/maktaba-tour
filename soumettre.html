@@ -26,7 +26,7 @@ tailwind.config = {
         bg:        '#FFF5F7',
         card:      '#F5F0FA',
         text:      '#3D1F2D',
-        muted:     '#8A6A7A',
+        muted:     '#7A5A6A',
         border:    '#E8D5DC',
         success:   '#5B8A5F',
       },
@@ -46,14 +46,14 @@ tailwind.config = {
   /* Inputs */
   .field-input { width: 100%; padding: 12px 14px; border: 1.5px solid #E8D5DC; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #3D1F2D; background: white; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
   .field-input:focus { border-color: #C96B8A; box-shadow: 0 0 0 3px rgba(201,107,138,0.08); }
-  .field-input::placeholder { color: #B09AAA; }
+  .field-input::placeholder { color: #7A5A6A; }
   .field-input.error { border-color: #E05050; }
   textarea.field-input { resize: vertical; min-height: 100px; }
   select.field-input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A6A7A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
 
   /* Label */
   .field-label { display: block; font-size: 13px; font-weight: 600; color: #3D1F2D; margin-bottom: 6px; }
-  .field-hint { font-size: 12px; color: #8A6A7A; margin-top: 5px; }
+  .field-hint { font-size: 12px; color: #7A5A6A; margin-top: 5px; }
   .field-required { color: #C96B8A; margin-left: 2px; }
   .field-error { font-size: 12px; color: #E05050; margin-top: 4px; display: none; align-items: center; gap: 3px; }
   .field-error.show { display: flex; }
@@ -90,10 +90,10 @@ tailwind.config = {
   /* Progress bar étapes */
   .step-bar { display: flex; align-items: center; gap: 0; margin-bottom: 32px; }
   .step-item { flex: 1; text-align: center; }
-  .step-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #E8D5DC; background: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #B09AAA; margin: 0 auto 4px; transition: all 0.3s; font-family: 'Playfair Display', serif; }
+  .step-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #E8D5DC; background: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #7A5A6A; margin: 0 auto 4px; transition: all 0.3s; font-family: 'Playfair Display', serif; }
   .step-dot.done { background: #C96B8A; border-color: #C96B8A; color: white; }
   .step-dot.current { border-color: #C96B8A; color: #C96B8A; }
-  .step-label { font-size: 11px; color: #B09AAA; font-weight: 500; }
+  .step-label { font-size: 11px; color: #7A5A6A; font-weight: 500; }
   .step-label.current { color: #C96B8A; font-weight: 600; }
   .step-connector { height: 2px; background: #E8D5DC; flex: 1; margin-bottom: 20px; transition: background 0.3s; }
   .step-connector.done { background: #C96B8A; }
@@ -103,7 +103,7 @@ tailwind.config = {
   .btn-primary:hover { background: #b55a78; }
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-secondary { background: white; color: #8A6A7A; border: 1.5px solid #E8D5DC; border-radius: 12px; padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-secondary { background: white; color: #7A5A6A; border: 1.5px solid #E8D5DC; border-radius: 12px; padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
   .btn-secondary:hover { border-color: #C96B8A; color: #C96B8A; }
 
   /* Spinner */
@@ -114,7 +114,7 @@ tailwind.config = {
   .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #C96B8A; }
 
   /* Char counter */
-  .char-counter { font-size: 11px; color: #B09AAA; text-align: right; margin-top: 4px; }
+  .char-counter { font-size: 11px; color: #7A5A6A; text-align: right; margin-top: 4px; }
   .char-counter.warn { color: #E05050; }
 
   /* Succès final */

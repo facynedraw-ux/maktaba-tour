@@ -17,7 +17,7 @@
 tailwind.config = {
   theme: {
     extend: {
-      colors: { primary:'#C96B8A', secondary:'#9B7FA6', accent:'#F0A87A', bg:'#FFF5F7', card:'#F5F0FA', text:'#3D1F2D', muted:'#8A6A7A', border:'#E8D5DC', success:'#5B8A5F' },
+      colors: { primary:'#C96B8A', secondary:'#9B7FA6', accent:'#F0A87A', bg:'#FFF5F7', card:'#F5F0FA', text:'#3D1F2D', muted:'#7A5A6A', border:'#E8D5DC', success:'#5B8A5F' },
       fontFamily: { display:['Playfair Display','serif'], body:['DM Sans','sans-serif'] }
     }
   }
@@ -27,7 +27,7 @@ tailwind.config = {
   *, *::before, *::after { box-sizing: border-box; }
   body { font-family:'DM Sans',sans-serif; background:#FFF5F7; color:#3D1F2D; margin:0; }
   .ms { font-family:'Material Symbols Outlined'; font-weight:normal; font-style:normal; font-size:20px; line-height:1; letter-spacing:normal; text-transform:none; display:inline-block; white-space:nowrap; direction:ltr; -webkit-font-smoothing:antialiased; }
-  .admin-nav-link { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; text-decoration:none; color:#8A6A7A; font-size:14px; font-weight:500; transition:all 0.15s; }
+  .admin-nav-link { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; text-decoration:none; color:#7A5A6A; font-size:14px; font-weight:500; transition:all 0.15s; }
   .admin-nav-link:hover, .admin-nav-link.active { background:#F5E8F0; color:#C96B8A; }
   .role-select { border:1.5px solid #E8D5DC; border-radius:8px; padding:5px 8px; font-family:'DM Sans',sans-serif; font-size:12px; color:#3D1F2D; background:white; cursor:pointer; outline:none; }
   .role-select:focus { border-color:#C96B8A; }
@@ -35,7 +35,7 @@ tailwind.config = {
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
   input[type=text] { border:1.5px solid #E8D5DC; border-radius:10px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:14px; color:#3D1F2D; background:white; outline:none; transition:border-color 0.2s; width:100%; }
   input[type=text]:focus { border-color:#C96B8A; }
-  input[type=text]::placeholder { color:#B09AAA; }
+  input[type=text]::placeholder { color:#7A5A6A; }
   @media (prefers-reduced-motion: reduce) {
     .skeleton { animation: none !important; }
   }

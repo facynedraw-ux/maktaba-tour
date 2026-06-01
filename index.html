@@ -47,7 +47,7 @@ tailwind.config = {
         bg:        '#FFF5F7',
         card:      '#F5F0FA',
         text:      '#3D1F2D',
-        muted:     '#8A6A7A',
+        muted:     '#7A5A6A',
         border:    '#E8D5DC',
         success:   '#5B8A5F',
       },
@@ -104,7 +104,7 @@ tailwind.config = {
   /* Input recherche */
   .search-input { width: 100%; padding: 14px 20px 14px 48px; border: 1.5px solid #E8D5DC; border-radius: 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: #3D1F2D; background: white; outline: none; transition: border-color 0.2s; }
   .search-input:focus { border-color: #C96B8A; }
-  .search-input::placeholder { color: #B09AAA; }
+  .search-input::placeholder { color: #7A5A6A; }
 
   /* Section titre */
   .section-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C96B8A; }
@@ -118,7 +118,7 @@ tailwind.config = {
   .bottom-nav { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
 
   /* Filtre pill */
-  .filter-pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; border: 1.5px solid #E8D5DC; background: white; color: #8A6A7A; flex-shrink: 0; }
+  .filter-pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; border: 1.5px solid #E8D5DC; background: white; color: #7A5A6A; flex-shrink: 0; }
   .filter-pill.active, .filter-pill:hover { background: #C96B8A; color: white; border-color: #C96B8A; }
   #theme-pills-home::-webkit-scrollbar { display: none; }
 
@@ -299,7 +299,6 @@ tailwind.config = {
 
     <div class="flex items-end justify-between mb-8">
       <div>
-        <p class="section-eyebrow mb-2">✦ Sélection du moment</p>
         <h2 class="font-display text-2xl md:text-3xl font-bold">Livres en vedette</h2>
       </div>
       <a href="catalogue.html" class="text-sm font-medium text-primary hover:underline no-underline flex items-center gap-1">
@@ -327,7 +326,6 @@ tailwind.config = {
 
     <div class="flex items-end justify-between mb-6">
       <div>
-        <p class="section-eyebrow mb-2">✦ Nouveautés</p>
         <h2 class="font-display text-2xl font-bold">Derniers ajouts</h2>
       </div>
       <a href="catalogue.html?sort=newest" class="text-sm font-medium text-primary hover:underline no-underline flex items-center gap-1">
@@ -356,7 +354,6 @@ tailwind.config = {
 
     <div class="flex items-end justify-between mb-8">
       <div>
-        <p class="section-eyebrow mb-2">✦ Ils créent pour vos enfants</p>
         <h2 class="font-display text-2xl md:text-3xl font-bold">Auteurs à découvrir</h2>
       </div>
     </div>
@@ -385,7 +382,6 @@ tailwind.config = {
 
       <div class="relative md:flex items-center justify-between gap-8">
         <div class="mb-6 md:mb-0">
-          <p class="text-xs font-semibold tracking-widest uppercase mb-3" style="color:#F0A87A;">✦ Tu as écrit un livre ?</p>
           <h2 class="font-display text-2xl md:text-3xl font-bold mb-3 text-white leading-snug">
             Rejoins notre catalogue<br>et trouve ton public.
           </h2>
@@ -414,7 +410,6 @@ tailwind.config = {
   <div class="max-w-5xl mx-auto">
 
     <div class="text-center mb-8">
-      <p class="section-eyebrow mb-2">✦ Elles ont trouvé la perle rare</p>
       <h2 class="font-display text-2xl md:text-3xl font-bold">Ce que disent les mamans</h2>
     </div>
 
@@ -479,7 +474,7 @@ tailwind.config = {
           <img src="Images/logo.png" alt="Maktaba Tour" class="w-8 h-8 object-contain">
           <span class="font-display font-bold text-white text-lg">Maktaba Tour</span>
         </div>
-        <p class="text-sm leading-relaxed" style="color:#B09AAA;">
+        <p class="text-sm leading-relaxed" style="color:#7A5A6A;">
           L'annuaire en ligne qui fait le tour des librairies pour vous trouver les meilleures pépites parmi les références francophones de livres à destination de la jeunesse musulmane.
         </p>
         <a href="https://www.instagram.com/jumua_and_me" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-3 text-sm no-underline" style="color:#C96B8A;">
@@ -492,12 +487,12 @@ tailwind.config = {
       <div>
         <h4 class="text-white font-semibold text-sm mb-3">Navigation</h4>
         <ul class="space-y-2 list-none p-0 m-0">
-          <li><a href="catalogue.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">Catalogue</a></li>
-          <li><a href="annuaire-auteurs.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">Annuaire auteurs</a></li>
-          <li><a href="annuaire-illustrateurs.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">Annuaire illustrateurs</a></li>
-          <li><a href="ressources.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">Ressources</a></li>
-          <li><a href="soumettre.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">Soumettre un livre</a></li>
-          <li><a href="a-propos.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">À propos</a></li>
+          <li><a href="catalogue.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">Catalogue</a></li>
+          <li><a href="annuaire-auteurs.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">Annuaire auteurs</a></li>
+          <li><a href="annuaire-illustrateurs.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">Annuaire illustrateurs</a></li>
+          <li><a href="ressources.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">Ressources</a></li>
+          <li><a href="soumettre.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">Soumettre un livre</a></li>
+          <li><a href="a-propos.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">À propos</a></li>
         </ul>
       </div>
 
@@ -505,9 +500,9 @@ tailwind.config = {
       <div>
         <h4 class="text-white font-semibold text-sm mb-3">Légal</h4>
         <ul class="space-y-2 list-none p-0 m-0">
-          <li><a href="confidentialite.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">Confidentialité</a></li>
-          <li><a href="cgv.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">CGV</a></li>
-          <li><a href="mentions.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#B09AAA;">Mentions légales</a></li>
+          <li><a href="confidentialite.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">Confidentialité</a></li>
+          <li><a href="cgv.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">CGV</a></li>
+          <li><a href="mentions.html" class="text-sm no-underline hover:text-primary transition-colors" style="color:#7A5A6A;">Mentions légales</a></li>
           <li><p class="text-xs mt-3" style="color:#6A4A5A;">Liens affiliés Amazon</p></li>
         </ul>
       </div>
