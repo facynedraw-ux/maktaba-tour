@@ -361,7 +361,11 @@ tailwind.config = {
             </label>
           </div>
           <div id="publisher-name-wrap" class="hidden mt-3">
-            <input type="text" id="publisher-name" class="field-input" placeholder="Nom de la maison d'édition">
+            <select id="publisher-select" class="field-input" onchange="handlePublisherChange()">
+              <option value="">— Choisir une maison d'édition —</option>
+              <option value="__other__">Autre (non répertoriée)…</option>
+            </select>
+            <input type="text" id="publisher-name" class="field-input hidden mt-2" placeholder="Nom de la maison d'édition">
           </div>
           <p class="field-error" id="err-edition"><span class="ms" style="font-size:12px;">error</span> Obligatoire.</p>
         </div>
@@ -424,50 +428,25 @@ tailwind.config = {
 
         <!-- Illustrations -->
         <div>
-          <label class="field-label">Illustrations <span class="field-required">*</span></label>
+          <label class="field-label">Illustrations</label>
           <div class="space-y-2">
             <label class="origin-option" id="illus-human" onclick="selectOrigin('illus','human')">
               <input type="radio" name="illus_origin" value="human">
               <span class="origin-badge" style="background:#F5E8F0;color:#C96B8A;">🎨 Humain</span>
-              <div>
-                <p class="font-medium text-sm">Illustrations dessinées</p>
-                <p class="text-xs text-muted">Par un illustrateur humain</p>
-              </div>
             </label>
             <label class="origin-option" id="illus-ai" onclick="selectOrigin('illus','ai')">
               <input type="radio" name="illus_origin" value="ai">
               <span class="origin-badge" style="background:#EEE8F5;color:#7A5F9A;">🖼️ IA</span>
-              <div>
-                <p class="font-medium text-sm">Illustrations générées par IA</p>
-                <p class="text-xs text-muted">Midjourney, DALL-E, Stable Diffusion…</p>
-              </div>
             </label>
             <label class="origin-option" id="illus-mixed" onclick="selectOrigin('illus','mixed')">
               <input type="radio" name="illus_origin" value="mixed">
               <span class="origin-badge" style="background:#FFF0E8;color:#C07040;">🔀 Mixte</span>
-              <div>
-                <p class="font-medium text-sm">Illustrations mixtes (IA + humain)</p>
-                <p class="text-xs text-muted">• Base IA retravaillée par un illustrateur</p>
-                <p class="text-xs text-muted">• Base dessinée par un humain, retravaillée par IA</p>
-              </div>
             </label>
           </div>
-          <p class="field-error" id="err-illus-origin"><span class="ms" style="font-size:12px;">error</span> Obligatoire.</p>
-        </div>
-
-        <!-- Visages -->
-        <div>
-          <label class="field-label">Visages dans les illustrations</label>
-          <div class="space-y-2">
-            <label class="origin-option" id="faces-none" onclick="selectFaces('none')">
-              <input type="radio" name="faces_in_illustrations" value="none">
-              <span class="origin-badge" style="background:#F5F0FA;color:#9B7FA6;">📄 Pas d'illustrations</span>
-            </label>
-            <label class="origin-option" id="faces-no" onclick="selectFaces('no')">
-              <input type="radio" name="faces_in_illustrations" value="no">
-              <span class="origin-badge" style="background:#FDE8EE;color:#C96B8A;">🚫 Sans visages / yeux</span>
-            </label>
-          </div>
+          <label class="flex items-center gap-2 mt-3 cursor-pointer select-none" id="no-faces-wrap">
+            <input type="checkbox" id="no-faces" style="accent-color:#C96B8A;width:16px;height:16px;">
+            <span class="origin-badge" style="background:#FDE8EE;color:#C96B8A;">🚫 Sans visages / yeux</span>
+          </label>
         </div>
 
       </div>
@@ -757,6 +736,7 @@ async function loadThemes() {
 }
 
 loadThemes();
+loadPublishers();
 
 // ── Navigation entre étapes ──
 function goStep(n) {
@@ -825,11 +805,7 @@ function validateStep(step) {
     if (!textOrigin) { errText.classList.add('show'); valid = false; }
     else errText.classList.remove('show');
 
-    // Origine illus
-    const illusOrigin = document.querySelector('input[name="illus_origin"]:checked');
-    const errIllus = document.getElementById('err-illus-origin');
-    if (!illusOrigin) { errIllus.classList.add('show'); valid = false; }
-    else errIllus.classList.remove('show');
+    // Origine illus — optionnelle (non coché = pas d'illustrations)
 
     // Visages — optionnel (non coché = avec visages par défaut)
   }
@@ -884,10 +860,24 @@ function selectEdition(val) {
   document.getElementById('err-edition').classList.remove('show');
 }
 
-// ── Visages ──
-function selectFaces(val) {
-  ['faces-none','faces-no'].forEach(id => document.getElementById(id).classList.remove('selected'));
-  document.getElementById('faces-' + val).classList.add('selected');
+// ── Publisher select ──
+let allPublishers = [];
+async function loadPublishers() {
+  const { data } = await _supabase.from('publishers').select('id, name, slug').order('name');
+  allPublishers = data || [];
+  const sel = document.getElementById('publisher-select');
+  if (!sel) return;
+  const otherOpt = sel.lastElementChild;
+  allPublishers.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.slug;
+    opt.textContent = p.name;
+    sel.insertBefore(opt, otherOpt);
+  });
+}
+function handlePublisherChange() {
+  const val = document.getElementById('publisher-select').value;
+  document.getElementById('publisher-name').classList.toggle('hidden', val !== '__other__');
 }
 
 // ── Origine IA ──
@@ -1002,7 +992,7 @@ function buildRecap() {
     ['Thèmes', themes],
     ['Texte', originLabels[textOrigin] || '—'],
     ['Illustrations', originLabels[illusOrigin] || '—'],
-    ['Visages', {'no':'🚫 Sans visages / yeux','none':'📄 Pas d\'illustrations'}[document.querySelector('input[name="faces_in_illustrations"]:checked')?.value] || '✅ Avec visages'],
+    ['Visages', document.getElementById('no-faces').checked ? '🚫 Sans visages / yeux' : '✅ Avec visages'],
     ['Couverture', coverFile ? '✅ ' + coverFile.name : '❌ Manquante'],
     ['Pages intérieures', interiorFiles.length > 0 ? interiorFiles.length + ' image(s)' : 'Aucune'],
     ['Lien achat', url],
@@ -1077,7 +1067,12 @@ async function submitForm() {
       description:      document.getElementById('book-desc').value.trim(),
       author_name:      document.getElementById('author-name').value.trim(),
       author_email:     document.getElementById('author-email').value.trim(),
-      publisher:        document.getElementById('publisher-name').value.trim() || null,
+      publisher: (() => {
+        const sel = document.getElementById('publisher-select');
+        if (!sel || !sel.value) return null;
+        if (sel.value === '__other__') return document.getElementById('publisher-name').value.trim() || null;
+        return allPublishers.find(p => p.slug === sel.value)?.name || null;
+      })(),
       is_self_published: document.querySelector('input[name="edition"]:checked')?.value === 'self',
       age_min:          parseInt(document.getElementById('age-min').value) || null,
       age_max:          parseInt(document.getElementById('age-max').value) || null,
@@ -1087,7 +1082,7 @@ async function submitForm() {
       cover_url:        coverUrl,
       interior_urls:    interiorUrls,
       message:          extras || null,
-      faces_in_illustrations: document.querySelector('input[name="faces_in_illustrations"]:checked')?.value || null,
+      faces_in_illustrations: document.getElementById('no-faces').checked ? 'no' : null,
       status:           'pending',
     }]);
 
