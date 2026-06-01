@@ -70,7 +70,10 @@ tailwind.config = {
       <a href="admin-livres.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">auto_stories</span> Livres</a>
       <a href="admin-soumissions.html" class="admin-nav-link active"><span class="ms" style="font-size:18px;">inbox</span> Soumissions</a>
       <a href="admin-avis.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">rate_review</span> Avis</a>
+      <a href="admin-annuaire.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">contacts</span> Annuaire</a>
+      <a href="admin-ressources.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">shopping_bag</span> Ressources</a>
       <a href="admin-utilisateurs.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">group</span> Utilisateurs</a>
+      <a href="admin-themes.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">label</span> Thèmes</a>
     </nav>
     <a href="index.html" class="admin-nav-link mt-4"><span class="ms" style="font-size:18px;">arrow_back</span> Retour au site</a>
   </aside>
@@ -93,7 +96,10 @@ tailwind.config = {
           <a href="admin-livres.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">auto_stories</span> Livres</a>
           <a href="admin-soumissions.html" class="admin-nav-link active"><span class="ms" style="font-size:18px;">inbox</span> Soumissions</a>
           <a href="admin-avis.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">rate_review</span> Avis</a>
+          <a href="admin-annuaire.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">contacts</span> Annuaire</a>
+          <a href="admin-ressources.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">shopping_bag</span> Ressources</a>
           <a href="admin-utilisateurs.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">group</span> Utilisateurs</a>
+          <a href="admin-themes.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">label</span> Thèmes</a>
         </nav>
         <a href="index.html" class="admin-nav-link mt-4"><span class="ms" style="font-size:18px;">arrow_back</span> Retour au site</a>
       </div>
@@ -273,7 +279,7 @@ function openModal(sub) {
     ['Thèmes', (sub.themes||[]).map(t => THEME_LABELS[t]||t).join(', ') || '—'],
     ['Lien achat', sub.purchase_url ? `<a href="${esc(sub.purchase_url)}" target="_blank" class="text-primary hover:underline text-sm">${esc(sub.purchase_url.slice(0,40))}…</a>` : '—'],
     ['Prix', sub.price ? sub.price + ' €' : '—'],
-    ['Visages', sub.faces_in_illustrations === true ? '✅ Avec visages' : sub.faces_in_illustrations === false ? '🚫 Sans visages' : '— Non renseigné'],
+    ['Visages', {'yes':'✅ Avec visages','no':'🚫 Sans visages / yeux','none':'📄 Pas d\'illustrations'}[sub.faces_in_illustrations] || '— Non renseigné'],
   ];
 
   document.getElementById('modal-fields').innerHTML = FIELDS.map(([label, val]) => `

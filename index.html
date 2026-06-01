@@ -258,19 +258,9 @@ tailwind.config = {
 ════════════════════════════════════ -->
 <section class="bg-white border-b border-border py-4 px-4 sticky top-16 z-40">
   <div class="max-w-5xl mx-auto">
-    <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1" style="scrollbar-width:none;">
+    <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1" style="scrollbar-width:none;" id="theme-pills-home">
       <button class="filter-pill active" onclick="filterByTheme('tous', this)">Tous</button>
-      <button class="filter-pill" onclick="filterByTheme('ramadan', this)">🌙 Ramadan</button>
-      <button class="filter-pill" onclick="filterByTheme('aid', this)">🎁 Aïd</button>
-      <button class="filter-pill" onclick="filterByTheme('hajj', this)">🕋 Hajj</button>
-      <button class="filter-pill" onclick="filterByTheme('prophetes', this)">⭐ Prophètes</button>
-      <button class="filter-pill" onclick="filterByTheme('valeurs', this)">💛 Valeurs</button>
-      <button class="filter-pill" onclick="filterByTheme('famille', this)">🏡 Famille</button>
-      <button class="filter-pill" onclick="filterByTheme('arabe', this)">ع Arabe</button>
-      <button class="filter-pill" onclick="filterByTheme('coran', this)">📖 Coran</button>
-      <button class="filter-pill" onclick="filterByTheme('nature', this)">🌿 Nature</button>
-      <button class="filter-pill" onclick="filterByTheme('aventure', this)">🚀 Aventure</button>
-      <button class="filter-pill" onclick="filterByTheme('halal_romance', this)">💕 Halal romance</button>
+      <!-- Chargé dynamiquement depuis la table themes -->
     </div>
   </div>
 </section>
@@ -548,7 +538,21 @@ const CARD_BG = [
   'linear-gradient(135deg,#E8EEF5,#EEE8F5)',
   'linear-gradient(135deg,#FAEEE8,#FFF0E8)',
 ];
-const THEME_LABELS = { ramadan:'Ramadan', aid:'Aïd', hajj:'Hajj', prophetes:'Prophètes', valeurs:'Valeurs', famille:'Famille', arabe:'Arabe', coran:'Coran', nature:'Nature', aventure:'Aventure', priere:'Prière', halal_romance:'Halal romance' };
+let THEME_LABELS = {};
+
+async function loadThemePills() {
+  const { data } = await _supabase.from('themes').select('slug, label, emoji').order('position');
+  const themes = data || [];
+  THEME_LABELS = Object.fromEntries(themes.map(t => [t.slug, t.label]));
+  const container = document.getElementById('theme-pills-home');
+  themes.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-pill';
+    btn.textContent = (t.emoji ? t.emoji + ' ' : '') + t.label;
+    btn.onclick = function() { filterByTheme(t.slug, this); };
+    container.appendChild(btn);
+  });
+}
 
 function escHtml(s) {
   return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -735,6 +739,8 @@ function handleSearch(val) {
     window.location.href = `catalogue.html?q=${encodeURIComponent(val)}`;
   }
 }
+
+loadThemePills();
 
 // Lancement
 loadFeaturedBooks();

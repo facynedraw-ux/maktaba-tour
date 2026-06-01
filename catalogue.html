@@ -277,8 +277,9 @@ tailwind.config = {
           <p class="filter-section-title">Visages</p>
           <div class="flex gap-1 flex-wrap">
             <button class="filter-pill text-xs px-2 py-1 active faces-btn" style="font-size:11px;" onclick="setFaces(null, this)">Tous</button>
-            <button class="filter-pill text-xs px-2 py-1 faces-btn" style="font-size:11px;" onclick="setFaces(false, this)">🚫 Sans</button>
-            <button class="filter-pill text-xs px-2 py-1 faces-btn" style="font-size:11px;" onclick="setFaces(true, this)">✅ Avec</button>
+            <button class="filter-pill text-xs px-2 py-1 faces-btn" style="font-size:11px;" onclick="setFaces('no', this)">🚫 Sans</button>
+            <button class="filter-pill text-xs px-2 py-1 faces-btn" style="font-size:11px;" onclick="setFaces('yes', this)">✅ Avec</button>
+            <button class="filter-pill text-xs px-2 py-1 faces-btn" style="font-size:11px;" onclick="setFaces('none', this)">📄 Sans illus.</button>
           </div>
         </div>
 
@@ -416,8 +417,9 @@ tailwind.config = {
       <p class="filter-section-title">Visages</p>
       <div class="flex gap-2 flex-wrap">
         <button class="filter-pill active faces-btn" style="font-size:12px;" onclick="setFaces(null, this)">Tous</button>
-        <button class="filter-pill faces-btn" style="font-size:12px;" onclick="setFaces(false, this)">🚫 Sans visages</button>
-        <button class="filter-pill faces-btn" style="font-size:12px;" onclick="setFaces(true, this)">✅ Avec visages</button>
+        <button class="filter-pill faces-btn" style="font-size:12px;" onclick="setFaces('no', this)">🚫 Sans visages / yeux</button>
+        <button class="filter-pill faces-btn" style="font-size:12px;" onclick="setFaces('yes', this)">✅ Avec visages</button>
+        <button class="filter-pill faces-btn" style="font-size:12px;" onclick="setFaces('none', this)">📄 Pas d'illustrations</button>
       </div>
     </div>
 
@@ -614,7 +616,7 @@ async function loadBooks() {
   if (audienceFilter !== null) query = query.eq('audience', audienceFilter);
 
   // Visages (auto-activé si recherche "sans visage(s)")
-  const autoFaces = /sans.?visages?/i.test(searchQuery) ? false : facesFilter;
+  const autoFaces = /sans.?visages?/i.test(searchQuery) ? 'no' : facesFilter;
   if (autoFaces !== null) query = query.eq('faces_in_illustrations', autoFaces);
 
   // Tri
