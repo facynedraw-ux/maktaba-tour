@@ -108,7 +108,7 @@ tailwind.config = {
   .filter-drawer.open { pointer-events: all; }
   .filter-drawer-overlay { position: absolute; inset: 0; background: rgba(61,31,45,0.4); opacity: 0; transition: opacity 0.3s; }
   .filter-drawer.open .filter-drawer-overlay { opacity: 1; }
-  .filter-drawer-panel { position: absolute; left: 0; top: 0; bottom: 0; width: 300px; background: white; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; padding: 24px 20px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  .filter-drawer-panel { position: absolute; left: 0; top: 0; bottom: 0; width: min(300px, 88vw); background: white; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; padding: 24px 20px; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .filter-drawer.open .filter-drawer-panel { transform: translateX(0); }
 
   /* Bottom nav */
