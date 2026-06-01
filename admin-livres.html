@@ -509,6 +509,8 @@ function openPanel(id) {
   document.getElementById('f-status').value = 'approved';
   document.querySelectorAll('input[name="theme"]').forEach(cb => cb.checked = false);
   updateCoverPreview('');
+  document.getElementById('save-btn').disabled = false;
+  document.getElementById('save-label').textContent = 'Enregistrer';
 
   document.getElementById('panel').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -595,6 +597,8 @@ async function saveBook() {
     }
     if (error) throw error;
 
+    btn.disabled = false;
+    document.getElementById('save-label').textContent = editingId ? 'Mettre à jour' : 'Enregistrer';
     showToast(editingId ? 'Livre mis à jour ✓' : 'Livre ajouté au catalogue ✓', 'success');
     closePanel();
     await loadBooks();
