@@ -334,7 +334,7 @@ async function loadBooks(authorId, authorSlug) {
       : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms" style="font-size:44px;color:#C96B8A;opacity:0.25;">auto_stories</span></div>`;
     return `
       <a href="livre.html?slug=${esc(b.slug)}" class="book-card">
-        <div class="aspect-[3/4] relative overflow-hidden" style="background:${bg};">
+        <div class="aspect-[3/4] relative overflow-hidden" style="background:#F5F0FA;">
           ${cover}
           ${age ? `<div class="absolute top-2 right-2"><span class="badge badge-age" style="font-size:10px;padding:2px 8px;">${esc(age)}</span></div>` : ''}
         </div>

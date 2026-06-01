@@ -537,7 +537,7 @@ function renderCard(book, i) {
   const yaBadge = book.audience === 'young-adult' ? `<span class="badge" style="background:#FFF5E0;color:#9B7020;">YA</span>` : '';
   return `
     <a href="livre.html?slug=${escHtml(book.slug)}" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="animation-delay:${delay}s;">
-      <div class="aspect-[3/4] relative" style="background:${bg};">
+      <div class="aspect-[3/4] relative" style="background:#F5F0FA;">
         ${cover}
         ${age ? `<div class="absolute top-2 right-2"><span class="badge badge-age">${age}</span></div>` : ''}
         ${isNew(book.created_at) ? '<div class="absolute top-2 left-2"><span class="badge badge-new">Nouveau</span></div>' : ''}

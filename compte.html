@@ -684,7 +684,7 @@ function renderBookMini(book, type, id, status) {
   const bg = cardBg(book.slug);
   const cover = book.cover_url
     ? `<img src="${escHtml(book.cover_url)}" alt="" class="w-full h-full object-cover" loading="lazy">`
-    : `<div class="w-full h-full flex items-center justify-center" style="background:${bg};"><span class="ms" style="font-size:22px;color:#C96B8A;opacity:0.4;">auto_stories</span></div>`;
+    : `<div class="w-full h-full flex items-center justify-center" style="background:#F5F0FA;"><span class="ms" style="font-size:22px;color:#C96B8A;opacity:0.4;">auto_stories</span></div>`;
 
   const action = type === 'favoris'
     ? `<button onclick="removeFavorite('${id}')" class="ms text-muted hover:text-red-400 transition-colors" style="font-size:20px;" aria-label="Retirer des favoris">heart_minus</button>`
