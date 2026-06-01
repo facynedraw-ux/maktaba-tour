@@ -124,6 +124,7 @@ tailwind.config = {
           <button class="filter-btn" onclick="setFilter('approved', this)">Approuvés</button>
           <button class="filter-btn" onclick="setFilter('pending', this)">En attente</button>
           <button class="filter-btn" onclick="setFilter('rejected', this)">Refusés</button>
+          <button id="filter-reported-btn" class="filter-btn" onclick="toggleReported(this)" style="border-color:#C07040;color:#C07040;">⚠️ Signalés</button>
         </div>
         <input type="text" class="search-input" placeholder="Rechercher…" oninput="filterList()" id="search-input" style="max-width:220px;">
       </div>
@@ -349,6 +350,7 @@ function updateCoverPreview(url) {
 }
 
 let currentFilter = 'all';
+let showReported = false;
 let allBooks = [];
 let authors = [];
 let editingId = null;
@@ -389,7 +391,7 @@ async function loadBooks() {
 
   const { data } = await _supabase
     .from('books')
-    .select('id, slug, title, status, cover_url, age_min, age_max, rating_avg, rating_count, authors(name)')
+    .select('id, slug, title, status, cover_url, age_min, age_max, rating_avg, rating_count, link_reported, authors(name)')
     .order('created_at', { ascending: false });
 
   allBooks = data || [];
@@ -402,6 +404,7 @@ function renderBooks() {
   const q = document.getElementById('search-input').value.toLowerCase();
   let books = allBooks;
   if (currentFilter !== 'all') books = books.filter(b => b.status === currentFilter);
+  if (showReported) books = books.filter(b => b.link_reported);
   if (q) books = books.filter(b => b.title.toLowerCase().includes(q) || (b.authors?.name||'').toLowerCase().includes(q));
 
   const emptyEl = document.getElementById('books-empty');
@@ -428,6 +431,7 @@ function renderBooks() {
           <p class="font-medium text-sm truncate">${esc(b.title)}</p>
           <p class="text-xs text-muted">${esc(b.authors?.name||'—')}${age ? ' · ' + age : ''}</p>
         </div>
+        ${b.link_reported ? `<span class="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 hidden sm:inline-flex" style="background:#FFF0E8;color:#C07040;" title="Lien signalé mort par un utilisateur">⚠️ lien</span>` : ''}
         <span class="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 hidden sm:inline-flex" style="background:${st.bg};color:${st.color};">${st.label}</span>
         <div class="flex gap-2 flex-shrink-0">
           <a href="livre.html?slug=${esc(b.slug)}" target="_blank" class="btn-sm" title="Voir la fiche">
@@ -571,6 +575,7 @@ async function saveBook() {
     const payload = {
       title,
       slug: document.getElementById('f-slug').value.trim() || slugify(title) + '-' + Date.now().toString(36),
+      link_reported: false,
       author_id: authorId,
       publisher: document.getElementById('f-publisher').value.trim() || null,
       is_self_published: document.getElementById('f-self-published').checked,
@@ -608,6 +613,13 @@ async function saveBook() {
     btn.disabled = false;
     document.getElementById('save-label').textContent = editingId ? 'Mettre à jour' : 'Enregistrer';
   }
+}
+
+function toggleReported(btn) {
+  showReported = !showReported;
+  btn.style.background = showReported ? '#FFF0E8' : '';
+  btn.style.fontWeight  = showReported ? '700' : '';
+  renderBooks();
 }
 
 function setFilter(f, btn) {
