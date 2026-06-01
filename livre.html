@@ -238,7 +238,7 @@ tailwind.config = {
             <span class="ms" style="font-size:18px;">share</span>
           </button>
         </div>
-        <p id="affiliate-note-desktop" class="text-xs text-muted mt-3 hidden md:block hidden">
+        <p id="affiliate-note-desktop" class="text-xs text-muted mt-3 hidden">
           <span class="ms" style="font-size:13px;vertical-align:-2px;">info</span>
           Lien affilié Amazon — Maktaba Tour reçoit une petite commission sans surcoût pour toi.
         </p>
@@ -350,9 +350,9 @@ tailwind.config = {
       <span class="ms" style="font-size:20px;">share</span>
     </button>
   </div>
-  <p class="text-xs text-muted mt-1.5 text-center">
+  <p id="affiliate-note-mobile" class="text-xs text-muted mt-1.5 text-center hidden">
     <span class="ms" style="font-size:12px;vertical-align:-1px;">info</span>
-    Lien affilié — commission sans surcoût pour toi
+    Lien affilié Amazon — commission sans surcoût pour toi
   </p>
 </div>
 
@@ -516,7 +516,10 @@ function renderBook(book) {
   ['buy-label-desktop','buy-label-mobile'].forEach(id => {
     const el = document.getElementById(id); if (el) el.textContent = label;
   });
-  if (isAmazon) document.getElementById('affiliate-note-desktop')?.classList.remove('hidden');
+  if (isAmazon) {
+    document.getElementById('affiliate-note-desktop')?.classList.remove('hidden');
+    document.getElementById('affiliate-note-mobile')?.classList.remove('hidden');
+  }
 
   // Lien "voir tout" similaires
   if (book.themes?.[0]) {
