@@ -128,6 +128,10 @@ tailwind.config = {
   /* Bottom nav */
   .bottom-nav { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
 
+  /* Skeleton */
+  .skeleton { background: linear-gradient(90deg,#F5E8F0 25%,#FAF0F5 50%,#F5E8F0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
   /* Animations */
   @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
   .fade-up { animation: fadeUp 0.45s ease both; }
@@ -300,18 +304,7 @@ tailwind.config = {
         <div>
           <label class="field-label">Thèmes <span class="field-required">*</span> <span class="font-normal text-muted">(1 minimum)</span></label>
           <div class="theme-grid" id="theme-grid">
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="ramadan"> 🌙 Ramadan</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="aid"> 🎁 Aïd</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="hajj"> 🕋 Hajj</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="prophetes"> ⭐ Prophètes</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="valeurs"> 💛 Valeurs</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="famille"> 🏡 Famille</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="arabe"> ع Arabe</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="coran"> 📖 Coran</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="nature"> 🌿 Nature</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="priere"> 🤲 Prière</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="aventure"> 🚀 Aventure</label>
-            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="halal_romance"> 💕 Halal romance</label>
+            <div class="skeleton h-9 rounded-xl col-span-full" style="grid-column:span 2;"></div>
           </div>
           <p class="field-error" id="err-themes"><span class="ms" style="font-size:12px;">error</span> Sélectionnez au moins un thème.</p>
         </div>
@@ -765,6 +758,16 @@ tailwind.config = {
 let currentStep = 1;
 let coverFile = null;
 let interiorFiles = [];
+
+async function loadThemes() {
+  const { data } = await _supabase.from('themes').select('slug, label, emoji').order('position');
+  const themes = data || [];
+  document.getElementById('theme-grid').innerHTML = themes.map(t =>
+    `<label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="${t.slug}"> ${t.emoji ? t.emoji + ' ' : ''}${t.label}</label>`
+  ).join('');
+}
+
+loadThemes();
 
 // ── Navigation entre étapes ──
 function goStep(n) {
