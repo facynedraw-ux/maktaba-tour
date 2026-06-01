@@ -237,6 +237,19 @@ async function init() {
   if (session) updateAccountLinks();
   renderAuthor(author);
   await loadBooks(author.id, author.slug);
+  if (session) checkAuthorOwnership(session.user.id, author.id);
+}
+
+async function checkAuthorOwnership(userId, authorId) {
+  const { data: profile } = await _supabase
+    .from('profiles').select('author_id').eq('id', userId).single();
+  if (profile?.author_id !== authorId) return;
+  document.getElementById('author-links').insertAdjacentHTML('afterend', `
+    <div class="mt-3">
+      <a href="compte.html" class="inline-flex items-center gap-2 text-sm font-medium no-underline transition-colors px-4 py-2 rounded-xl border" style="color:#C96B8A;border-color:rgba(201,107,138,0.3);" onmouseover="this.style.background='rgba(201,107,138,0.05)'" onmouseout="this.style.background=''">
+        <span class="ms" style="font-size:16px;">edit</span> Modifier ma fiche
+      </a>
+    </div>`);
 }
 
 function showNotFound() {

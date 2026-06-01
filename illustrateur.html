@@ -297,6 +297,19 @@ async function init() {
   renderProfile(illus);
   renderPortfolio(illus.illustrator_portfolio || []);
   await loadBooks(illus);
+  if (session) checkIllusOwnership(session.user.id, illus.id);
+}
+
+async function checkIllusOwnership(userId, illusId) {
+  const { data: profile } = await _supabase
+    .from('profiles').select('illustrator_id').eq('id', userId).single();
+  if (profile?.illustrator_id !== illusId) return;
+  document.getElementById('illus-links').insertAdjacentHTML('afterend', `
+    <div class="mt-3">
+      <a href="compte.html" class="inline-flex items-center gap-2 text-sm font-medium no-underline transition-colors px-4 py-2 rounded-xl border" style="color:#C96B8A;border-color:rgba(201,107,138,0.3);" onmouseover="this.style.background='rgba(201,107,138,0.05)'" onmouseout="this.style.background=''">
+        <span class="ms" style="font-size:16px;">edit</span> Modifier ma fiche
+      </a>
+    </div>`);
 }
 
 function showNotFound() {
