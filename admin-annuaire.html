@@ -13,6 +13,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
+<script src="media-picker.js"></script>
 <script>
 tailwind.config = {
   theme: {
@@ -207,8 +208,17 @@ tailwind.config = {
       <textarea id="e-bio" class="f-textarea" rows="3" placeholder="Courte bio…"></textarea>
     </div>
     <div class="mb-3">
-      <label class="f-label" for="e-photo">URL photo de profil</label>
-      <input type="text" id="e-photo" class="f-input" placeholder="https://…">
+      <label class="f-label">Photo de profil</label>
+      <div id="e-photo-preview-wrap" class="hidden mb-2">
+        <img id="e-photo-preview-img" src="" alt="" style="height:72px;width:72px;border-radius:50%;object-fit:cover;border:2px solid #E8D5DC;">
+      </div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="e-photo" class="f-input" style="flex:1;" placeholder="URL photo…" oninput="updatePhotoPreview(this.value)" onchange="updatePhotoPreview(this.value)">
+        <button type="button" onclick="MediaPicker.open({inputId:'e-photo',bucket:'portfolios',prefix:'',accept:'image',onSelect:updatePhotoPreview})"
+          style="flex-shrink:0;background:#F5E8F0;color:#C96B8A;border:none;border-radius:8px;padding:7px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+          <span style="font-family:'Material Symbols Outlined';font-size:15px;line-height:1;">image</span> Choisir
+        </button>
+      </div>
     </div>
     <div class="grid grid-cols-2 gap-3 mb-3">
       <div>
@@ -297,6 +307,19 @@ tailwind.config = {
 <script>
 let currentTab = 'illus-pending';
 let currentSub = null;
+
+function updatePhotoPreview(url) {
+  const wrap = document.getElementById('e-photo-preview-wrap');
+  const img  = document.getElementById('e-photo-preview-img');
+  if (!wrap || !img) return;
+  if (url && url.startsWith('http')) {
+    img.src = url;
+    wrap.classList.remove('hidden');
+  } else {
+    wrap.classList.add('hidden');
+    img.src = '';
+  }
+}
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function slugify(str) {
@@ -596,6 +619,7 @@ function openEditPanel(illus) {
   document.getElementById('e-name').value = illus.name || '';
   document.getElementById('e-bio').value = illus.bio || '';
   document.getElementById('e-photo').value = illus.photo_url || '';
+  updatePhotoPreview(illus.photo_url || '');
   document.getElementById('e-website').value = illus.website || '';
   document.getElementById('e-instagram').value = illus.instagram || '';
 

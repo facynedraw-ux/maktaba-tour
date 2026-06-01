@@ -13,6 +13,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
+<script src="media-picker.js"></script>
 <script>
 tailwind.config = {
   theme: {
@@ -253,8 +254,16 @@ tailwind.config = {
       </div>
 
       <div class="mb-4">
-        <label class="form-label" for="f-cover-url">URL couverture</label>
-        <input type="text" id="f-cover-url" class="form-input" placeholder="https://…">
+        <label class="form-label">Couverture</label>
+        <div id="f-cover-preview-wrap" class="hidden mb-2">
+          <img id="f-cover-preview-img" src="" alt="" class="rounded-xl border border-border object-cover" style="height:100px;width:auto;">
+        </div>
+        <div class="flex gap-2">
+          <input type="text" id="f-cover-url" class="form-input flex-1" placeholder="URL image…" oninput="updateCoverPreview(this.value)" onchange="updateCoverPreview(this.value)">
+          <button type="button" onclick="MediaPicker.open({inputId:'f-cover-url',bucket:'submissions',prefix:'book-covers/',accept:'image',onSelect:updateCoverPreview})" class="btn-sm flex-shrink-0">
+            <span class="ms" style="font-size:15px;">image</span> Choisir
+          </button>
+        </div>
       </div>
       <div class="mb-4">
         <label class="form-label" for="f-purchase-url">Lien d'achat</label>
@@ -326,6 +335,19 @@ tailwind.config = {
 
 
 <script>
+function updateCoverPreview(url) {
+  const wrap = document.getElementById('f-cover-preview-wrap');
+  const img  = document.getElementById('f-cover-preview-img');
+  if (!wrap || !img) return;
+  if (url && url.startsWith('http')) {
+    img.src = url;
+    wrap.classList.remove('hidden');
+  } else {
+    wrap.classList.add('hidden');
+    img.src = '';
+  }
+}
+
 let currentFilter = 'all';
 let allBooks = [];
 let authors = [];
@@ -436,6 +458,7 @@ async function editBook(id) {
   document.getElementById('f-publisher').value = full.publisher || '';
   document.getElementById('f-self-published').checked = !!full.is_self_published;
   document.getElementById('f-cover-url').value = full.cover_url || '';
+  updateCoverPreview(full.cover_url || '');
   document.getElementById('f-purchase-url').value = full.purchase_url || '';
   document.getElementById('f-price').value = full.price || '';
   document.getElementById('f-description').value = full.description || '';
@@ -485,6 +508,7 @@ function openPanel(id) {
   document.getElementById('f-faces').value = '';
   document.getElementById('f-status').value = 'approved';
   document.querySelectorAll('input[name="theme"]').forEach(cb => cb.checked = false);
+  updateCoverPreview('');
 
   document.getElementById('panel').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
