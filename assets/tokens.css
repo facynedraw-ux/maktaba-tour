@@ -12,8 +12,8 @@
   --c-white:     #FFFFFF;
 
   /* Fonts */
-  --f-display: 'Vollkorn', serif;
-  --f-body:    'Figtree', sans-serif;
+  --f-display: 'Playfair Display', serif;
+  --f-body:    'DM Sans', sans-serif;
 
   /* Échelle typographique (ratio 1.25 — major third) */
   --t-xs:   0.75rem;    /* 12px — labels légaux, meta */
