@@ -90,6 +90,11 @@ tailwind.config = {
   .creator-result:hover { border-color:#C96B8A; background:#FFF5F7; }
   .creator-avatar-sm { width:36px; height:36px; border-radius:50%; flex-shrink:0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
   textarea.field-input { resize:vertical; }
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .skeleton { animation: none !important; }
+    .book-card { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">

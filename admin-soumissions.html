@@ -51,6 +51,9 @@ tailwind.config = {
   .modal-input:focus { border-color:#C96B8A; }
   .modal-textarea { width:100%; padding:10px 12px; border:1.5px solid #E8D5DC; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:14px; color:#3D1F2D; outline:none; transition:border-color 0.2s; resize:vertical; }
   .modal-textarea:focus { border-color:#C96B8A; }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">

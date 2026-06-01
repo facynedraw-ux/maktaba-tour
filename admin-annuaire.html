@@ -73,6 +73,9 @@ tailwind.config = {
   .toggle::after { content:''; position:absolute; top:3px; width:18px; height:18px; border-radius:50%; background:white; transition:left 0.2s; }
   .toggle.on::after { left:21px; }
   .toggle.off::after { left:3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">

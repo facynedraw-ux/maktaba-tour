@@ -35,6 +35,9 @@ tailwind.config = {
   .fade-up { animation:fadeUp 0.5s ease both; }
   .spinner { width:20px; height:20px; border:2px solid rgba(201,107,138,0.3); border-top-color:#C96B8A; border-radius:50%; animation:spin 0.7s linear infinite; }
   @keyframes spin { to { transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg">

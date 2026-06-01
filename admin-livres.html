@@ -58,6 +58,9 @@ tailwind.config = {
   input[type=text].search-input { border:1.5px solid #E8D5DC; border-radius:10px; padding:9px 14px; font-family:'DM Sans',sans-serif; font-size:14px; color:#3D1F2D; outline:none; transition:border-color 0.2s; background:white; }
   input[type=text].search-input:focus { border-color:#C96B8A; }
   input[type=text].search-input::placeholder { color:#B09AAA; }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">

@@ -59,6 +59,11 @@ tailwind.config = {
   .divider { height:1px; background:linear-gradient(90deg,transparent,#E8D5DC,transparent); margin:3rem 0; }
 
   .stat-box { background:white; border:1px solid #E8D5DC; border-radius:16px; padding:20px; text-align:center; }
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .skeleton { animation: none !important; }
+    .book-card { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">
@@ -73,7 +78,7 @@ tailwind.config = {
     <nav class="hidden md:flex items-center gap-5">
       <a href="catalogue.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">Catalogue</a>
       <div class="relative" id="annuaires-menu">
-        <button onclick="toggleAnnuaires()" class="text-sm font-medium text-muted hover:text-primary transition-colors flex items-center gap-0.5 bg-transparent border-none cursor-pointer font-body p-0">
+        <button id="annuaires-btn" onclick="toggleAnnuaires()" aria-haspopup="menu" aria-expanded="false" class="text-sm font-medium text-muted hover:text-primary transition-colors flex items-center gap-0.5 bg-transparent border-none cursor-pointer font-body p-0">
           Annuaires <span class="ms" style="font-size:16px;transition:transform 0.2s;" id="annuaires-chevron">expand_more</span>
         </button>
         <div id="annuaires-dropdown" class="hidden absolute top-full left-0 mt-2 bg-white border border-border rounded-xl shadow-lg py-2 z-50" style="min-width:200px;">
@@ -344,8 +349,11 @@ function toggleMenu() {
 function toggleAnnuaires() {
   const dd = document.getElementById('annuaires-dropdown');
   const ch = document.getElementById('annuaires-chevron');
+  const btn = document.getElementById('annuaires-btn');
   dd.classList.toggle('hidden');
-  ch.style.transform = dd.classList.contains('hidden') ? '' : 'rotate(180deg)';
+  const open = !dd.classList.contains('hidden');
+  ch.style.transform = open ? 'rotate(180deg)' : '';
+  if (btn) btn.setAttribute('aria-expanded', open);
 }
 document.addEventListener('click', function(e) {
   const m = document.getElementById('annuaires-menu');

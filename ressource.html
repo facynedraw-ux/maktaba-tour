@@ -64,6 +64,11 @@ tailwind.config = {
   /* PDF aperçu */
   .pdf-preview-wrap { background:white; border:1px solid #E8D5DC; border-radius:16px; overflow:hidden; }
   .pdf-locked { padding:20px 16px 24px; text-align:center; border-top:1px solid #E8D5DC; background:#FFF5F7; }
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .skeleton { animation: none !important; }
+    .book-card { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">

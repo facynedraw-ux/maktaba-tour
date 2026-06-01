@@ -33,6 +33,9 @@ tailwind.config = {
   .badge-pill { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
   .skeleton { background:linear-gradient(90deg,#F5E8F0 25%,#FAF0F5 50%,#F5E8F0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">

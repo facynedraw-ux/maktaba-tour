@@ -39,6 +39,9 @@ tailwind.config = {
   .skeleton { background:linear-gradient(90deg,#F5E8F0 25%,#FAF0F5 50%,#F5E8F0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
   @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
   .review-card { background:white; border:1px solid #E8D5DC; border-radius:16px; padding:20px; }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">

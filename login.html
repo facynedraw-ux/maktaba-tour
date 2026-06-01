@@ -108,6 +108,9 @@ tailwind.config = {
   .separator { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
   .separator::before, .separator::after { content: ''; flex: 1; height: 1px; background: #E8D5DC; }
   .separator span { font-size: 12px; color: #B09AAA; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
 </style>
 </head>
 <body class="bg-bg font-body text-text">
