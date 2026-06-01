@@ -457,34 +457,17 @@ tailwind.config = {
 
         <!-- Visages -->
         <div>
-          <label class="field-label">Visages dans les illustrations <span class="field-required">*</span></label>
+          <label class="field-label">Visages dans les illustrations</label>
           <div class="space-y-2">
             <label class="origin-option" id="faces-none" onclick="selectFaces('none')">
               <input type="radio" name="faces_in_illustrations" value="none">
               <span class="origin-badge" style="background:#F5F0FA;color:#9B7FA6;">📄 Pas d'illustrations</span>
-              <div>
-                <p class="font-medium text-sm">Pas d'illustrations</p>
-                <p class="text-xs text-muted">Roman, livre sans images (Young Adult…)</p>
-              </div>
             </label>
             <label class="origin-option" id="faces-no" onclick="selectFaces('no')">
               <input type="radio" name="faces_in_illustrations" value="no">
               <span class="origin-badge" style="background:#FDE8EE;color:#C96B8A;">🚫 Sans visages / yeux</span>
-              <div>
-                <p class="font-medium text-sm">Sans visages / yeux</p>
-                <p class="text-xs text-muted">Personnages sans visages ni yeux dessinés</p>
-              </div>
-            </label>
-            <label class="origin-option" id="faces-yes" onclick="selectFaces('yes')">
-              <input type="radio" name="faces_in_illustrations" value="yes">
-              <span class="origin-badge" style="background:#E8F0E8;color:#4A7A4A;">✅ Avec visages</span>
-              <div>
-                <p class="font-medium text-sm">Avec visages</p>
-                <p class="text-xs text-muted">Les personnages ont des visages dessinés</p>
-              </div>
             </label>
           </div>
-          <p class="field-error" id="err-faces"><span class="ms" style="font-size:12px;">error</span> Obligatoire.</p>
         </div>
 
       </div>
@@ -848,11 +831,7 @@ function validateStep(step) {
     if (!illusOrigin) { errIllus.classList.add('show'); valid = false; }
     else errIllus.classList.remove('show');
 
-    // Visages
-    const facesVal = document.querySelector('input[name="faces_in_illustrations"]:checked');
-    const errFaces = document.getElementById('err-faces');
-    if (!facesVal) { errFaces.classList.add('show'); valid = false; }
-    else errFaces.classList.remove('show');
+    // Visages — optionnel (non coché = avec visages par défaut)
   }
 
   if (step === 2) {
@@ -907,9 +886,8 @@ function selectEdition(val) {
 
 // ── Visages ──
 function selectFaces(val) {
-  ['faces-none','faces-no','faces-yes'].forEach(id => document.getElementById(id).classList.remove('selected'));
+  ['faces-none','faces-no'].forEach(id => document.getElementById(id).classList.remove('selected'));
   document.getElementById('faces-' + val).classList.add('selected');
-  document.getElementById('err-faces').classList.remove('show');
 }
 
 // ── Origine IA ──
@@ -1024,7 +1002,7 @@ function buildRecap() {
     ['Thèmes', themes],
     ['Texte', originLabels[textOrigin] || '—'],
     ['Illustrations', originLabels[illusOrigin] || '—'],
-    ['Visages', {'yes':'✅ Avec visages','no':'🚫 Sans visages / yeux','none':'📄 Pas d\'illustrations'}[document.querySelector('input[name="faces_in_illustrations"]:checked')?.value] || '—'],
+    ['Visages', {'no':'🚫 Sans visages / yeux','none':'📄 Pas d\'illustrations'}[document.querySelector('input[name="faces_in_illustrations"]:checked')?.value] || '✅ Avec visages'],
     ['Couverture', coverFile ? '✅ ' + coverFile.name : '❌ Manquante'],
     ['Pages intérieures', interiorFiles.length > 0 ? interiorFiles.length + ' image(s)' : 'Aucune'],
     ['Lien achat', url],
