@@ -1,4 +1,5 @@
 :root {
+  /* Couleurs */
   --c-primary:   #C96B8A;
   --c-secondary: #9B7FA6;
   --c-accent:    #F0A87A;
@@ -9,4 +10,33 @@
   --c-border:    #E8D5DC;
   --c-success:   #5B8A5F;
   --c-white:     #FFFFFF;
+
+  /* Fonts */
+  --f-display: 'Vollkorn', serif;
+  --f-body:    'Figtree', sans-serif;
+
+  /* Échelle typographique (ratio 1.25 — major third) */
+  --t-xs:   0.75rem;    /* 12px — labels légaux, meta */
+  --t-sm:   0.875rem;   /* 14px — secondary UI */
+  --t-base: 1rem;       /* 16px — corps */
+  --t-lg:   1.25rem;    /* 20px — sous-titres */
+  --t-xl:   1.5625rem;  /* 25px — h3 */
+  --t-2xl:  1.953rem;   /* ~31px — h2 */
+  --t-3xl:  2.441rem;   /* ~39px — h1 desktop */
+}
+
+/* Typographie globale */
+body {
+  font-optical-sizing: auto;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+  line-height: 1.15;
+}
+
+p, li {
+  text-wrap: pretty;
+  max-width: 70ch;
 }

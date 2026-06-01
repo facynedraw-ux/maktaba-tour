@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#C96B8A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;600;700&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 <link rel="stylesheet" href="assets/tokens.css">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -19,22 +19,22 @@ tailwind.config = {
   theme: {
     extend: {
       colors: { primary:'#C96B8A', secondary:'#9B7FA6', accent:'#F0A87A', bg:'#FFF5F7', card:'#F5F0FA', text:'#3D1F2D', muted:'#7A5A6A', border:'#E8D5DC', success:'#5B8A5F' },
-      fontFamily: { display:['Playfair Display','serif'], body:['DM Sans','sans-serif'] }
+      fontFamily: { display:['Vollkorn','serif'], body:['Figtree','sans-serif'] }
     }
   }
 }
 </script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
-  body { font-family:'DM Sans',sans-serif; background:#FFF5F7; color:#3D1F2D; margin:0; }
+  body { font-family:'Figtree',sans-serif; background:#FFF5F7; color:#3D1F2D; margin:0; }
   .ms { font-family:'Material Symbols Outlined'; font-weight:normal; font-style:normal; font-size:20px; line-height:1; letter-spacing:normal; text-transform:none; display:inline-block; white-space:nowrap; direction:ltr; -webkit-font-smoothing:antialiased; }
   .admin-nav-link { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; text-decoration:none; color:#7A5A6A; font-size:14px; font-weight:500; transition:all 0.15s; }
   .admin-nav-link:hover, .admin-nav-link.active { background:#F5E8F0; color:#C96B8A; }
-  .btn-approve { background:#E8F0E8; color:#5B8A5F; border:none; border-radius:10px; padding:8px 16px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background 0.15s; }
+  .btn-approve { background:#E8F0E8; color:#5B8A5F; border:none; border-radius:10px; padding:8px 16px; font-family:'Figtree',sans-serif; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background 0.15s; }
   .btn-approve:hover { background:#D4E8D4; }
-  .btn-reject { background:#FDE8EE; color:#C96B8A; border:none; border-radius:10px; padding:8px 16px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background 0.15s; }
+  .btn-reject { background:#FDE8EE; color:#C96B8A; border:none; border-radius:10px; padding:8px 16px; font-family:'Figtree',sans-serif; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background 0.15s; }
   .btn-reject:hover { background:#FACDD8; }
-  .filter-btn { padding:6px 14px; border-radius:20px; border:1.5px solid #E8D5DC; background:white; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:#7A5A6A; cursor:pointer; transition:all 0.15s; }
+  .filter-btn { padding:6px 14px; border-radius:20px; border:1.5px solid #E8D5DC; background:white; font-family:'Figtree',sans-serif; font-size:13px; font-weight:500; color:#7A5A6A; cursor:pointer; transition:all 0.15s; }
   .filter-btn.active { border-color:#C96B8A; background:#F5E8F0; color:#C96B8A; }
   .stars { color:#F0A87A; font-size:13px; }
   .skeleton { background:linear-gradient(90deg,#F5E8F0 25%,#FAF0F5 50%,#F5E8F0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
