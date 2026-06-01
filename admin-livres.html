@@ -416,7 +416,7 @@ async function loadBooks() {
 
   const { data } = await _supabase
     .from('books')
-    .select('id, slug, title, status, cover_url, age_min, age_max, rating_avg, rating_count, link_reported, authors(name)')
+    .select('id, slug, title, status, cover_url, age_min, age_max, rating_avg, rating_count, link_reported, featured_position, authors(name)')
     .order('created_at', { ascending: false });
 
   allBooks = data || [];
