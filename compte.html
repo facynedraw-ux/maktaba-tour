@@ -292,11 +292,20 @@ async function init() {
 
 // ── Profil ──
 async function loadProfile() {
-  const { data: profileData } = await _supabase
+  let { data: profileData, error } = await _supabase
     .from('profiles')
     .select('display_name, role, author_id, illustrator_id')
     .eq('id', session.user.id)
     .single();
+
+  // Fallback si les colonnes author_id/illustrator_id n'existent pas encore
+  if (error) {
+    ({ data: profileData } = await _supabase
+      .from('profiles')
+      .select('display_name, role')
+      .eq('id', session.user.id)
+      .single());
+  }
 
   userProfile = profileData;
 

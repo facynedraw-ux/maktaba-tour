@@ -529,7 +529,7 @@ function renderCard(book, i) {
   const bg = cardBg(book.slug);
   const delay = (i % 4) * 0.06;
   const cover = book.cover_url
-    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-cover" loading="lazy">`
+    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-contain" loading="lazy">`
     : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms" style="font-size:52px;color:#C96B8A;opacity:0.25;">auto_stories</span></div>`;
   const langBadge = book.language === 'fr-ar' || book.language === 'ar'
     ? `<span class="badge badge-lang">${book.language === 'fr-ar' ? 'Bilingue' : 'Arabe'}</span>` : '';

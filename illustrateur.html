@@ -410,7 +410,7 @@ async function loadBooks(illus) {
     const bg = cardBg(b.slug);
     const age = b.age_min != null ? `${b.age_min}–${b.age_max} ans` : '';
     const cover = b.cover_url
-      ? `<img src="${esc(b.cover_url)}" alt="${esc(b.title)}" class="w-full h-full object-cover" loading="lazy">`
+      ? `<img src="${esc(b.cover_url)}" alt="${esc(b.title)}" class="w-full h-full object-contain" loading="lazy">`
       : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms" style="font-size:36px;color:#C96B8A;opacity:0.2;">auto_stories</span></div>`;
     return `
       <a href="livre.html?slug=${esc(b.slug)}" class="bg-white border border-border rounded-2xl overflow-hidden no-underline block hover:shadow-md transition-shadow">

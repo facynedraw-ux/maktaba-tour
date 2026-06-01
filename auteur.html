@@ -330,7 +330,7 @@ async function loadBooks(authorId, authorSlug) {
     const age = b.age_min != null ? `${b.age_min}–${b.age_max} ans` : '';
     const theme = b.themes?.[0] ? THEME_LABELS[b.themes[0]] || b.themes[0] : '';
     const cover = b.cover_url
-      ? `<img src="${esc(b.cover_url)}" alt="${esc(b.title)}" class="w-full h-full object-cover" loading="lazy">`
+      ? `<img src="${esc(b.cover_url)}" alt="${esc(b.title)}" class="w-full h-full object-contain" loading="lazy">`
       : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms" style="font-size:44px;color:#C96B8A;opacity:0.25;">auto_stories</span></div>`;
     return `
       <a href="livre.html?slug=${esc(b.slug)}" class="book-card">

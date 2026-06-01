@@ -572,7 +572,7 @@ function renderFeaturedCard(book) {
   const theme = book.themes?.[0] || '';
   const bg = cardBg(book.slug);
   const cover = book.cover_url
-    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-cover" loading="lazy">`
+    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-contain" loading="lazy">`
     : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms" style="font-size:52px;color:#C96B8A;opacity:0.25;">auto_stories</span></div>`;
   return `
     <a href="livre.html?slug=${escHtml(book.slug)}" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block">
@@ -594,7 +594,7 @@ function renderScrollCard(book) {
   const author = book.authors?.name || '';
   const bg = cardBg(book.slug);
   const cover = book.cover_url
-    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-cover" loading="lazy">`
+    ? `<img src="${escHtml(book.cover_url)}" alt="${escHtml(book.title)}" class="w-full h-full object-contain" loading="lazy">`
     : `<div class="absolute inset-0 flex items-center justify-center"><span class="ms text-5xl" style="color:#C96B8A;opacity:0.35;">auto_stories</span></div>`;
   return `
     <a href="livre.html?slug=${escHtml(book.slug)}" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="width:160px;">
