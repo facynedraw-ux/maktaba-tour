@@ -325,6 +325,17 @@ tailwind.config = {
         </select>
       </div>
 
+      <div class="mb-4">
+        <label class="form-label" for="f-featured-position">⭐ Position vedette (accueil)</label>
+        <select id="f-featured-position" class="form-select">
+          <option value="">— Non mis en avant —</option>
+          <option value="1">Position 1</option>
+          <option value="2">Position 2</option>
+          <option value="3">Position 3</option>
+          <option value="4">Position 4</option>
+        </select>
+      </div>
+
     </div>
 
     <div class="pt-6 border-t border-border mt-6 flex gap-3">
@@ -444,6 +455,7 @@ function renderBooks() {
           <p class="text-xs text-muted">${esc(b.authors?.name||'—')}${age ? ' · ' + age : ''}</p>
         </div>
         ${b.link_reported ? `<span class="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 hidden sm:inline-flex" style="background:#FFF0E8;color:#C07040;" title="Lien signalé mort par un utilisateur">⚠️ lien</span>` : ''}
+        ${b.featured_position != null ? `<span class="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 hidden sm:inline-flex" style="background:#FEFCE8;color:#A07000;" title="Mis en avant sur l'accueil">⭐ #${b.featured_position}</span>` : ''}
         <span class="text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 hidden sm:inline-flex" style="background:${st.bg};color:${st.color};">${st.label}</span>
         <div class="flex gap-2 flex-shrink-0">
           <a href="livre.html?slug=${esc(b.slug)}" target="_blank" class="btn-sm" title="Voir la fiche">
@@ -487,6 +499,7 @@ async function editBook(id) {
   document.getElementById('f-faces').value = full.faces_in_illustrations || '';
   document.getElementById('f-audience').value = full.audience || 'children';
   document.getElementById('f-status').value = full.status || 'pending';
+  document.getElementById('f-featured-position').value = full.featured_position != null ? String(full.featured_position) : '';
 
   // Auteur
   document.getElementById('f-new-author').checked = false;
@@ -525,6 +538,7 @@ function openPanel(id) {
   document.getElementById('f-faces').value = '';
   document.getElementById('f-audience').value = 'children';
   document.getElementById('f-status').value = 'approved';
+  document.getElementById('f-featured-position').value = '';
   document.querySelectorAll('input[name="theme"]').forEach(cb => cb.checked = false);
   updateCoverPreview('');
   document.getElementById('save-btn').disabled = false;
@@ -607,6 +621,9 @@ async function saveBook() {
       audience: document.getElementById('f-audience').value || 'children',
       themes,
       status: document.getElementById('f-status').value,
+      featured_position: document.getElementById('f-featured-position').value
+        ? parseInt(document.getElementById('f-featured-position').value)
+        : null,
     };
 
     let error;
