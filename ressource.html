@@ -14,6 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
 <script>
@@ -59,6 +60,10 @@ tailwind.config = {
   @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
   .fade-up { animation:fadeUp 0.5s ease both; }
   .delay-1 { animation-delay:0.1s; }
+
+  /* PDF aperçu */
+  .pdf-preview-wrap { background:white; border:1px solid #E8D5DC; border-radius:16px; overflow:hidden; }
+  .pdf-locked { padding:20px 16px 24px; text-align:center; border-top:1px solid #E8D5DC; background:#FFF5F7; }
 </style>
 </head>
 <body class="bg-bg font-body text-text">
@@ -172,6 +177,28 @@ tailwind.config = {
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- PDF APERÇU -->
+    <div id="preview-pdf-section" class="hidden mb-8 fade-up delay-1">
+      <div class="mb-4">
+        <p class="section-eyebrow mb-1">✦ Feuilleter un extrait</p>
+        <h2 id="preview-pdf-label" class="font-display text-xl font-bold">Aperçu</h2>
+      </div>
+      <div class="pdf-preview-wrap">
+        <div id="pdf-loading" class="skeleton h-64 m-3 rounded-xl"></div>
+        <div id="pdf-canvases" class="hidden"></div>
+        <div id="pdf-locked" class="pdf-locked hidden">
+          <div class="flex items-center justify-center gap-2 mb-3">
+            <span class="ms" style="font-size:20px;color:#C96B8A;">lock</span>
+            <p class="font-semibold text-sm text-text">La suite est réservée aux acheteurs</p>
+          </div>
+          <button class="btn-buy" style="max-width:300px;margin:0 auto;" onclick="handleBuy()">
+            <span class="ms" style="font-size:18px;">shopping_bag</span>
+            <span id="preview-buy-label">Acheter · Version complète</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -291,6 +318,14 @@ function renderResource(r) {
   document.getElementById('resource-infos').innerHTML = infosHtml;
 
   document.getElementById('resource-content').classList.remove('hidden');
+
+  if (r.preview_pdf_url) {
+    document.getElementById('preview-pdf-section').classList.remove('hidden');
+    const price = Number(r.price).toFixed(2);
+    const pages = r.page_count ? ` (${r.page_count} pages)` : '';
+    document.getElementById('preview-buy-label').textContent = `Acheter — ${price} € · Version complète${pages}`;
+    loadPdfPreview(r.preview_pdf_url, r.page_count);
+  }
 }
 
 function infoCell(label, value) {
@@ -368,6 +403,54 @@ function closeLightbox() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
+async function loadPdfPreview(url, totalPages) {
+  if (typeof pdfjsLib === 'undefined') {
+    document.getElementById('preview-pdf-section').classList.add('hidden');
+    return;
+  }
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  const loading = document.getElementById('pdf-loading');
+  const canvasWrap = document.getElementById('pdf-canvases');
+  const locked = document.getElementById('pdf-locked');
+
+  try {
+    const pdf = await pdfjsLib.getDocument(url).promise;
+    const n = pdf.numPages;
+    const pageLabel = totalPages && totalPages > n
+      ? `${n} page${n > 1 ? 's' : ''} sur ${totalPages}`
+      : `${n} page${n > 1 ? 's' : ''} d'aperçu`;
+    document.getElementById('preview-pdf-label').textContent = pageLabel;
+
+    canvasWrap.innerHTML = '';
+
+    for (let i = 1; i <= n; i++) {
+      const page = await pdf.getPage(i);
+      const section = document.getElementById('preview-pdf-section');
+      const containerWidth = (section.offsetWidth || 360) - 2;
+      const baseVp = page.getViewport({ scale: 1 });
+      const scale = containerWidth / baseVp.width;
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.style.width = '100%';
+      canvas.style.display = 'block';
+      if (i < n) canvas.style.borderBottom = '1px solid #E8D5DC';
+
+      canvasWrap.appendChild(canvas);
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    }
+
+    loading.classList.add('hidden');
+    canvasWrap.classList.remove('hidden');
+    locked.classList.remove('hidden');
+  } catch (e) {
+    document.getElementById('preview-pdf-section').classList.add('hidden');
+  }
+}
 
 init();
 </script>
