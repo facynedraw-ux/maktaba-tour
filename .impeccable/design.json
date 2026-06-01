@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-01T00:00:00Z",
+  "title": "Design System: Maktaba Tour",
+  "extensions": {
+    "colorMeta": {
+      "rose-pivoine":   { "role": "primary",   "displayName": "Rose Pivoine Poudré",  "canonical": "#C96B8A", "tonalRamp": ["#4a1a2d","#6b2840","#8c3d5c","#ae5278","#C96B8A","#d98aa5","#e9aec2","#f4d1df","#faf0f4"] },
+      "mauve-ardoise":  { "role": "secondary",  "displayName": "Mauve Ardoise",        "canonical": "#9B7FA6", "tonalRamp": ["#2d1f3a","#4a3460","#67508a","#836aa0","#9B7FA6","#b29bc0","#cab8d6","#e3d6eb","#f4eff8"] },
+      "abricot-chaud":  { "role": "tertiary",   "displayName": "Abricot Chaud",        "canonical": "#F0A87A", "tonalRamp": ["#4a2a10","#7a4520","#a86030","#d07848","#F0A87A","#f4bc96","#f7cfb2","#fbe3cf","#fdf4ec"] },
+      "prune-encre":    { "role": "neutral",    "displayName": "Prune Encre",          "canonical": "#3D1F2D", "tonalRamp": ["#1a0a12","#2d1220","#3D1F2D","#5a3044","#78485e","#9a6a7e","#bc8fa0","#dbbac5","#f5ecf0"] },
+      "blanc-rose":     { "role": "neutral",    "displayName": "Blanc Rosé",           "canonical": "#FFF5F7", "tonalRamp": ["#f5d0d8","#f8dde4","#fae8ec","#fbeff2","#FFF5F7","#fff8f9","#fffbfc","#fffefe","#ffffff"] },
+      "lavande-pale":   { "role": "neutral",    "displayName": "Lavande Pâle",         "canonical": "#F5F0FA", "tonalRamp": ["#d0c0e8","#dbd0ef","#e5ddf4","#eee9f8","#F5F0FA","#f8f5fc","#faf9fd","#fcfcfe","#ffffff"] },
+      "mauve-cendre":   { "role": "neutral",    "displayName": "Mauve Cendré",         "canonical": "#7A5A6A", "tonalRamp": ["#2a1820","#442838","#5c3a50","#7A5A6A","#967888","#b298a6","#ccbac4","#e4d8de","#f5eff2"] },
+      "rose-cendre":    { "role": "neutral",    "displayName": "Rose Cendré",          "canonical": "#E8D5DC", "tonalRamp": ["#c0909a","#cca4ae","#d8b8c2","#e2c8d0","#E8D5DC","#ede0e5","#f2eaed","#f8f4f6","#fdfbfc"] },
+      "vert-validation":{ "role": "neutral",    "displayName": "Vert Validation",      "canonical": "#5B8A5F", "tonalRamp": ["#1a3018","#2c4e2a","#3e6c3e","#4e7c50","#5B8A5F","#72a074","#94bc96","#b8d6ba","#dff0e0"] }
+    },
+    "typographyMeta": {
+      "display":  { "displayName": "Display",  "purpose": "Hero h1 uniquement. Fluid clamp. Italic rose autorisé sur le slogan." },
+      "headline": { "displayName": "Headline", "purpose": "H2 sections principales." },
+      "title":    { "displayName": "Title",    "purpose": "H3, sous-titres de fiches, noms de section." },
+      "body":     { "displayName": "Body",     "purpose": "Corps de texte. Max 70ch sur prose longue." },
+      "label":    { "displayName": "Label",    "purpose": "Badges, pills, meta, breadcrumbs." }
+    },
+    "shadows": [
+      { "name": "hover-card",      "value": "0 8px 24px rgba(201,107,138,0.12)",   "purpose": "Cartes auteur au hover." },
+      { "name": "hover-book-card", "value": "0 12px 32px rgba(201,107,138,0.15)",  "purpose": "Cartes livre au hover." },
+      { "name": "frosted-stat",    "value": "backdrop-filter:blur(4px); background:rgba(255,255,255,0.8)", "purpose": "Stats flottantes hero desktop uniquement." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "ease",                    "purpose": "Transitions boutons et liens (0.15–0.2s)." },
+      { "name": "fade-up",       "value": "fadeUp 0.6s ease both",   "purpose": "Entrée hero uniquement. Désactivé prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action principale. Rose pivoine plein, blanc, radius 12px.",
+      "html": "<button class=\"ds-btn-primary\">Voir le catalogue</button>",
+      "css": ".ds-btn-primary{background:#C96B8A;color:#fff;border:none;border-radius:12px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:background 0.2s,transform 0.1s}.ds-btn-primary:hover{background:#b55a78}.ds-btn-primary:focus-visible{outline:2px solid #C96B8A;outline-offset:2px}.ds-btn-primary:active{transform:scale(0.98)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Action secondaire. Contour rose, fond transparent.",
+      "html": "<button class=\"ds-btn-secondary\">Soumettre un livre</button>",
+      "css": ".ds-btn-secondary{background:transparent;color:#C96B8A;border:1.5px solid #C96B8A;border-radius:12px;padding:11px 24px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:all 0.2s}.ds-btn-secondary:hover{background:#FFF5F7}.ds-btn-secondary:focus-visible{outline:2px solid #C96B8A;outline-offset:2px}"
+    },
+    {
+      "name": "Filter Pill",
+      "kind": "chip",
+      "refersTo": "filter-pill",
+      "description": "Filtre catalogue. Contour gris repos, rose plein actif.",
+      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-pill\">Ramadan</button><button class=\"ds-pill ds-pill--active\">Famille</button></div>",
+      "css": ".ds-pill{padding:8px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid #E8D5DC;background:#fff;color:#7A5A6A;font-family:'DM Sans',sans-serif;transition:all 0.15s}.ds-pill:hover{border-color:#C96B8A;color:#C96B8A}.ds-pill--active{background:#C96B8A;color:#fff;border-color:#C96B8A}"
+    },
+    {
+      "name": "Book Card",
+      "kind": "card",
+      "refersTo": "book-card",
+      "description": "Carte livre. Couverture 3/4 object-contain, hover rose.",
+      "html": "<a class=\"ds-book-card\" href=\"#\"><div class=\"ds-book-cover\"></div><div class=\"ds-book-body\"><span class=\"ds-badge-age\">3–6 ans</span><h3 class=\"ds-book-title\">Le Ramadan de Lina</h3><p class=\"ds-book-author\">Sarah Oumna</p><div class=\"ds-stars\">★★★★★</div></div></a>",
+      "css": ".ds-book-card{display:block;background:#fff;border:1px solid #E8D5DC;border-radius:16px;overflow:hidden;text-decoration:none;color:#3D1F2D;transition:transform 0.2s ease,box-shadow 0.2s ease}.ds-book-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(201,107,138,0.15)}.ds-book-cover{aspect-ratio:3/4;background:#F5F0FA;width:100%}.ds-book-body{padding:12px}.ds-badge-age{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#F5E8F0;color:#C96B8A;margin-bottom:6px;font-family:'DM Sans',sans-serif}.ds-book-title{font-family:'Playfair Display',serif;font-weight:600;font-size:14px;margin:4px 0;line-height:1.3}.ds-book-author{font-family:'DM Sans',sans-serif;font-size:12px;color:#7A5A6A;margin:0 0 6px}.ds-stars{color:#F0A87A;font-size:12px}"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Barre de recherche hero. Icône gauche, focus rose, placeholder contrasté.",
+      "html": "<div class=\"ds-search-wrap\"><input class=\"ds-search\" type=\"text\" placeholder=\"Rechercher un titre, un auteur…\"/></div>",
+      "css": ".ds-search-wrap{position:relative;max-width:480px}.ds-search{width:100%;padding:14px 20px 14px 48px;border:1.5px solid #E8D5DC;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;color:#3D1F2D;background:#fff;outline:none;transition:border-color 0.2s;box-sizing:border-box}.ds-search:focus{border-color:#C96B8A}.ds-search::placeholder{color:#7A5A6A}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge-theme",
+      "description": "Badge thème, âge, langue. Non interactif.",
+      "html": "<div style=\"display:flex;gap:6px\"><span class=\"ds-badge-age\">3–6 ans</span><span class=\"ds-badge-theme\">Ramadan</span><span class=\"ds-badge-lang\">FR / AR</span></div>",
+      "css": ".ds-badge-age,.ds-badge-theme,.ds-badge-lang{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;font-family:'DM Sans',sans-serif}.ds-badge-age{background:#F5E8F0;color:#C96B8A}.ds-badge-theme{background:#EEE8F5;color:#7A5F9A}.ds-badge-lang{background:#E8F0E8;color:#4A7A4A}"
+    }
+  ],
+  "narrative": {
+    "northStar": "La Libraire de Confiance",
+    "overview": "Maktaba Tour se comporte comme une libraire indépendante qui connaît chaque livre de son fond, recommande avec expertise et chaleur, et ne vend jamais à la dure. Chaleureux sans être sucré, éditorial sans être froid, fiable sans être ennuyeux.\n\nLa palette rose pivoine, mauve ardoise et abricot chaud sur fond blanc rosé évoque un intérieur de librairie bien tenu. Playfair Display pour l'autorité éditoriale, DM Sans pour la lisibilité mobile.",
+    "keyCharacteristics": [
+      "Palette à 3 rôles : accent (rose pivoine), support (mauve + abricot), neutre (blancs rosés + prune)",
+      "Typo éditoriale : Playfair Display pour l'autorité, DM Sans pour la lisibilité",
+      "Rayon d'angle cohérent : pilules 20px — cartes 16px — boutons 12px — inputs 10px",
+      "Élévation plate par défaut, ombre rose expressive au survol uniquement",
+      "Mobile first : bottom nav fixe, carousels scroll-snap, touch targets 44px+"
+    ],
+    "rules": [
+      { "name": "La Règle du Murmure",         "body": "Le rose pivoine murmure, il ne crie pas. Maximum 15% de surface par écran.",                              "section": "colors" },
+      { "name": "La Règle du Neutre Teinté",   "body": "Aucun gris pur. Chaque neutre penche vers le mauve ou le rose. #888888 est interdit.",                  "section": "colors" },
+      { "name": "La Règle du Serif Réservé",   "body": "Playfair Display uniquement dans h1–h3, logo, pull quotes. Jamais dans les boutons ni le corps de texte.", "section": "typography" },
+      { "name": "La Règle du Plat-par-Défaut", "body": "Surfaces sans ombre au repos. L'ombre rose apparaît au hover uniquement.",                               "section": "elevation" }
+    ],
+    "dos": [
+      "Do utiliser #C96B8A comme seule couleur d'action : boutons, links, focus rings, états actifs.",
+      "Do respecter la hiérarchie Playfair/DM Sans.",
+      "Do appliquer aspect-ratio:3/4 + object-contain + fond #F5F0FA sur toutes les couvertures.",
+      "Do conserver prefers-reduced-motion sur chaque animation."
+    ],
+    "donts": [
+      "Don't utiliser #C96B8A comme fond de section étendu.",
+      "Don't créer des grilles de 3 cartes identiques sans hiérarchie.",
+      "Don't placer un eyebrow uppercase sur chaque section.",
+      "Don't reproduire les anti-références : Amazon, ornements islamiques génériques, SaaS blanc, blog tout rose."
+    ]
+  }
+}

@@ -28,15 +28,12 @@
 /* Typographie globale */
 body {
   font-optical-sizing: auto;
-  line-height: 1.6;
 }
 
 h1, h2, h3 {
   text-wrap: balance;
-  line-height: 1.15;
 }
 
-p, li {
+p {
   text-wrap: pretty;
-  max-width: 70ch;
 }
