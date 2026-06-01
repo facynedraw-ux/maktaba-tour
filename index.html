@@ -450,9 +450,7 @@ tailwind.config = {
       <!-- Brand -->
       <div class="md:col-span-2">
         <div class="flex items-center gap-2 mb-3">
-          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <span class="text-white text-sm font-bold" style="font-family: 'Playfair Display', serif;">M</span>
-          </div>
+          <img src="Images/logo.png" alt="Maktaba Tour" class="w-8 h-8 object-contain">
           <span class="font-display font-bold text-white text-lg">Maktaba Tour</span>
         </div>
         <p class="text-sm leading-relaxed" style="color:#B09AAA;">
@@ -620,7 +618,7 @@ function renderAuthorCard(author, bookCount) {
       <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center overflow-hidden" style="background:${bg};">${photo}</div>
       <h3 class="font-semibold text-sm text-text mb-1">${escHtml(author.name)}</h3>
       <p class="text-xs text-muted mb-2">${bookCount} livre${bookCount > 1 ? 's' : ''}</p>
-      <span class="badge ${author.is_self_published ? 'badge-theme' : 'badge-age'}">${author.is_self_published ? 'Auto-édité·e' : 'Maison éd.'}</span>
+      ${author.is_self_published ? `<span class="badge badge-theme">Auto-édité·e</span>` : ''}
     </a>`;
 }
 
