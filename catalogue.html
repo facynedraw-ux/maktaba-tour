@@ -230,6 +230,16 @@ tailwind.config = {
           <button class="btn-reset" onclick="resetFilters()">Tout effacer</button>
         </div>
 
+        <!-- Public -->
+        <div class="mb-6">
+          <p class="filter-section-title">Public</p>
+          <div class="flex gap-1 flex-wrap">
+            <button class="filter-pill text-xs px-2 py-1 active audience-btn" style="font-size:11px;" onclick="setAudience(null, this)">Tous</button>
+            <button class="filter-pill text-xs px-2 py-1 audience-btn" style="font-size:11px;" onclick="setAudience('children', this)">👦 Jeunesse</button>
+            <button class="filter-pill text-xs px-2 py-1 audience-btn" style="font-size:11px;" onclick="setAudience('young-adult', this)">📚 Young Adult</button>
+          </div>
+        </div>
+
         <!-- Tranche d'âge -->
         <div class="mb-6">
           <p class="filter-section-title">Tranche d'âge</p>
@@ -359,6 +369,16 @@ tailwind.config = {
       </div>
     </div>
 
+    <!-- Public mobile -->
+    <div class="mb-6">
+      <p class="filter-section-title">Public</p>
+      <div class="flex gap-2 flex-wrap">
+        <button class="filter-pill active audience-btn" style="font-size:12px;" onclick="setAudience(null, this)">Tous</button>
+        <button class="filter-pill audience-btn" style="font-size:12px;" onclick="setAudience('children', this)">👦 Jeunesse</button>
+        <button class="filter-pill audience-btn" style="font-size:12px;" onclick="setAudience('young-adult', this)">📚 Young Adult</button>
+      </div>
+    </div>
+
     <!-- Tranche d'âge -->
     <div class="mb-6">
       <p class="filter-section-title">Tranche d'âge</p>
@@ -484,6 +504,7 @@ let currentSort = 'rating';
 let minRating = 0;
 let activeTheme = 'tous';
 let searchQuery = '';
+let audienceFilter = null;
 
 function escHtml(s) {
   return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -513,6 +534,7 @@ function renderCard(book, i) {
   const langBadge = book.language === 'fr-ar' || book.language === 'ar'
     ? `<span class="badge badge-lang">${book.language === 'fr-ar' ? 'Bilingue' : 'Arabe'}</span>` : '';
   const themeBadge = theme ? `<span class="badge badge-theme">${escHtml(THEME_LABELS[theme]||theme)}</span>` : '';
+  const yaBadge = book.audience === 'young-adult' ? `<span class="badge" style="background:#FFF5E0;color:#9B7020;">YA</span>` : '';
   return `
     <a href="livre.html?slug=${escHtml(book.slug)}" class="book-card bg-white rounded-2xl border border-border overflow-hidden no-underline block" style="animation-delay:${delay}s;">
       <div class="aspect-[3/4] relative" style="background:${bg};">
@@ -524,7 +546,7 @@ function renderCard(book, i) {
         <div class="stars text-xs mb-1">${starsHtml(book.rating_avg)}</div>
         <h3 class="font-display font-semibold text-xs leading-snug mb-1 text-text">${escHtml(book.title)}</h3>
         <p class="text-xs text-muted mb-2">${escHtml(author)}</p>
-        <div class="flex gap-1 flex-wrap">${themeBadge}${langBadge}</div>
+        <div class="flex gap-1 flex-wrap">${yaBadge}${themeBadge}${langBadge}</div>
       </div>
     </a>`;
 }
@@ -587,6 +609,9 @@ async function loadBooks() {
 
   // Note minimum
   if (minRating > 0) query = query.gte('rating_avg', minRating);
+
+  // Public (audience)
+  if (audienceFilter !== null) query = query.eq('audience', audienceFilter);
 
   // Visages (auto-activé si recherche "sans visage(s)")
   const autoFaces = /sans.?visages?/i.test(searchQuery) ? false : facesFilter;
@@ -682,13 +707,22 @@ function setMinRating(rating, btn) {
   btn.classList.add('active');
   applyFilters();
 }
+function setAudience(val, btn) {
+  audienceFilter = val;
+  document.querySelectorAll('.audience-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  currentPage = 1;
+  applyFilters();
+}
+
 function resetFilters() {
   document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
-  minRating = 0; activeTheme = 'tous'; searchQuery = ''; currentPage = 1;
+  minRating = 0; activeTheme = 'tous'; searchQuery = ''; currentPage = 1; audienceFilter = null;
   document.getElementById('search-input').value = '';
   document.getElementById('clear-search').classList.add('hidden');
   document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
   document.querySelector('.filter-pill').classList.add('active');
+  document.querySelectorAll('.audience-btn').forEach((b, i) => { if (i === 0) b.classList.add('active'); });
   loadBooks();
 }
 function setView(view) {
