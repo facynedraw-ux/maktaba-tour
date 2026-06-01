@@ -257,10 +257,12 @@ tailwind.config = {
 <!-- ═══════════════════════════════════
      FILTRES THÈMES
 ════════════════════════════════════ -->
-<section class="bg-white border-b border-border sticky top-16 z-40">
-  <div id="theme-pills-home" class="flex gap-2 overflow-x-auto py-4" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-left:16px;padding-right:16px;">
-    <button class="filter-pill active" onclick="filterByTheme('tous', this)">Tous</button>
-    <!-- Chargé dynamiquement depuis la table themes -->
+<section class="bg-white border-b border-border sticky top-16 z-40 px-4 py-4">
+  <div class="max-w-5xl mx-auto">
+    <div id="theme-pills-home" class="flex flex-wrap gap-2">
+      <button class="filter-pill active" onclick="filterByTheme('tous', this)">Tous</button>
+      <!-- Chargé dynamiquement depuis la table themes -->
+    </div>
   </div>
 </section>
 
