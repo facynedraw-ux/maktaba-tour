@@ -178,8 +178,8 @@ tailwind.config = {
     </div>
     <div class="bg-white rounded-2xl border border-border p-4 text-center">
       <span class="ms block mb-2" style="font-size:28px;color:#F0A87A;">groups</span>
-      <p class="font-semibold text-sm mb-1">Communauté</p>
-      <p class="text-xs text-muted">Milliers de familles</p>
+      <p class="font-semibold text-sm mb-1">Portée</p>
+      <p class="text-xs text-muted">Des milliers de familles</p>
     </div>
   </div>
 
@@ -302,6 +302,7 @@ tailwind.config = {
           <div class="theme-grid" id="theme-grid">
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="ramadan"> 🌙 Ramadan</label>
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="aid"> 🎁 Aïd</label>
+            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="hajj"> 🕋 Hajj</label>
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="prophetes"> ⭐ Prophètes</label>
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="valeurs"> 💛 Valeurs</label>
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="famille"> 🏡 Famille</label>
@@ -310,6 +311,7 @@ tailwind.config = {
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="nature"> 🌿 Nature</label>
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="priere"> 🤲 Prière</label>
             <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="aventure"> 🚀 Aventure</label>
+            <label class="theme-check" onclick="toggleTheme(this)"><input type="checkbox" value="halal_romance"> 💕 Halal romance</label>
           </div>
           <p class="field-error" id="err-themes"><span class="ms" style="font-size:12px;">error</span> Sélectionnez au moins un thème.</p>
         </div>
@@ -318,7 +320,7 @@ tailwind.config = {
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="field-label" for="book-lang">Langue <span class="field-required">*</span></label>
-            <select id="book-lang" class="field-input">
+            <select id="book-lang" class="field-input" onchange="toggleArabicLevel(this.value)">
               <option value="">— Choisir —</option>
               <option value="fr">Français</option>
               <option value="fr-ar">Bilingue FR / AR</option>
@@ -326,8 +328,8 @@ tailwind.config = {
             </select>
             <p class="field-error" id="err-book-lang"><span class="ms" style="font-size:12px;">error</span> Obligatoire.</p>
           </div>
-          <div>
-            <label class="field-label" for="arabic-level">Niveau arabe</label>
+          <div id="arabic-level-wrap">
+            <label class="field-label" for="arabic-level">Niveau</label>
             <select id="arabic-level" class="field-input">
               <option value="none">Sans arabe</option>
               <option value="initiation">Initiation</option>
@@ -453,8 +455,9 @@ tailwind.config = {
               <input type="radio" name="illus_origin" value="mixed">
               <span class="origin-badge" style="background:#FFF0E8;color:#C07040;">🔀 Mixte</span>
               <div>
-                <p class="font-medium text-sm">Illustrations mixtes</p>
-                <p class="text-xs text-muted">Base IA retravaillée par un illustrateur</p>
+                <p class="font-medium text-sm">Illustrations mixtes (IA + humain)</p>
+                <p class="text-xs text-muted">• Base IA retravaillée par un illustrateur</p>
+                <p class="text-xs text-muted">• Base dessinée par un humain, retravaillée par IA</p>
               </div>
             </label>
           </div>
@@ -470,7 +473,7 @@ tailwind.config = {
               <span class="origin-badge" style="background:#FDE8EE;color:#C96B8A;">🚫 Sans visages</span>
               <div>
                 <p class="font-medium text-sm">Sans visages</p>
-                <p class="text-xs text-muted">Aucun visage dessiné sur les personnages (style pudique)</p>
+                <p class="text-xs text-muted">Aucun visage dessiné sur les personnages</p>
               </div>
             </label>
             <label class="origin-option" id="faces-yes" onclick="selectFaces('yes')">
@@ -970,6 +973,12 @@ function countChars(inputId, countId, max) {
   const el = document.getElementById(countId);
   el.textContent = len + ' / ' + max;
   el.classList.toggle('warn', len > max * 0.9);
+}
+
+// ── Niveau arabe conditionnel ──
+function toggleArabicLevel(lang) {
+  const wrap = document.getElementById('arabic-level-wrap');
+  wrap.style.visibility = (lang === 'fr-ar' || lang === 'ar') ? '' : 'hidden';
 }
 
 // ── Consentement ──

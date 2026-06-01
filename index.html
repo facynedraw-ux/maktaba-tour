@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Maktaba Tour — La bibliothèque qui fait le tour pour toi</title>
-<meta name="description" content="Découvrez les meilleurs livres jeunesse musulmans francophones. Notes, avis, recommandations et liens d'achat.">
+<title>Maktaba Tour — L'annuaire littérature jeunesse musulmane</title>
+<meta name="description" content="L'annuaire en ligne qui fait le tour des librairies pour vous trouver les meilleures pépites parmi les références francophones de livres à destination de la jeunesse musulmane.">
 <meta property="og:title" content="Maktaba Tour">
 <meta property="og:description" content="La bibliothèque qui fait le tour pour toi">
 <meta property="og:type" content="website">
@@ -198,18 +198,18 @@ tailwind.config = {
     <div class="max-w-2xl">
 
       <!-- Eyebrow -->
-      <p class="section-eyebrow mb-4 fade-up">✦ La bibliothèque jeunesse musulmane</p>
+      <p class="section-eyebrow mb-4 fade-up">✦ Annuaire littérature jeunesse musulmane</p>
 
       <!-- Titre -->
       <h1 class="font-display text-4xl md:text-5xl font-bold leading-tight mb-5 fade-up delay-1" style="color:#3D1F2D;">
         On fait le tour<br>
-        <em style="color:#C96B8A;">des bibliothèques</em><br>
-        pour toi.
+        <em style="color:#C96B8A;">des librairies</em><br>
+        pour vous.
       </h1>
 
       <!-- Sous-titre -->
       <p class="text-lg text-muted leading-relaxed mb-8 fade-up delay-2" style="max-width:500px;">
-        Découvrez, notez et achetez les meilleurs livres jeunesse musulmans en français. 
+        Découvrez, notez et achetez les meilleurs livres jeunesse musulmans.
         Sélectionnés avec amour pour vos enfants.
       </p>
 
@@ -262,6 +262,7 @@ tailwind.config = {
       <button class="filter-pill active" onclick="filterByTheme('tous', this)">Tous</button>
       <button class="filter-pill" onclick="filterByTheme('ramadan', this)">🌙 Ramadan</button>
       <button class="filter-pill" onclick="filterByTheme('aid', this)">🎁 Aïd</button>
+      <button class="filter-pill" onclick="filterByTheme('hajj', this)">🕋 Hajj</button>
       <button class="filter-pill" onclick="filterByTheme('prophetes', this)">⭐ Prophètes</button>
       <button class="filter-pill" onclick="filterByTheme('valeurs', this)">💛 Valeurs</button>
       <button class="filter-pill" onclick="filterByTheme('famille', this)">🏡 Famille</button>
@@ -269,6 +270,7 @@ tailwind.config = {
       <button class="filter-pill" onclick="filterByTheme('coran', this)">📖 Coran</button>
       <button class="filter-pill" onclick="filterByTheme('nature', this)">🌿 Nature</button>
       <button class="filter-pill" onclick="filterByTheme('aventure', this)">🚀 Aventure</button>
+      <button class="filter-pill" onclick="filterByTheme('halal_romance', this)">💕 Halal romance</button>
     </div>
   </div>
 </section>
@@ -465,7 +467,7 @@ tailwind.config = {
           <span class="font-display font-bold text-white text-lg">Maktaba Tour</span>
         </div>
         <p class="text-sm leading-relaxed" style="color:#B09AAA;">
-          La bibliothèque qui fait le tour pour toi. La référence francophone des livres jeunesse musulmans.
+          L'annuaire en ligne qui fait le tour des librairies pour vous trouver les meilleures pépites parmi les références francophones de livres à destination de la jeunesse musulmane.
         </p>
         <a href="https://www.instagram.com/jumua_and_me" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-3 text-sm no-underline" style="color:#C96B8A;">
           <span class="ms" style="font-size:18px;">photo_camera</span>
@@ -500,7 +502,7 @@ tailwind.config = {
     </div>
 
     <div class="border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-2" style="border-color:#5A3A4A;">
-      <p class="text-xs" style="color:#6A4A5A;">© 2026 Maktaba Tour · On fait le tour des bibliothèques pour toi.</p>
+      <p class="text-xs" style="color:#6A4A5A;">© 2026 Maktaba Tour · On fait le tour des librairies pour vous.</p>
       <p class="text-xs" style="color:#6A4A5A;">Un projet <a href="https://www.instagram.com/jumua_and_me" target="_blank" rel="noopener" class="no-underline hover:text-primary" style="color:#C96B8A;">Jumua & Me</a></p>
     </div>
 
@@ -546,7 +548,7 @@ const CARD_BG = [
   'linear-gradient(135deg,#E8EEF5,#EEE8F5)',
   'linear-gradient(135deg,#FAEEE8,#FFF0E8)',
 ];
-const THEME_LABELS = { ramadan:'Ramadan', aid:'Aïd', prophetes:'Prophètes', valeurs:'Valeurs', famille:'Famille', arabe:'Arabe', coran:'Coran', nature:'Nature', aventure:'Aventure', priere:'Prière' };
+const THEME_LABELS = { ramadan:'Ramadan', aid:'Aïd', hajj:'Hajj', prophetes:'Prophètes', valeurs:'Valeurs', famille:'Famille', arabe:'Arabe', coran:'Coran', nature:'Nature', aventure:'Aventure', priere:'Prière', halal_romance:'Halal romance' };
 
 function escHtml(s) {
   return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');

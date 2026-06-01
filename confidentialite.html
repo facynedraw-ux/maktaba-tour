@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Politique de confidentialité — Maktaba Tour</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#C96B8A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: { colors: { primary:'#C96B8A', bg:'#FFF5F7', text:'#3D1F2D', muted:'#8A6A7A', border:'#E8D5DC' }, fontFamily: { display:['Playfair Display','serif'], body:['DM Sans','sans-serif'] } } }
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family:'DM Sans',sans-serif; background:#FFF5F7; color:#3D1F2D; margin:0; }
+  .prose h2 { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:#3D1F2D; margin-top:2rem; margin-bottom:0.75rem; }
+  .prose p, .prose li { color:#8A6A7A; line-height:1.8; margin-bottom:0.75rem; font-size:0.9rem; }
+  .prose ul { padding-left:1.25rem; list-style:disc; }
+  .prose a { color:#C96B8A; }
+</style>
+</head>
+<body class="bg-bg font-body text-text">
+
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-border">
+  <div class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 no-underline">
+      <div class="w-7 h-7 rounded-full bg-primary flex items-center justify-center">
+        <span class="text-white text-xs font-bold" style="font-family:'Playfair Display',serif;">M</span>
+      </div>
+      <span class="font-display font-bold text-text text-base hidden sm:block">Maktaba Tour</span>
+    </a>
+    <a href="index.html" class="text-sm text-muted hover:text-primary no-underline">← Retour</a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 pt-10 pb-20">
+  <h1 class="font-display text-3xl font-bold mb-2">Politique de confidentialité</h1>
+  <p class="text-sm text-muted mb-8">Dernière mise à jour : juin 2026</p>
+
+  <div class="prose">
+
+    <h2>1. Responsable du traitement</h2>
+    <p>
+      Maktaba Tour est un projet édité par <strong>[NOM LÉGAL DE L'ENTREPRISE OU NOM / PRÉNOM SI AUTO-ENTREPRENEUR]</strong>,
+      domicilié au <strong>[ADRESSE COMPLÈTE]</strong>.<br>
+      Contact : <a href="mailto:jumuaandme@gmail.com">jumuaandme@gmail.com</a>
+    </p>
+
+    <h2>2. Données collectées</h2>
+    <p>Nous collectons les données suivantes :</p>
+    <ul>
+      <li><strong>Compte utilisateur</strong> : adresse email (via Supabase Auth, OTP)</li>
+      <li><strong>Profil</strong> : nom d'affichage, avatar (optionnels)</li>
+      <li><strong>Interactions</strong> : favoris, liste de lecture, avis sur les livres</li>
+      <li><strong>Soumissions d'auteurs</strong> : nom, email, informations sur le livre, visuels</li>
+      <li><strong>Achats boutique</strong> : email, historique d'achats (via Stripe)</li>
+      <li><strong>Candidatures annuaire</strong> : nom, email, portfolio, spécialités</li>
+    </ul>
+
+    <h2>3. Finalités du traitement</h2>
+    <ul>
+      <li>Fonctionnement du compte utilisateur et des fonctionnalités personnalisées</li>
+      <li>Traitement des soumissions de livres et candidatures d'illustrateurs</li>
+      <li>Gestion des achats et livraison des ressources numériques</li>
+      <li>Envoi d'emails transactionnels (confirmation, réponse à la soumission)</li>
+      <li>Amélioration du service</li>
+    </ul>
+
+    <h2>4. Base légale</h2>
+    <p>Le traitement repose sur votre consentement (création de compte, soumission) et sur l'exécution du contrat (achats).</p>
+
+    <h2>5. Durée de conservation</h2>
+    <ul>
+      <li>Données de compte : jusqu'à suppression du compte</li>
+      <li>Données d'achat : 10 ans (obligation comptable)</li>
+      <li>Soumissions : 3 ans après la décision éditoriale</li>
+    </ul>
+
+    <h2>6. Sous-traitants</h2>
+    <ul>
+      <li><strong>Supabase</strong> (base de données, authentification, stockage) — hébergé en Europe (AWS eu-west-1)</li>
+      <li><strong>Stripe</strong> (paiements) — conforme PCI-DSS</li>
+      <li><strong>Resend</strong> (emails transactionnels)</li>
+      <li><strong>Cloudflare</strong> (hébergement du site)</li>
+    </ul>
+
+    <h2>7. Vos droits</h2>
+    <p>Conformément au RGPD, vous disposez des droits d'accès, de rectification, d'effacement, de portabilité et d'opposition. Pour exercer ces droits : <a href="mailto:jumuaandme@gmail.com">jumuaandme@gmail.com</a></p>
+
+    <h2>8. Cookies</h2>
+    <p>Maktaba Tour utilise uniquement des cookies techniques nécessaires au fonctionnement de l'authentification (session Supabase). Aucun cookie publicitaire ou de traçage tiers n'est utilisé.</p>
+
+    <h2>9. Contact et réclamations</h2>
+    <p>Pour toute question : <a href="mailto:jumuaandme@gmail.com">jumuaandme@gmail.com</a><br>
+    Vous pouvez également adresser une réclamation à la <a href="https://www.cnil.fr" target="_blank">CNIL</a>.</p>
+
+  </div>
+</main>
+
+<footer class="border-t border-border bg-white py-5 text-center text-xs text-muted">
+  <p>© 2026 Maktaba Tour · <a href="index.html" class="text-primary hover:underline no-underline">Accueil</a> · <a href="cgv.html" class="text-primary hover:underline no-underline">CGV</a> · <a href="mentions.html" class="text-primary hover:underline no-underline">Mentions légales</a></p>
+</footer>
+
+</body>
+</html>

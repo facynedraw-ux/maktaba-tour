@@ -177,7 +177,6 @@ tailwind.config = {
           <button class="filter-pill spec-btn" onclick="setFilter('spec', 'jeunesse', this)">Jeunesse</button>
           <button class="filter-pill spec-btn" onclick="setFilter('spec', 'pedagogique', this)">Pédagogique</button>
           <button class="filter-pill spec-btn" onclick="setFilter('spec', 'coran', this)">Coran</button>
-          <button class="filter-pill spec-btn" onclick="setFilter('spec', 'decoration', this)">Décoration</button>
         </div>
       </div>
     </div>
@@ -250,7 +249,7 @@ tailwind.config = {
 
 <script>
 const STYLE_LABELS = { aquarelle:'Aquarelle', vectoriel:'Vectoriel', numerique:'Numérique', mixte:'Mixte' };
-const SPEC_LABELS  = { jeunesse:'Jeunesse', pedagogique:'Pédagogique', coran:'Coran', decoration:'Décoration', autre:'Autre' };
+const SPEC_LABELS  = { jeunesse:'Jeunesse', pedagogique:'Pédagogique', coran:'Coran', autre:'Autre' };
 
 let allIllus = [];
 let activeFilters = { style: null, faces: null, avail: null, spec: null };
