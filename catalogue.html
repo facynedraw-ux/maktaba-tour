@@ -206,19 +206,9 @@ tailwind.config = {
 
     </div>
 
-    <!-- Pills thèmes desktop rapide -->
-    <div class="hidden md:flex gap-2 mt-3 overflow-x-auto" style="scrollbar-width:none;">
+    <!-- Pills thèmes desktop rapide (chargées dynamiquement) -->
+    <div id="theme-pills" class="hidden md:flex gap-2 mt-3 overflow-x-auto" style="scrollbar-width:none;">
       <button class="filter-pill active" onclick="quickFilter('tous', this)">Tous</button>
-      <button class="filter-pill" onclick="quickFilter('ramadan', this)">🌙 Ramadan</button>
-      <button class="filter-pill" onclick="quickFilter('aid', this)">🎁 Aïd</button>
-      <button class="filter-pill" onclick="quickFilter('hajj', this)">🕋 Hajj</button>
-      <button class="filter-pill" onclick="quickFilter('prophetes', this)">⭐ Prophètes</button>
-      <button class="filter-pill" onclick="quickFilter('valeurs', this)">💛 Valeurs</button>
-      <button class="filter-pill" onclick="quickFilter('famille', this)">🏡 Famille</button>
-      <button class="filter-pill" onclick="quickFilter('arabe', this)">ع Arabe</button>
-      <button class="filter-pill" onclick="quickFilter('coran', this)">📖 Coran</button>
-      <button class="filter-pill" onclick="quickFilter('nature', this)">🌿 Nature</button>
-      <button class="filter-pill" onclick="quickFilter('aventure', this)">🚀 Aventure</button>
     </div>
   </div>
 </div>
@@ -470,7 +460,23 @@ const CARD_BG = [
   'linear-gradient(135deg,#E8EEF5,#EEE8F5)',
   'linear-gradient(135deg,#FAEEE8,#FFF0E8)',
 ];
-const THEME_LABELS = { ramadan:'Ramadan', aid:'Aïd', hajj:'Hajj', prophetes:'Prophètes', valeurs:'Valeurs', famille:'Famille', arabe:'Arabe', coran:'Coran', nature:'Nature', aventure:'Aventure', priere:'Prière' };
+let THEME_LABELS = {};
+
+async function loadThemes() {
+  const { data } = await _supabase.from('themes').select('slug, label, emoji').order('position');
+  const themes = data || [];
+  THEME_LABELS = Object.fromEntries(themes.map(t => [t.slug, t.label]));
+  const pills = document.getElementById('theme-pills');
+  if (pills) {
+    themes.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-pill';
+      btn.textContent = (t.emoji ? t.emoji + ' ' : '') + t.label;
+      btn.onclick = function() { quickFilter(t.slug, this); };
+      pills.appendChild(btn);
+    });
+  }
+}
 
 let currentPage = 1;
 let currentView = 'grid';
@@ -743,6 +749,7 @@ if (themeParam) {
 if (sortParam) { currentSort = sortParam; document.querySelector('.sort-select').value = sortParam; }
 if (qParam) { document.getElementById('search-input').value = qParam; searchQuery = qParam.toLowerCase(); }
 
+loadThemes();
 loadBooks();
 </script>
 

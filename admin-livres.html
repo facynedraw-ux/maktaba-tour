@@ -78,6 +78,7 @@ tailwind.config = {
       <a href="admin-soumissions.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">inbox</span> Soumissions</a>
       <a href="admin-avis.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">rate_review</span> Avis</a>
       <a href="admin-utilisateurs.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">group</span> Utilisateurs</a>
+      <a href="admin-themes.html" class="admin-nav-link"><span class="ms" style="font-size:18px;">label</span> Thèmes</a>
     </nav>
     <a href="index.html" class="admin-nav-link mt-4"><span class="ms" style="font-size:18px;">arrow_back</span> Retour au site</a>
   </aside>
@@ -229,18 +230,8 @@ tailwind.config = {
 
       <div class="mb-4">
         <label class="form-label">Thèmes</label>
-        <div class="grid grid-cols-2 gap-y-2 gap-x-4 mt-1">
-          <label class="theme-check"><input type="checkbox" value="ramadan" name="theme"> Ramadan</label>
-          <label class="theme-check"><input type="checkbox" value="aid" name="theme"> Aïd</label>
-          <label class="theme-check"><input type="checkbox" value="hajj" name="theme"> 🕋 Hajj</label>
-          <label class="theme-check"><input type="checkbox" value="prophetes" name="theme"> Prophètes</label>
-          <label class="theme-check"><input type="checkbox" value="valeurs" name="theme"> Valeurs</label>
-          <label class="theme-check"><input type="checkbox" value="famille" name="theme"> Famille</label>
-          <label class="theme-check"><input type="checkbox" value="arabe" name="theme"> Arabe</label>
-          <label class="theme-check"><input type="checkbox" value="coran" name="theme"> Coran</label>
-          <label class="theme-check"><input type="checkbox" value="nature" name="theme"> Nature</label>
-          <label class="theme-check"><input type="checkbox" value="aventure" name="theme"> Aventure</label>
-          <label class="theme-check"><input type="checkbox" value="priere" name="theme"> Prière</label>
+        <div id="themes-checkboxes" class="grid grid-cols-2 gap-y-2 gap-x-4 mt-1">
+          <span class="text-xs text-muted col-span-2">Chargement…</span>
         </div>
       </div>
 
@@ -371,10 +362,18 @@ const STATUS_STYLE = {
   rejected: { bg:'#FDE8EE', color:'#C96B8A', label:'Refusé' },
 };
 
+async function loadThemes() {
+  const { data } = await _supabase.from('themes').select('slug, label, emoji').order('position');
+  const themes = data || [];
+  document.getElementById('themes-checkboxes').innerHTML = themes.map(t =>
+    `<label class="theme-check"><input type="checkbox" value="${t.slug}" name="theme"> ${t.emoji ? t.emoji + ' ' : ''}${t.label}</label>`
+  ).join('');
+}
+
 async function init() {
   const admin = await isAdmin();
   if (!admin) { window.location.href = 'index.html'; return; }
-  await Promise.all([loadBooks(), loadAuthors()]);
+  await Promise.all([loadBooks(), loadAuthors(), loadThemes()]);
 }
 
 async function loadAuthors() {
