@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Illustrateur — Maktaba Tour</title>
 <meta name="description" content="Fiche illustrateur jeunesse musulmane — Maktaba Tour">
+<meta property="og:type" content="profile">
+<meta property="og:title" id="og-title" content="Illustrateur — Maktaba Tour">
+<meta property="og:description" id="og-description" content="Fiche illustrateur jeunesse musulmane — Maktaba Tour">
+<meta property="og:url" id="og-url" content="https://maktabatour.com/illustrateur.html">
+<meta property="og:image" id="og-image" content="https://maktabatour.com/Images/logo.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#C96B8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -318,9 +323,12 @@ function showNotFound() {
 
 function renderProfile(illus) {
   document.title = `${illus.name} — Maktaba Tour`;
-  document.querySelector('meta[name="description"]').content = illus.bio
-    ? illus.bio.slice(0,150) + '…'
-    : `Portfolio de ${illus.name} — Annuaire illustrateurs Maktaba Tour`;
+  const _desc = illus.bio ? illus.bio.slice(0, 200) + '…' : `Portfolio de ${illus.name} — Annuaire illustrateurs Maktaba Tour`;
+  document.querySelector('meta[name="description"]').content = _desc;
+  document.getElementById('og-title').content = `${illus.name} — Maktaba Tour`;
+  document.getElementById('og-description').content = _desc;
+  document.getElementById('og-url').content = `https://maktabatour.com/illustrateur.html?slug=${illus.slug}`;
+  if (illus.photo_url) document.getElementById('og-image').content = illus.photo_url;
   document.getElementById('bc-name').textContent = illus.name;
 
   // Avatar

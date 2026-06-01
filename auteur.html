@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Auteur — Maktaba Tour</title>
 <meta name="description" content="Découvrez les livres de cet auteur — Maktaba Tour">
+<meta property="og:type" content="profile">
+<meta property="og:title" id="og-title" content="Auteur — Maktaba Tour">
+<meta property="og:description" id="og-description" content="Découvrez les livres de cet auteur — Maktaba Tour">
+<meta property="og:url" id="og-url" content="https://maktabatour.com/auteur.html">
+<meta property="og:image" id="og-image" content="https://maktabatour.com/Images/logo.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#C96B8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -258,9 +263,12 @@ function showNotFound() {
 
 function renderAuthor(author) {
   document.title = `${author.name} — Maktaba Tour`;
-  document.querySelector('meta[name="description"]').content = author.bio
-    ? author.bio.slice(0, 150) + '…'
-    : `Découvrez les livres de ${author.name} — Maktaba Tour`;
+  const _desc = author.bio ? author.bio.slice(0, 200) + '…' : `Découvrez les livres de ${author.name} — Maktaba Tour`;
+  document.querySelector('meta[name="description"]').content = _desc;
+  document.getElementById('og-title').content = `${author.name} — Maktaba Tour`;
+  document.getElementById('og-description').content = _desc;
+  document.getElementById('og-url').content = `https://maktabatour.com/auteur.html?slug=${author.slug}`;
+  if (author.photo_url) document.getElementById('og-image').content = author.photo_url;
   document.getElementById('bc-name').textContent = author.name;
 
   // Avatar

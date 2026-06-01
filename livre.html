@@ -6,6 +6,9 @@
 <title>Livre — Maktaba Tour</title>
 <meta name="description" content="Fiche livre, avis et lien d'achat — Maktaba Tour">
 <meta property="og:type" content="book">
+<meta property="og:title" id="og-title" content="Livre — Maktaba Tour">
+<meta property="og:description" id="og-description" content="Fiche livre, avis et lien d'achat — Maktaba Tour">
+<meta property="og:url" id="og-url" content="https://maktabatour.com/livre.html">
 <meta property="og:image" id="og-image" content="https://maktabatour.com/Images/logo.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#C96B8A">
@@ -447,7 +450,12 @@ function renderBook(book) {
 
   // Titre + meta
   document.title = `${book.title} — Maktaba Tour`;
-  document.querySelector('meta[name="description"]').content = book.description || `${book.title} — Maktaba Tour`;
+  const _desc = book.description ? book.description.slice(0, 200) : `${book.title} — Maktaba Tour`;
+  document.querySelector('meta[name="description"]').content = _desc;
+  document.getElementById('og-title').content = `${book.title} — Maktaba Tour`;
+  document.getElementById('og-description').content = _desc;
+  document.getElementById('og-url').content = `https://maktabatour.com/livre.html?slug=${book.slug}`;
+  if (book.cover_url) document.getElementById('og-image').content = book.cover_url;
   document.getElementById('bc-title').textContent = book.title;
 
   // Couverture + galerie
