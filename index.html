@@ -100,8 +100,9 @@ tailwind.config = {
   .bottom-nav { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
 
   /* Filtre pill */
-  .filter-pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; border: 1.5px solid #E8D5DC; background: white; color: #8A6A7A; }
+  .filter-pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; border: 1.5px solid #E8D5DC; background: white; color: #8A6A7A; flex-shrink: 0; }
   .filter-pill.active, .filter-pill:hover { background: #C96B8A; color: white; border-color: #C96B8A; }
+  #theme-pills-home::-webkit-scrollbar { display: none; }
 
   /* Auteur card */
   .author-card { transition: transform 0.2s; }
@@ -256,12 +257,10 @@ tailwind.config = {
 <!-- ═══════════════════════════════════
      FILTRES THÈMES
 ════════════════════════════════════ -->
-<section class="bg-white border-b border-border py-4 px-4 sticky top-16 z-40">
-  <div class="max-w-5xl mx-auto">
-    <div class="flex gap-2 overflow-x-auto scrollbar-hide pb-1" style="scrollbar-width:none;" id="theme-pills-home">
-      <button class="filter-pill active" onclick="filterByTheme('tous', this)">Tous</button>
-      <!-- Chargé dynamiquement depuis la table themes -->
-    </div>
+<section class="bg-white border-b border-border sticky top-16 z-40">
+  <div id="theme-pills-home" class="flex gap-2 overflow-x-auto py-4" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-left:16px;padding-right:16px;">
+    <button class="filter-pill active" onclick="filterByTheme('tous', this)">Tous</button>
+    <!-- Chargé dynamiquement depuis la table themes -->
   </div>
 </section>
 
