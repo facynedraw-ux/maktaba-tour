@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Ressource — Maktaba Tour</title>
-<meta name="description" content="Ressource pédagogique illustrée — Maktaba Tour">
+<title>Ressource — Jumua Time</title>
+<meta name="description" content="Ressource pédagogique illustrée — Jumua Time">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#C96B8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -78,8 +78,8 @@ tailwind.config = {
 <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-border">
   <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-2 no-underline">
-      <img src="Images/logo.png" alt="Maktaba Tour" class="w-8 h-8 object-contain">
-      <span class="font-display font-bold text-text text-lg hidden sm:block">Maktaba Tour</span>
+      <img src="Images/logo.png" alt="Jumua Time" class="w-8 h-8 object-contain">
+      <span class="font-display font-bold text-text text-lg hidden sm:block">Jumua Time</span>
     </a>
     <nav class="hidden md:flex items-center gap-5">
       <a href="catalogue.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">Catalogue</a>
@@ -177,7 +177,7 @@ tailwind.config = {
           <div class="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center font-display font-bold" style="background:#F5E8F0;color:#C96B8A;">F</div>
           <div>
             <p class="font-semibold text-sm">Créé par Facyne</p>
-            <p class="text-xs text-muted">Fondatrice de Maktaba Tour · Illustratrice jeunesse</p>
+            <p class="text-xs text-muted">Fondatrice de Jumua Time · Illustratrice jeunesse</p>
           </div>
         </div>
 
@@ -271,10 +271,10 @@ function showNotFound() {
 }
 
 function renderResource(r) {
-  document.title = `${r.title} — Maktaba Tour`;
+  document.title = `${r.title} — Jumua Time`;
   document.querySelector('meta[name="description"]').content = r.description
     ? r.description.slice(0,150) + '…'
-    : `${r.title} — Ressource pédagogique Maktaba Tour`;
+    : `${r.title} — Ressource pédagogique Jumua Time`;
   document.getElementById('bc-title').textContent = r.title;
 
   // Aperçu

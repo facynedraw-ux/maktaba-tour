@@ -1,7 +1,7 @@
 {
-  "name": "Jumua & Me",
-  "short_name": "Jumua & Me",
-  "description": "La boutique islamique illustrée par Oum Safya",
+  "name": "Jumua Time",
+  "short_name": "Jumua Time",
+  "description": "La boutique islamique illustrée — Jumua Time",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -9,6 +9,6 @@
   "theme_color": "#5B9EAD",
   "lang": "fr",
   "icons": [
-    { "src": "Images/logo_version_white.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "Images/logo_version_bwhite.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }

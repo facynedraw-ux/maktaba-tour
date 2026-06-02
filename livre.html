@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Livre — Maktaba Tour</title>
-<meta name="description" content="Fiche livre, avis et lien d'achat — Maktaba Tour">
+<title>Livre — Jumua Time</title>
+<meta name="description" content="Fiche livre, avis et lien d'achat — Jumua Time">
 <meta property="og:type" content="book">
-<meta property="og:title" id="og-title" content="Livre — Maktaba Tour">
-<meta property="og:description" id="og-description" content="Fiche livre, avis et lien d'achat — Maktaba Tour">
-<meta property="og:url" id="og-url" content="https://maktabatour.com/livre.html">
-<meta property="og:image" id="og-image" content="https://maktabatour.com/Images/logo.png">
+<meta property="og:title" id="og-title" content="Livre — Jumua Time">
+<meta property="og:description" id="og-description" content="Fiche livre, avis et lien d'achat — Jumua Time">
+<meta property="og:url" id="og-url" content="https://jumuatime.com/livre.html">
+<meta property="og:image" id="og-image" content="https://jumuatime.com/Images/logo.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#C96B8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -110,8 +110,8 @@ tailwind.config = {
 <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-border">
   <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-2 no-underline">
-      <img src="Images/logo.png" alt="Maktaba Tour" class="w-8 h-8 object-contain">
-      <span class="font-display font-bold text-text text-lg hidden sm:block">Maktaba Tour</span>
+      <img src="Images/logo.png" alt="Jumua Time" class="w-8 h-8 object-contain">
+      <span class="font-display font-bold text-text text-lg hidden sm:block">Jumua Time</span>
     </a>
     <nav class="hidden md:flex items-center gap-5">
       <a href="catalogue.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">Catalogue</a>
@@ -248,7 +248,7 @@ tailwind.config = {
         </div>
         <p id="affiliate-note-desktop" class="text-xs text-muted mt-3 hidden">
           <span class="ms" style="font-size:13px;vertical-align:-2px;">info</span>
-          Lien affilié Amazon — Maktaba Tour reçoit une petite commission sans surcoût pour toi.
+          Lien affilié Amazon — Jumua Time reçoit une petite commission sans surcoût pour toi.
         </p>
         <p id="report-link-desktop" class="hidden mt-2">
           <button onclick="reportLink()" class="text-xs text-muted hover:text-primary transition-colors" style="text-decoration:underline;text-underline-offset:3px;background:none;border:none;cursor:pointer;padding:0;">
@@ -455,12 +455,12 @@ function renderBook(book) {
   const author = book.authors;
 
   // Titre + meta
-  document.title = `${book.title} — Maktaba Tour`;
-  const _desc = book.description ? book.description.slice(0, 200) : `${book.title} — Maktaba Tour`;
+  document.title = `${book.title} — Jumua Time`;
+  const _desc = book.description ? book.description.slice(0, 200) : `${book.title} — Jumua Time`;
   document.querySelector('meta[name="description"]').content = _desc;
-  document.getElementById('og-title').content = `${book.title} — Maktaba Tour`;
+  document.getElementById('og-title').content = `${book.title} — Jumua Time`;
   document.getElementById('og-description').content = _desc;
-  document.getElementById('og-url').content = `https://maktabatour.com/livre.html?slug=${book.slug}`;
+  document.getElementById('og-url').content = `https://jumuatime.com/livre.html?slug=${book.slug}`;
   if (book.cover_url) document.getElementById('og-image').content = book.cover_url;
   document.getElementById('bc-title').textContent = book.title;
 
@@ -529,7 +529,7 @@ function renderBook(book) {
   // Bouton achat
   const hasLink = !!book.purchase_url;
   const isAmazon = hasLink && book.purchase_url.includes('amazon');
-  const url = hasLink ? (isAmazon ? book.purchase_url + (book.purchase_url.includes('?') ? '&' : '?') + 'tag=maktabatour-21' : book.purchase_url) : '#';
+  const url = hasLink ? (isAmazon ? book.purchase_url + (book.purchase_url.includes('?') ? '&' : '?') + 'tag=jumuatime-21' : book.purchase_url) : '#';
   const label = !hasLink ? 'Lien non disponible' : isAmazon ? 'Acheter sur Amazon' : 'Acheter chez l\'auteur';
 
   ['buy-btn-desktop','buy-btn-mobile'].forEach(id => {
@@ -819,9 +819,9 @@ async function reportLink() {
 }
 
 function shareBook() {
-  const title = currentBook?.title || 'Maktaba Tour';
+  const title = currentBook?.title || 'Jumua Time';
   if (navigator.share) {
-    navigator.share({ title, text: `Je viens de trouver "${title}" sur Maktaba Tour !`, url: window.location.href });
+    navigator.share({ title, text: `Je viens de trouver "${title}" sur Jumua Time !`, url: window.location.href });
   } else {
     navigator.clipboard.writeText(window.location.href).then(() => showToast('Lien copié !', 'info'));
   }

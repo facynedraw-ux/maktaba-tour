@@ -1,5 +1,5 @@
 ---
-name: Maktaba Tour
+name: Jumua Time
 description: Le catalogue de référence des livres jeunesse islamiques en français
 colors:
   rose-pivoine: "#C96B8A"
@@ -96,13 +96,13 @@ components:
     padding: "12px 16px 12px 44px"
 ---
 
-# Design System: Maktaba Tour
+# Design System: Jumua Time
 
 ## 1. Overview
 
 **Creative North Star: "La Libraire de Confiance"**
 
-Maktaba Tour se comporte comme une libraire indépendante qui connaît chaque livre de son fond, recommande avec expertise et chaleur, et ne vend jamais à la dure. Le système de design traduit cette posture : chaleureux sans être sucré, éditorial sans être froid, fiable sans être ennuyeux. Chaque décision visuelle — couleur retenue, serif élégant, espace généreux — sert la même intention : mettre la maman en confiance avant même qu'elle lise un titre.
+Jumua Time se comporte comme une libraire indépendante qui connaît chaque livre de son fond, recommande avec expertise et chaleur, et ne vend jamais à la dure. Le système de design traduit cette posture : chaleureux sans être sucré, éditorial sans être froid, fiable sans être ennuyeux. Chaque décision visuelle — couleur retenue, serif élégant, espace généreux — sert la même intention : mettre la maman en confiance avant même qu'elle lise un titre.
 
 La palette est dominée par du rose pivoine poudré, mauve ardoise, et abricot chaud, sur fond blanc légèrement rosé. Ces teintes évoquent un intérieur de librairie bien tenu : tissus doux, bois clair, lumière de l'après-midi. La couleur est présente mais jamais saturée au premier plan ; elle est le contexte, pas le message.
 

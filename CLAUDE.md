@@ -1,23 +1,23 @@
-# CLAUDE.md — Maktaba Tour
+# CLAUDE.md — Jumua Time
 
-Ce fichier guide Claude Code pour tout travail sur le projet Maktaba Tour.
+Ce fichier guide Claude Code pour tout travail sur le projet Jumua Time.
 Lire entièrement avant de toucher au code.
 
 ---
 
 ## Vue d'ensemble du projet
 
-**Maktaba Tour** est une plateforme web francophone de découverte, recommandation et achat de livres jeunesse musulmans.
-Slogan : "On fait le tour des bibliothèques pour toi."
-Cible : mamans musulmanes francophones (France, Canada, Belgique, Suisse), 25–45 ans.
-Instagram : à définir
-Copyright : © 2026 Maktaba Tour • On fait le tour des bibliothèques pour toi.
+**Jumua Time** est la boutique islamique illustrée par Oum Safya (Facyne) — ressources pédagogiques, décoration islamique et outils spirituels.
+Domaine : jumuatime.com
+Ancien domaine (redirection active) : maktabatour.com
+Instagram : @jumuatime
+Copyright : © 2026 Jumua Time · Un projet Jumua Time
 
 ---
 
 ## Projet de référence : Tilawa Tour
 
-Maktaba Tour est développé par la même créatrice que **Tilawa Tour** (repo : `facynedraw-ux/tilawa-deploy`).
+Jumua Time est développé par la même créatrice que **Tilawa Tour** (repo : `facynedraw-ux/tilawa-deploy`).
 S'appuyer sur les mêmes patterns et conventions que Tilawa Tour partout où c'est possible :
 - Stack statique HTML + Tailwind CDN + Vanilla JS
 - Déploiement Cloudflare Pages via git push
@@ -67,7 +67,7 @@ Si erreur SSL git : `git config --global http.sslBackend schannel`
 
 ## Design System
 
-### Palette Maktaba Tour
+### Palette Jumua Time
 ```css
 --color-primary:     #C96B8A;   /* Rose poudré profond */
 --color-secondary:   #9B7FA6;   /* Mauve doux */
@@ -300,7 +300,7 @@ OTP length dans Supabase Dashboard : 6 chiffres.
 
 ## Système de recherche intelligente
 
-La recherche est la force différenciatrice de Maktaba Tour. Elle doit être pertinente, rapide et compréhensive.
+La recherche est la force différenciatrice de Jumua Time. Elle doit être pertinente, rapide et compréhensive.
 
 ### Champs indexés (colonne `search_vector` de type `tsvector` dans Supabase)
 Tous ces champs sont combinés dans un index de recherche full-text PostgreSQL :
@@ -483,7 +483,7 @@ const SORTS = ['rating','newest','title_az'];
 
 ---
 
-## localStorage — clés Maktaba Tour
+## localStorage — clés Jumua Time
 
 Données légères uniquement (pas le catalogue) :
 
@@ -523,7 +523,7 @@ Données légères uniquement (pas le catalogue) :
 
 ## Modèle économique
 
-- **Affiliation Amazon** : paramètre `tag=maktabatour-21` ajouté aux liens Amazon
+- **Affiliation Amazon** : paramètre `tag=jumuatime-21` ajouté aux liens Amazon
 - **Liens directs auteurs** : sans affiliation, pour les auto-édités
 - Afficher discrètement "lien affilié" sur les pages légalité
 
@@ -581,8 +581,8 @@ Héritées de Tilawa Tour et adaptées :
 `manifest.json` :
 ```json
 {
-  "name": "Maktaba Tour",
-  "short_name": "Maktaba",
+  "name": "Jumua Time",
+  "short_name": "Jumua Time",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFF5F7",

@@ -1,4 +1,4 @@
-# Maktaba Tour — Architecture & Plan de développement
+# Jumua Time — Architecture & Plan de développement
 
 ## Vision
 Plateforme de référence francophone pour la découverte de livres jeunesse musulmans.
