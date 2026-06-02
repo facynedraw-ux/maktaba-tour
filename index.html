@@ -98,6 +98,14 @@ tailwind.config = {
   .delay-4 { animation-delay:0.4s; }
   .delay-5 { animation-delay:0.5s; }
 
+  /* ── Float hero cards ── */
+  @keyframes floatA { 0%,100%{transform:rotate(-6deg) translateY(0)} 50%{transform:rotate(-6deg) translateY(-10px)} }
+  @keyframes floatB { 0%,100%{transform:rotate(4deg) translateY(0)} 50%{transform:rotate(4deg) translateY(-14px)} }
+  @keyframes floatC { 0%,100%{transform:translateX(-50%) rotate(-2deg) translateY(0)} 50%{transform:translateX(-50%) rotate(-2deg) translateY(-8px)} }
+  .hero-card-a { animation:floatA 5s ease-in-out infinite; }
+  .hero-card-b { animation:floatB 6s ease-in-out infinite 0.8s; }
+  .hero-card-c { animation:floatC 4.5s ease-in-out infinite 0.4s; }
+
   /* ── Resource card ── */
   .resource-card { transition:transform 0.2s ease,box-shadow 0.2s ease;text-decoration:none;color:inherit;display:block;background:white;border-radius:16px;border:1px solid #E2D4BC;overflow:hidden; }
   .resource-card:hover { transform:translateY(-4px);box-shadow:0 12px 32px rgba(91,158,173,0.15); }
@@ -217,7 +225,7 @@ tailwind.config = {
     <div class="hidden md:block relative fade-up delay-3" style="height:340px;">
 
       <!-- Carte arrière — inclinée à gauche -->
-      <div class="absolute" style="top:30px;left:20px;width:200px;background:white;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.18);transform:rotate(-6deg);overflow:hidden;opacity:0.85;">
+      <div class="absolute hero-card-a" style="top:30px;left:20px;width:200px;background:white;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.18);overflow:hidden;opacity:0.85;">
         <div style="height:100px;background:linear-gradient(135deg,#F0EBF5,#DDD0E8);"></div>
         <div style="padding:12px 14px;">
           <span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#9B7FA6;background:#F0EBF5;padding:2px 8px;border-radius:20px;">Décoration</span>
@@ -227,7 +235,7 @@ tailwind.config = {
       </div>
 
       <!-- Carte milieu — droite -->
-      <div class="absolute" style="top:10px;right:0;width:210px;background:white;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,0.22);transform:rotate(4deg);overflow:hidden;">
+      <div class="absolute hero-card-b" style="top:10px;right:0;width:210px;background:white;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,0.22);overflow:hidden;">
         <div style="height:110px;background:linear-gradient(135deg,#EBF5F7,#C8E4EB);"></div>
         <div style="padding:12px 14px;">
           <span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#5B9EAD;background:#EBF5F7;padding:2px 8px;border-radius:20px;">Enfants</span>
@@ -237,7 +245,7 @@ tailwind.config = {
       </div>
 
       <!-- Carte avant — centrée, au premier plan -->
-      <div class="absolute" style="bottom:0;left:50%;transform:translateX(-50%) rotate(-2deg);width:220px;background:white;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,0.28);overflow:hidden;">
+      <div class="absolute hero-card-c" style="bottom:0;left:50%;width:220px;background:white;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,0.28);overflow:hidden;">
         <div style="height:115px;background:linear-gradient(135deg,#F5EDE0,#E8D0A8);"></div>
         <div style="padding:14px 16px;">
           <span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#C49A5A;background:#F5EDE0;padding:2px 8px;border-radius:20px;">Spiritualité</span>
