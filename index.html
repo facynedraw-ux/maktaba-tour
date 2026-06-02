@@ -177,37 +177,79 @@ tailwind.config = {
   <div class="absolute bottom-0 left-0 w-56 h-56 rounded-full pointer-events-none" style="background:rgba(196,154,90,0.15);transform:translate(-30%,30%);"></div>
   <div class="absolute top-1/2 right-1/4 w-28 h-28 rounded-full pointer-events-none" style="background:rgba(255,255,255,0.05);"></div>
 
-  <div class="relative max-w-5xl mx-auto">
+  <div class="relative max-w-5xl mx-auto md:grid md:gap-12 md:items-center" style="grid-template-columns:1fr 420px;">
 
-    <!-- Logo blanc -->
-    <div class="mb-6 fade-up">
-      <img src="Images/logo_version_white.png" alt="Jumua & Me" class="h-12 object-contain">
+    <!-- Colonne gauche : texte -->
+    <div>
+      <!-- Logo blanc -->
+      <div class="mb-6 fade-up">
+        <img src="Images/logo_version_white.png" alt="Jumua Time" class="h-12 object-contain">
+      </div>
+
+      <!-- Tag -->
+      <p class="mb-5 fade-up delay-1" style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.65);">
+        ✦ BOUTIQUE ISLAMIQUE ILLUSTRÉE
+      </p>
+
+      <!-- Titre -->
+      <h1 class="font-display leading-tight mb-6 fade-up delay-2"
+          style="color:white;font-weight:900;font-size:clamp(2.2rem,6vw,3.75rem);">
+        Des créations<br>
+        pour toute<br>
+        <em style="color:#F2C4B2;font-style:italic;">la famille.</em>
+      </h1>
+
+      <!-- Sous-titre -->
+      <p class="mb-8 leading-relaxed fade-up delay-3"
+         style="color:rgba(255,255,255,0.78);max-width:420px;font-weight:300;font-size:clamp(1rem,2.5vw,1.125rem);">
+        Ressources pédagogiques, décoration islamique
+        et outils spirituels — illustrés par Oum Safya.
+      </p>
+
+      <!-- Boutons -->
+      <div class="flex flex-wrap gap-3 fade-up delay-4">
+        <a href="ressources.html" class="btn-gold">Découvrir la boutique</a>
+        <a href="a-propos.html" class="btn-outline-white">Notre histoire →</a>
+      </div>
     </div>
 
-    <!-- Tag -->
-    <p class="mb-5 fade-up delay-1" style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.65);">
-      ✦ BOUTIQUE ISLAMIQUE ILLUSTRÉE
-    </p>
+    <!-- Colonne droite : composition cartes (desktop uniquement) -->
+    <div class="hidden md:block relative fade-up delay-3" style="height:340px;">
 
-    <!-- Titre -->
-    <h1 class="font-display leading-tight mb-6 fade-up delay-2"
-        style="color:white;font-weight:900;font-size:clamp(2.2rem,6vw,3.75rem);max-width:560px;">
-      Des créations<br>
-      pour toute<br>
-      <em style="color:#F2C4B2;font-style:italic;">la famille.</em>
-    </h1>
+      <!-- Carte arrière — inclinée à gauche -->
+      <div class="absolute" style="top:30px;left:20px;width:200px;background:white;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.18);transform:rotate(-6deg);overflow:hidden;opacity:0.85;">
+        <div style="height:100px;background:linear-gradient(135deg,#F0EBF5,#DDD0E8);"></div>
+        <div style="padding:12px 14px;">
+          <span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#9B7FA6;background:#F0EBF5;padding:2px 8px;border-radius:20px;">Décoration</span>
+          <p style="font-family:'Playfair Display',serif;font-weight:700;font-size:13px;color:#1A1208;margin:8px 0 4px;">Affiche calligraphie</p>
+          <p style="font-size:12px;font-weight:600;color:#C49A5A;">4,90 €</p>
+        </div>
+      </div>
 
-    <!-- Sous-titre -->
-    <p class="mb-8 leading-relaxed fade-up delay-3"
-       style="color:rgba(255,255,255,0.78);max-width:460px;font-weight:300;font-size:clamp(1rem,2.5vw,1.125rem);">
-      Ressources pédagogiques, décoration islamique
-      et outils spirituels — illustrés par Oum Safya.
-    </p>
+      <!-- Carte milieu — droite -->
+      <div class="absolute" style="top:10px;right:0;width:210px;background:white;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,0.22);transform:rotate(4deg);overflow:hidden;">
+        <div style="height:110px;background:linear-gradient(135deg,#EBF5F7,#C8E4EB);"></div>
+        <div style="padding:12px 14px;">
+          <span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#5B9EAD;background:#EBF5F7;padding:2px 8px;border-radius:20px;">Enfants</span>
+          <p style="font-family:'Playfair Display',serif;font-weight:700;font-size:13px;color:#1A1208;margin:8px 0 4px;">Fiche pédagogique Ramadan</p>
+          <p style="font-size:12px;font-weight:600;color:#C49A5A;">3,50 €</p>
+        </div>
+      </div>
 
-    <!-- Boutons -->
-    <div class="flex flex-wrap gap-3 fade-up delay-4">
-      <a href="ressources.html" class="btn-gold">Découvrir la boutique</a>
-      <a href="a-propos.html" class="btn-outline-white">Notre histoire →</a>
+      <!-- Carte avant — centrée, au premier plan -->
+      <div class="absolute" style="bottom:0;left:50%;transform:translateX(-50%) rotate(-2deg);width:220px;background:white;border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,0.28);overflow:hidden;">
+        <div style="height:115px;background:linear-gradient(135deg,#F5EDE0,#E8D0A8);"></div>
+        <div style="padding:14px 16px;">
+          <span style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#C49A5A;background:#F5EDE0;padding:2px 8px;border-radius:20px;">Spiritualité</span>
+          <p style="font-family:'Playfair Display',serif;font-weight:700;font-size:14px;color:#1A1208;margin:8px 0 4px;">Carnet de duaas illustré</p>
+          <p style="font-size:13px;font-weight:700;color:#C49A5A;">7,90 €</p>
+        </div>
+      </div>
+
+      <!-- Étoile décorative -->
+      <div class="absolute" style="top:0;right:20px;width:36px;height:36px;background:#C49A5A;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <span style="color:white;font-size:14px;">✦</span>
+      </div>
     </div>
 
   </div>
