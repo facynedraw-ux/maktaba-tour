@@ -1,6 +1,3 @@
-# Redirection ancien domaine → nouveau
-https://maktabatour.com/*  https://jumuatime.com/:splat  301
-
 # Pages supprimées → pages existantes
 /catalogue          /ressources.html    301
 /catalogue.html     /ressources.html    301
