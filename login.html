@@ -1,17 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Connexion — Jumua Time</title>
-<meta name="description" content="Connectez-vous à Jumua Time pour accéder à vos favoris et laisser des avis.">
+<meta name="description" content="Connectez-vous à Jumua Time pour accéder à vos achats.">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="favicon.png">
-<meta name="theme-color" content="#C96B8A">
+<meta name="theme-color" content="#5B9EAD">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jumua Time">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 <link rel="stylesheet" href="assets/tokens.css">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -22,14 +23,16 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        primary:   '#C96B8A',
-        secondary: '#9B7FA6',
-        accent:    '#F0A87A',
-        bg:        '#FFF5F7',
-        card:      '#F5F0FA',
-        text:      '#3D1F2D',
-        muted:     '#7A5A6A',
-        border:    '#E8D5DC',
+        teal:        '#5B9EAD',
+        'teal-light':'#EBF5F7',
+        'teal-dark': '#3D7A8A',
+        gold:        '#C49A5A',
+        'gold-light':'#F5EDE0',
+        dark:        '#1A1208',
+        bg:          '#FAF6F0',
+        border:      '#E2D4BC',
+        text:        '#1A1208',
+        muted:       '#8B7A5A',
       },
       fontFamily: {
         display: ['Playfair Display', 'serif'],
@@ -41,92 +44,87 @@ tailwind.config = {
 </script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
-  body { font-family: 'DM Sans', sans-serif; background: #FFF5F7; color: #3D1F2D; margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
-  .ms { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 20px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; }
+  body { font-family:'DM Sans',sans-serif; background:#FAF6F0; color:#1A1208; margin:0; min-height:100vh; display:flex; flex-direction:column; }
+  .ms { font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:20px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-smoothing:antialiased; }
 
-  /* Blob déco */
-  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.2; pointer-events: none; }
+  /* Blobs déco */
+  .blob { position:fixed; border-radius:50%; filter:blur(80px); opacity:0.18; pointer-events:none; z-index:0; }
 
   /* Carte centrale */
-  .login-card { background: white; border: 1px solid #E8D5DC; border-radius: 24px; padding: 40px 36px; width: 100%; max-width: 420px; position: relative; z-index: 1; }
+  .login-card { background:white; border:1px solid #E2D4BC; border-radius:24px; padding:40px 36px; width:100%; max-width:420px; position:relative; z-index:1; }
+  @media (max-width:460px) { .login-card { padding:32px 24px; border-radius:20px; } }
 
   /* Input email */
-  .email-input { width: 100%; padding: 14px 16px 14px 46px; border: 1.5px solid #E8D5DC; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: #3D1F2D; background: white; outline: none; transition: border-color 0.2s; }
-  .email-input:focus { border-color: #C96B8A; box-shadow: 0 0 0 3px rgba(201,107,138,0.1); }
-  .email-input::placeholder { color: #7A5A6A; }
-  .email-input.error { border-color: #E05050; }
+  .email-input { width:100%; padding:14px 16px 14px 46px; border:1.5px solid #E2D4BC; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:15px; color:#1A1208; background:white; outline:none; transition:border-color 0.2s, box-shadow 0.2s; }
+  .email-input:focus { border-color:#5B9EAD; box-shadow:0 0 0 3px rgba(91,158,173,0.1); }
+  .email-input::placeholder { color:#8B7A5A; }
+  .email-input.error { border-color:#E05050; }
 
-  /* Inputs OTP — 6 cases */
-  .otp-container { display: flex; gap: 6px; justify-content: center; width: 100%; }
+  /* Cases OTP — 8 chiffres */
+  .otp-container { display:flex; gap:6px; justify-content:center; width:100%; }
   .otp-input {
-    flex: 1 1 0; min-width: 0; max-width: 44px; height: 52px;
-    border: 1.5px solid #E8D5DC; border-radius: 10px;
-    font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600;
-    color: #3D1F2D; text-align: center; background: white;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-    caret-color: #C96B8A; padding: 0;
+    flex:1 1 0; min-width:0; max-width:44px; height:52px;
+    border:1.5px solid #E2D4BC; border-radius:10px;
+    font-family:'Playfair Display',serif; font-size:20px; font-weight:600;
+    color:#1A1208; text-align:center; background:white;
+    outline:none; transition:border-color 0.2s, box-shadow 0.2s, background 0.15s;
+    caret-color:#5B9EAD; padding:0;
   }
-  @media (max-width: 380px) { .otp-container { gap: 4px; } .otp-input { height: 46px; font-size: 17px; } }
-  .otp-input:focus { border-color: #C96B8A; box-shadow: 0 0 0 3px rgba(201,107,138,0.12); }
-  .otp-input.filled { border-color: #C96B8A; background: #FFF5F7; }
-  .otp-input.error { border-color: #E05050; animation: shake 0.4s ease; }
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    20%,60% { transform: translateX(-4px); }
-    40%,80% { transform: translateX(4px); }
-  }
+  @media (max-width:380px) { .otp-container { gap:4px; } .otp-input { height:46px; font-size:17px; } }
+  .otp-input:focus  { border-color:#5B9EAD; box-shadow:0 0 0 3px rgba(91,158,173,0.12); }
+  .otp-input.filled { border-color:#5B9EAD; background:#EBF5F7; }
+  .otp-input.error  { border-color:#E05050; animation:shake 0.4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-4px)} 40%,80%{transform:translateX(4px)} }
 
   /* Boutons */
-  .btn-primary { width: 100%; background: #C96B8A; color: white; border: none; border-radius: 12px; padding: 14px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s, transform 0.1s, opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .btn-primary:hover:not(:disabled) { background: #b55a78; }
-  .btn-primary:active:not(:disabled) { transform: scale(0.98); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-ghost { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #7A5A6A; cursor: pointer; padding: 4px; text-decoration: underline; }
-  .btn-ghost:hover { color: #C96B8A; }
+  .btn-primary { width:100%; background:#5B9EAD; color:white; border:none; border-radius:12px; padding:14px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; cursor:pointer; transition:background 0.2s, transform 0.1s, opacity 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .btn-primary:hover:not(:disabled) { background:#3D7A8A; }
+  .btn-primary:active:not(:disabled) { transform:scale(0.98); }
+  .btn-primary:disabled { opacity:0.5; cursor:not-allowed; }
+  .btn-ghost { background:none; border:none; font-family:'DM Sans',sans-serif; font-size:13px; color:#8B7A5A; cursor:pointer; padding:4px; text-decoration:underline; }
+  .btn-ghost:hover { color:#5B9EAD; }
 
-  /* Message erreur */
-  .error-msg { color: #E05050; font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap-4px; }
+  /* Messages */
+  .error-msg { color:#E05050; font-size:12px; margin-top:6px; display:flex; align-items:center; gap:4px; }
+  .success-box { background:#E8F5F7; border:1px solid #A8D5DE; border-radius:12px; padding:14px 16px; font-size:13px; color:#1A5060; display:flex; align-items:flex-start; gap:8px; }
 
-  /* Message succès */
-  .success-box { background: #E8F0E8; border: 1px solid #A8C8A8; border-radius: 12px; padding: 14px 16px; font-size: 13px; color: #3A6A3A; display: flex; align-items: flex-start; gap: 8px; }
-
-  /* Loader spinner */
-  .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  /* Spinner */
+  .spinner { width:18px; height:18px; border:2px solid rgba(255,255,255,0.4); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
 
   /* Étapes */
-  .step { display: none; }
-  .step.active { display: block; }
-
-  /* Animation */
-  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-  .fade-up { animation: fadeUp 0.5s ease both; }
+  .step { display:none; }
+  .step.active { display:block; }
 
   /* Progress dots */
-  .progress-dot { width: 6px; height: 6px; border-radius: 50%; background: #E8D5DC; transition: background 0.3s; }
-  .progress-dot.active { background: #C96B8A; }
+  .progress-dot { width:6px; height:6px; border-radius:50%; background:#E2D4BC; transition:background 0.3s; }
+  .progress-dot.active { background:#5B9EAD; }
 
-  /* Separator */
-  .separator { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
-  .separator::before, .separator::after { content: ''; flex: 1; height: 1px; background: #E8D5DC; }
-  .separator span { font-size: 12px; color: #7A5A6A; white-space: nowrap; }
-  @media (prefers-reduced-motion: reduce) {
-    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+  /* Séparateur */
+  .separator { display:flex; align-items:center; gap:12px; margin:20px 0; }
+  .separator::before, .separator::after { content:''; flex:1; height:1px; background:#E2D4BC; }
+  .separator span { font-size:12px; color:#8B7A5A; white-space:nowrap; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .fade-up { animation:fadeUp 0.5s ease both; }
+
+  @media (prefers-reduced-motion:reduce) {
+    .fade-up { animation:none !important; opacity:1 !important; }
   }
 </style>
 </head>
 <body class="bg-bg font-body text-text">
 
-<!-- Blobs décoratifs fond -->
-<div class="blob w-80 h-80 bg-primary fixed" style="top:-60px;right:-80px;z-index:0;"></div>
-<div class="blob w-60 h-60 bg-secondary fixed" style="bottom:-40px;left:-60px;z-index:0;"></div>
-<div class="blob w-40 h-40 bg-accent fixed" style="top:50%;left:60%;z-index:0;"></div>
+<!-- Blobs décoratifs -->
+<div class="blob w-80 h-80" style="background:#5B9EAD;top:-60px;right:-80px;"></div>
+<div class="blob w-60 h-60" style="background:#C49A5A;bottom:-40px;left:-60px;"></div>
+<div class="blob w-40 h-40" style="background:#F2C4B2;top:50%;left:60%;"></div>
 
 <!-- Header minimal -->
 <header class="relative z-10 px-4 pt-6 pb-2">
   <a href="index.html" class="inline-flex items-center gap-2 no-underline">
-    <img src="Images/logo.png" alt="Jumua Time" class="w-8 h-8 object-contain">
-    <span class="font-display font-bold text-text">Jumua Time</span>
+    <img src="Images/logo_jumuatime.svg" alt="Jumua Time" class="h-8 w-auto object-contain">
+    <span class="font-display font-bold" style="color:#1A1208;">Jumua Time</span>
   </a>
 </header>
 
@@ -134,50 +132,44 @@ tailwind.config = {
 <div class="flex-1 flex items-center justify-center px-4 py-8 relative z-10">
   <div class="login-card fade-up">
 
-    <!-- Logo + titre -->
+    <!-- Icône + titre -->
     <div class="text-center mb-8">
-      <div class="w-16 h-16 rounded-2xl bg-primary mx-auto mb-4 flex items-center justify-center" style="background:linear-gradient(135deg,#C96B8A,#9B7FA6);">
-        <span class="ms text-white" style="font-size:28px;">auto_stories</span>
+      <div class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
+           style="background:linear-gradient(135deg,#5B9EAD,#3D7A8A);">
+        <span class="ms text-white" style="font-size:28px;">shopping_bag</span>
       </div>
-      <h1 class="font-display text-2xl font-bold mb-1">Bienvenue !</h1>
-      <p class="text-sm text-muted">Connectez-vous pour accéder à vos favoris,<br>vos listes et laisser des avis.</p>
+      <h1 class="font-display text-2xl font-bold mb-1" style="color:#1A1208;">Bienvenue !</h1>
+      <p class="text-sm" style="color:#8B7A5A;">Connectez-vous pour accéder<br>à vos achats Jumua Time.</p>
     </div>
 
-    <!-- Progress dots -->
+    <!-- Dots progression -->
     <div class="flex justify-center gap-2 mb-8">
       <div class="progress-dot active" id="dot-1"></div>
       <div class="progress-dot" id="dot-2"></div>
     </div>
 
 
-    <!-- ── ÉTAPE 1 : Saisie email ── -->
+    <!-- ── ÉTAPE 1 : Email ── -->
     <div class="step active" id="step-email">
 
       <label class="block text-sm font-medium mb-2" for="email-input">Votre adresse email</label>
       <div class="relative mb-1">
-        <span class="ms absolute left-3 top-1/2 -translate-y-1/2 text-muted" style="font-size:18px;">mail</span>
-        <input
-          type="email"
-          id="email-input"
-          class="email-input"
-          placeholder="vous@exemple.com"
-          autocomplete="email"
-          inputmode="email"
-          onkeydown="if(event.key==='Enter') sendOtp()"
-        >
+        <span class="ms absolute left-3 top-1/2 -translate-y-1/2" style="font-size:18px;color:#8B7A5A;">mail</span>
+        <input type="email" id="email-input" class="email-input"
+               placeholder="vous@exemple.com" autocomplete="email" inputmode="email"
+               onkeydown="if(event.key==='Enter') sendOtp()">
       </div>
       <p id="email-error" class="error-msg hidden">
-        <span class="ms" style="font-size:14px;color:#E05050;vertical-align:-2px;">error</span>
+        <span class="ms" style="font-size:14px;color:#E05050;">error</span>
         Veuillez saisir une adresse email valide.
       </p>
 
       <div class="separator"><span>Pas de mot de passe à retenir</span></div>
 
-      <!-- Explication -->
-      <div class="bg-card rounded-xl p-4 mb-6 flex gap-3">
-        <span class="ms text-secondary flex-shrink-0" style="font-size:20px;margin-top:1px;">info</span>
-        <p class="text-xs text-muted leading-relaxed">
-          Nous vous enverrons un <strong>code à 8 chiffres</strong> par email.
+      <div class="rounded-xl p-4 mb-6 flex gap-3" style="background:#EBF5F7;">
+        <span class="ms flex-shrink-0" style="font-size:20px;color:#5B9EAD;margin-top:1px;">info</span>
+        <p class="text-xs leading-relaxed" style="color:#8B7A5A;">
+          Nous vous enverrons un <strong style="color:#1A1208;">code à 8 chiffres</strong> par email.
           Aucun mot de passe à créer ni à retenir — simple et sécurisé.
         </p>
       </div>
@@ -187,29 +179,30 @@ tailwind.config = {
         Recevoir mon code
       </button>
 
-      <p class="text-center text-xs text-muted mt-4">
+      <p class="text-center text-xs mt-4" style="color:#8B7A5A;">
         En continuant, vous acceptez nos
-        <a href="confidentialite.html" class="text-primary no-underline hover:underline">conditions d'utilisation</a>.
+        <a href="confidentialite.html" class="no-underline hover:underline" style="color:#5B9EAD;">conditions d'utilisation</a>.
       </p>
 
     </div>
 
 
-    <!-- ── ÉTAPE 2 : Saisie OTP ── -->
+    <!-- ── ÉTAPE 2 : OTP ── -->
     <div class="step" id="step-otp">
 
-      <!-- Info email envoyé -->
       <div class="success-box mb-6">
-        <span class="ms flex-shrink-0" style="font-size:20px;color:#5B8A5F;">mark_email_read</span>
+        <span class="ms flex-shrink-0" style="font-size:20px;color:#3D7A8A;">mark_email_read</span>
         <div>
           <p class="font-medium text-sm">Code envoyé !</p>
-          <p class="mt-0.5">Vérifiez votre boîte <strong id="email-display"></strong>.<br>Le code expire dans <strong id="countdown">10:00</strong>.</p>
+          <p class="mt-0.5 text-xs" style="color:#1A5060;">
+            Vérifiez <strong id="email-display"></strong>.<br>
+            Le code expire dans <strong id="countdown">10:00</strong>.
+          </p>
         </div>
       </div>
 
-      <label class="block text-sm font-medium mb-3 text-center">Entrez votre code à 8 chiffres</label>
+      <label class="block text-sm font-medium mb-3 text-center" style="color:#1A1208;">Entrez votre code à 8 chiffres</label>
 
-      <!-- 6 cases OTP -->
       <div class="otp-container mb-2" id="otp-container">
         <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" id="otp-0" oninput="otpInput(this,0)" onkeydown="otpKeydown(event,0)" onpaste="otpPaste(event)">
         <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="otp-1" oninput="otpInput(this,1)" onkeydown="otpKeydown(event,1)">
@@ -221,7 +214,7 @@ tailwind.config = {
         <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" id="otp-7" oninput="otpInput(this,7)" onkeydown="otpKeydown(event,7)">
       </div>
 
-      <p id="otp-error" class="text-center error-msg justify-center hidden">
+      <p id="otp-error" class="error-msg justify-center hidden" style="text-align:center;">
         <span class="ms" style="font-size:14px;color:#E05050;">error</span>
         Code incorrect. Veuillez réessayer.
       </p>
@@ -233,13 +226,10 @@ tailwind.config = {
         </span>
       </button>
 
-      <!-- Renvoyer le code -->
       <div class="flex items-center justify-between mt-5 pt-4 border-t border-border">
-        <button class="btn-ghost" onclick="goBack()">
-          ← Changer d'email
-        </button>
+        <button class="btn-ghost" onclick="goBack()">← Changer d'email</button>
         <div class="text-right">
-          <p class="text-xs text-muted mb-1" id="resend-info">Pas reçu le code ?</p>
+          <p class="text-xs mb-1" style="color:#8B7A5A;" id="resend-info">Pas reçu le code ?</p>
           <button class="btn-ghost" id="btn-resend" onclick="resendOtp()" disabled>
             Renvoyer <span id="resend-timer"></span>
           </button>
@@ -253,19 +243,22 @@ tailwind.config = {
 
 <!-- Footer minimal -->
 <footer class="relative z-10 text-center py-4">
-  <p class="text-xs text-muted">© 2026 Jumua Time · <a href="confidentialite.html" class="text-muted hover:text-primary no-underline">Confidentialité</a></p>
+  <p class="text-xs" style="color:#8B7A5A;">
+    © 2026 Jumua Time ·
+    <a href="confidentialite.html" class="no-underline hover:underline" style="color:#8B7A5A;">Confidentialité</a>
+  </p>
 </footer>
 
 
 <script>
-// _supabase est déjà initialisé dans supabase-client.js
-
 let userEmail = '';
 let countdownInterval = null;
 let resendInterval = null;
 let resendSeconds = 60;
 
-// ── Redirection si déjà connecté ──
+const OTP_LEN = 8;
+
+// Redirection si déjà connecté
 async function checkSession() {
   try {
     const { data: { session } } = await _supabase.auth.getSession();
@@ -278,14 +271,13 @@ async function checkSession() {
 checkSession();
 
 
-// ── ÉTAPE 1 : Envoyer l'OTP ──
+// ── ÉTAPE 1 : Envoyer OTP ──
 async function sendOtp() {
   const emailEl = document.getElementById('email-input');
   const email = emailEl.value.trim().toLowerCase();
   const errEl = document.getElementById('email-error');
   const btn = document.getElementById('btn-send-otp');
 
-  // Validation
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     emailEl.classList.add('error');
     errEl.classList.remove('hidden');
@@ -295,14 +287,12 @@ async function sendOtp() {
   emailEl.classList.remove('error');
   errEl.classList.add('hidden');
 
-  // Loading
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div> Envoi en cours…';
 
   try {
     const { error } = await _supabase.auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: true }
+      email, options: { shouldCreateUser: true }
     });
     if (error) throw error;
     userEmail = email;
@@ -311,7 +301,9 @@ async function sendOtp() {
     btn.disabled = false;
     btn.innerHTML = '<span class="ms" style="font-size:18px;">send</span> Recevoir mon code';
     emailEl.classList.add('error');
-    errEl.textContent = 'Erreur : ' + (err.message || 'Réessayez dans un instant.');
+    errEl.querySelector
+      ? (errEl.innerHTML = '<span class="ms" style="font-size:14px;color:#E05050;">error</span> Erreur : ' + (err.message || 'Réessayez dans un instant.'))
+      : (errEl.textContent = 'Erreur : ' + (err.message || 'Réessayez.'));
     errEl.classList.remove('hidden');
   }
 }
@@ -322,67 +314,56 @@ function showStep2() {
   document.getElementById('email-display').textContent = userEmail;
   document.getElementById('dot-1').classList.remove('active');
   document.getElementById('dot-2').classList.add('active');
-  // Focus première case
   setTimeout(() => document.getElementById('otp-0').focus(), 100);
-  // Démarrer countdown 10 min
   startCountdown(600);
-  // Démarrer timer renvoyer (60s)
   startResendTimer();
 }
 
 
-// ── ÉTAPE 2 : Gestion cases OTP ──
+// ── ÉTAPE 2 : Cases OTP ──
 function otpInput(el, idx) {
-  const val = el.value.replace(/[^0-9]/g, '');
-  el.value = val;
-  el.classList.toggle('filled', val.length > 0);
-
-  if (val && idx < 7) {
-    document.getElementById('otp-' + (idx + 1)).focus();
-  }
+  el.value = el.value.replace(/[^0-9]/g, '');
+  el.classList.toggle('filled', el.value.length > 0);
+  if (el.value && idx < OTP_LEN - 1) document.getElementById('otp-' + (idx+1)).focus();
   checkOtpComplete();
 }
 
 function otpKeydown(e, idx) {
   if (e.key === 'Backspace' && !document.getElementById('otp-' + idx).value && idx > 0) {
-    const prev = document.getElementById('otp-' + (idx - 1));
-    prev.value = '';
-    prev.classList.remove('filled');
-    prev.focus();
+    const prev = document.getElementById('otp-' + (idx-1));
+    prev.value = ''; prev.classList.remove('filled'); prev.focus();
   }
-  if (e.key === 'ArrowLeft' && idx > 0) document.getElementById('otp-' + (idx - 1)).focus();
-  if (e.key === 'ArrowRight' && idx < 7) document.getElementById('otp-' + (idx + 1)).focus();
+  if (e.key === 'ArrowLeft'  && idx > 0)           document.getElementById('otp-' + (idx-1)).focus();
+  if (e.key === 'ArrowRight' && idx < OTP_LEN - 1) document.getElementById('otp-' + (idx+1)).focus();
   if (e.key === 'Enter') verifyOtp();
 }
 
 function otpPaste(e) {
   e.preventDefault();
-  const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 8);
+  const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'').slice(0, OTP_LEN);
   paste.split('').forEach((char, i) => {
     const el = document.getElementById('otp-' + i);
     if (el) { el.value = char; el.classList.add('filled'); }
   });
-  const lastFilled = Math.min(paste.length, 7);
-  document.getElementById('otp-' + lastFilled).focus();
+  document.getElementById('otp-' + Math.min(paste.length, OTP_LEN-1)).focus();
   checkOtpComplete();
+}
+
+function getOtpValue() {
+  return Array.from({length:OTP_LEN}, (_,i) => document.getElementById('otp-'+i).value).join('');
 }
 
 function checkOtpComplete() {
   const code = getOtpValue();
-  const btn = document.getElementById('btn-verify');
-  btn.disabled = code.length < 8;
-  if (code.length === 8) setTimeout(verifyOtp, 200);
-}
-
-function getOtpValue() {
-  return [0,1,2,3,4,5,6,7].map(i => document.getElementById('otp-' + i).value).join('');
+  document.getElementById('btn-verify').disabled = code.length < OTP_LEN;
+  if (code.length === OTP_LEN) setTimeout(verifyOtp, 200);
 }
 
 
-// ── Vérifier l'OTP ──
+// ── Vérifier OTP ──
 async function verifyOtp() {
   const code = getOtpValue();
-  if (code.length < 8) return;
+  if (code.length < OTP_LEN) return;
 
   const btn = document.getElementById('btn-verify');
   const labelEl = document.getElementById('verify-label');
@@ -391,57 +372,44 @@ async function verifyOtp() {
   btn.disabled = true;
   labelEl.innerHTML = '<div class="spinner"></div> Vérification…';
   errEl.classList.add('hidden');
-
-  // Effacer shake
   document.querySelectorAll('.otp-input').forEach(el => el.classList.remove('error'));
 
   try {
-    // Essayer 'email' (utilisateur existant) puis 'signup' (nouvel utilisateur)
     let error;
-    ({ error } = await _supabase.auth.verifyOtp({ email: userEmail, token: code, type: 'email' }));
-    if (error) {
-      ({ error } = await _supabase.auth.verifyOtp({ email: userEmail, token: code, type: 'signup' }));
-    }
+    ({ error } = await _supabase.auth.verifyOtp({ email:userEmail, token:code, type:'email' }));
+    if (error) ({ error } = await _supabase.auth.verifyOtp({ email:userEmail, token:code, type:'signup' }));
     if (error) throw error;
 
-    // Succès — animation
     labelEl.innerHTML = '<span class="ms" style="font-size:18px;">check_circle</span> Connexion réussie !';
-    btn.style.background = '#5B8A5F';
+    btn.style.background = '#4A8A5A';
     clearInterval(countdownInterval);
 
-    // Redirection
     const next = new URLSearchParams(window.location.search).get('next') || 'compte.html';
     setTimeout(() => { window.location.href = next; }, 800);
 
   } catch(err) {
-    // Erreur code
     btn.disabled = false;
     labelEl.innerHTML = '<span class="ms" style="font-size:18px;">verified</span> Vérifier le code';
     errEl.classList.remove('hidden');
     document.querySelectorAll('.otp-input').forEach(el => {
-      el.classList.add('error');
-      el.value = '';
-      el.classList.remove('filled');
+      el.classList.add('error'); el.value = ''; el.classList.remove('filled');
     });
-    setTimeout(() => {
-      document.querySelectorAll('.otp-input').forEach(el => el.classList.remove('error'));
-    }, 600);
+    setTimeout(() => document.querySelectorAll('.otp-input').forEach(el => el.classList.remove('error')), 600);
     document.getElementById('otp-0').focus();
   }
 }
 
 
-// ── Renvoyer le code ──
+// ── Renvoyer code ──
 async function resendOtp() {
   document.getElementById('btn-resend').disabled = true;
   try {
-    await _supabase.auth.signInWithOtp({ email: userEmail });
+    await _supabase.auth.signInWithOtp({ email:userEmail });
     document.getElementById('resend-info').textContent = 'Code renvoyé !';
     startResendTimer();
-    // Reset cases
-    [0,1,2,3,4,5].forEach(i => {
-      const el = document.getElementById('otp-' + i);
-      el.value = ''; el.classList.remove('filled', 'error');
+    Array.from({length:OTP_LEN}, (_,i) => i).forEach(i => {
+      const el = document.getElementById('otp-'+i);
+      el.value = ''; el.classList.remove('filled','error');
     });
     document.getElementById('otp-0').focus();
     startCountdown(600);
@@ -457,7 +425,7 @@ function startResendTimer() {
   const btn = document.getElementById('btn-resend');
   const timerEl = document.getElementById('resend-timer');
   btn.disabled = true;
-  timerEl.textContent = '(' + resendSeconds + 's)';
+  timerEl.textContent = '(60s)';
   resendInterval = setInterval(() => {
     resendSeconds--;
     if (resendSeconds <= 0) {
@@ -476,19 +444,15 @@ function startCountdown(seconds) {
   clearInterval(countdownInterval);
   let remaining = seconds;
   const el = document.getElementById('countdown');
-  const update = () => {
-    const m = Math.floor(remaining / 60);
+  const tick = () => {
+    const m = Math.floor(remaining/60);
     const s = remaining % 60;
-    el.textContent = m + ':' + String(s).padStart(2, '0');
-    if (remaining <= 0) {
-      clearInterval(countdownInterval);
-      el.textContent = 'expiré';
-      el.style.color = '#E05050';
-    }
+    el.textContent = m + ':' + String(s).padStart(2,'0');
+    if (remaining <= 0) { clearInterval(countdownInterval); el.textContent = 'expiré'; el.style.color = '#E05050'; }
     remaining--;
   };
-  update();
-  countdownInterval = setInterval(update, 1000);
+  tick();
+  countdownInterval = setInterval(tick, 1000);
 }
 
 
@@ -503,19 +467,15 @@ function goBack() {
   const btn = document.getElementById('btn-send-otp');
   btn.disabled = false;
   btn.innerHTML = '<span class="ms" style="font-size:18px;">send</span> Recevoir mon code';
-  [0,1,2,3,4,5].forEach(i => {
-    const el = document.getElementById('otp-' + i);
+  Array.from({length:OTP_LEN}, (_,i) => i).forEach(i => {
+    const el = document.getElementById('otp-'+i);
     el.value = ''; el.classList.remove('filled','error');
   });
   document.getElementById('otp-error').classList.add('hidden');
   setTimeout(() => document.getElementById('email-input').focus(), 100);
 }
 
-
-// ── Focus auto au load ──
-window.addEventListener('load', () => {
-  document.getElementById('email-input').focus();
-});
+window.addEventListener('load', () => document.getElementById('email-input').focus());
 </script>
 
 </body>
