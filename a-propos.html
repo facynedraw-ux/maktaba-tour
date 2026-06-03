@@ -1,22 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>À propos — Jumua Time</title>
-<meta name="description" content="Jumua Time est Un projet Jumua Time — un annuaire sélectif de livres jeunesse islamiques francophones, pensé pour les mamans musulmanes.">
+<meta name="description" content="Jumua Time est la boutique islamique illustrée créée par Oum Safya (Facyne) — ressources pédagogiques, décoration et outils spirituels pour toute la famille.">
 <meta property="og:title" content="À propos — Jumua Time">
-<meta property="og:description" content="L'histoire de Jumua Time, Un projet Jumua Time par Facyne, illustratrice jeunesse.">
-<meta property="og:image" content="https://jumuatime.com/Images/logo.png">
+<meta property="og:description" content="Derrière Jumua Time, il y a Oum Safya — maman, illustratrice, et créatrice d'applications islamiques.">
+<meta property="og:image" content="https://jumuatime.com/Images/logo_version_white.png">
 <meta property="og:url" content="https://jumuatime.com/a-propos.html">
 <meta property="og:type" content="website">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="favicon.png">
-<meta name="theme-color" content="#C96B8A">
+<meta name="theme-color" content="#5B9EAD">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jumua Time">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 <link rel="stylesheet" href="assets/tokens.css">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -26,24 +27,57 @@
 tailwind.config = {
   theme: {
     extend: {
-      colors: { primary:'#C96B8A', secondary:'#9B7FA6', accent:'#F0A87A', bg:'#FFF5F7', card:'#F5F0FA', text:'#3D1F2D', muted:'#7A5A6A', border:'#E8D5DC', success:'#5B8A5F' },
-      fontFamily: { display:['Playfair Display','serif'], body:['DM Sans','sans-serif'] }
+      colors: {
+        teal:        '#5B9EAD',
+        'teal-light':'#EBF5F7',
+        'teal-dark': '#3D7A8A',
+        gold:        '#C49A5A',
+        'gold-light':'#F5EDE0',
+        'gold-dark': '#8B6230',
+        pink:        '#F2C4B2',
+        'pink-light':'#F7EDE8',
+        dark:        '#1A1208',
+        bg:          '#FAF6F0',
+        border:      '#E2D4BC',
+        text:        '#1A1208',
+        muted:       '#8B7A5A',
+        mauve:       '#9B7FA6',
+        rose:        '#C96B8A',
+      },
+      fontFamily: {
+        display: ['Playfair Display', 'serif'],
+        body:    ['DM Sans', 'sans-serif'],
+      },
     }
   }
 }
 </script>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
-  body { font-family:'DM Sans',sans-serif; background:#FFF5F7; color:#3D1F2D; margin:0; }
-  .ms { font-family:'Material Symbols Outlined'; font-weight:normal; font-style:normal; font-size:20px; line-height:1; letter-spacing:normal; text-transform:none; display:inline-block; white-space:nowrap; direction:ltr; -webkit-font-smoothing:antialiased; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAF6F0; color: #1A1208; margin: 0; }
+  .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+  .ms { font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:20px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-smoothing:antialiased; }
 
-  .btn-primary { background:#C96B8A; color:white; border:none; border-radius:14px; padding:14px 28px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; cursor:pointer; transition:background 0.2s; display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
-  .btn-primary:hover { background:#b55a78; }
+  .btn-gold { background:#C49A5A;color:white;border:none;border-radius:24px;padding:12px 28px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none; }
+  .btn-gold:hover { background:#8B6230; }
+  .btn-teal { background:#5B9EAD;color:white;border:none;border-radius:20px;padding:10px 22px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none; }
+  .btn-teal:hover { background:#3D7A8A; }
 
-  .section-eyebrow { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#C96B8A; }
+  .section-eyebrow { font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C49A5A; }
 
-  .value-card { background:white; border:1px solid #E8D5DC; border-radius:20px; padding:24px; }
-  .value-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+  .value-card { background:white;border:1px solid #E2D4BC;border-radius:20px;padding:24px; }
+  .value-icon { width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px; }
+
+  .prose p { color:#8B7A5A;line-height:1.8;margin-bottom:1rem; }
+  .prose strong { color:#1A1208;font-weight:600; }
+
+  .divider { height:1px;background:linear-gradient(90deg,transparent,#E2D4BC,transparent);margin:3rem 0; }
+
+  .eco-card { background:white;border:1px solid #E2D4BC;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px; }
+  .eco-icon { width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+
+  .footer-link { color:rgba(255,255,255,0.55);font-size:14px;text-decoration:none;transition:color 0.2s; }
+  .footer-link:hover { color:white; }
 
   @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
   .fade-up { animation:fadeUp 0.55s ease both; }
@@ -52,183 +86,140 @@ tailwind.config = {
   .delay-3 { animation-delay:0.3s; }
   .delay-4 { animation-delay:0.4s; }
 
-  .breadcrumb a { color:#7A5A6A; text-decoration:none; font-size:13px; }
-  .breadcrumb a:hover { color:#C96B8A; }
-
-  .prose p { color:#7A5A6A; line-height:1.8; margin-bottom:1rem; }
-  .prose strong { color:#3D1F2D; font-weight:600; }
-
-  .divider { height:1px; background:linear-gradient(90deg,transparent,#E8D5DC,transparent); margin:3rem 0; }
-
-  .stat-box { background:white; border:1px solid #E8D5DC; border-radius:16px; padding:20px; text-align:center; }
   @media (prefers-reduced-motion: reduce) {
-    .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
-    .skeleton { animation: none !important; }
-    .book-card { animation: none !important; transition: none !important; }
+    .fade-up { animation:none !important;opacity:1 !important;transform:none !important; }
   }
 </style>
 </head>
 <body class="bg-bg font-body text-text">
 
-<!-- HEADER -->
+<!-- ═══════════════════════════════════
+     HEADER
+════════════════════════════════════ -->
 <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-border">
   <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-2 no-underline">
-      <img src="Images/logo.png" alt="Jumua Time" class="w-8 h-8 object-contain">
-      <span class="font-display font-bold text-text text-lg hidden sm:block">Jumua Time</span>
+      <img src="Images/logo_jumuatime.svg" alt="Jumua Time" class="h-8 w-auto object-contain">
+      <span class="font-display font-bold text-lg hidden sm:block" style="color:#1A1208;">Jumua Time</span>
     </a>
-    <nav class="hidden md:flex items-center gap-5">
-      <a href="catalogue.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">Catalogue</a>
-      <div class="relative" id="annuaires-menu">
-        <button id="annuaires-btn" onclick="toggleAnnuaires()" aria-haspopup="menu" aria-expanded="false" class="text-sm font-medium text-muted hover:text-primary transition-colors flex items-center gap-0.5 bg-transparent border-none cursor-pointer font-body p-0">
-          Annuaires <span class="ms" style="font-size:16px;transition:transform 0.2s;" id="annuaires-chevron">expand_more</span>
-        </button>
-        <div id="annuaires-dropdown" class="hidden absolute top-full left-0 mt-2 bg-white border border-border rounded-xl shadow-lg py-2 z-50" style="min-width:200px;">
-          <a href="annuaire-illustrateurs.html" class="flex items-center gap-2 px-4 py-2 text-sm text-muted hover:text-primary hover:bg-card no-underline transition-colors">
-            <span class="ms" style="font-size:16px;">palette</span> Illustrateurs
-          </a>
-          <a href="annuaire-auteurs.html" class="flex items-center gap-2 px-4 py-2 text-sm text-muted hover:text-primary hover:bg-card no-underline transition-colors">
-            <span class="ms" style="font-size:16px;">edit_note</span> Auteurs
-          </a>
-        </div>
-      </div>
-      <a href="ressources.html" class="text-sm font-medium text-muted hover:text-primary transition-colors no-underline">Ressources</a>
-      <a href="a-propos.html" class="text-sm font-semibold text-primary no-underline">À propos</a>
+    <nav class="hidden md:flex items-center gap-5" aria-label="Navigation principale">
+      <a href="ressources.html" class="text-sm font-medium text-muted hover:text-teal transition-colors no-underline">Boutique</a>
+      <a href="a-propos.html" class="text-sm font-semibold no-underline" style="color:#5B9EAD;">À propos</a>
     </nav>
     <div class="flex items-center gap-2">
-      <a href="soumettre.html" class="hidden lg:inline-flex items-center gap-1 text-sm font-medium text-primary border border-primary/30 rounded-xl px-3 py-1.5 hover:bg-primary/5 no-underline transition-colors">
-        <span class="ms" style="font-size:15px;">add_circle</span> Soumettre
+      <a id="header-account-link" href="login.html" class="btn-teal hidden md:inline-flex" style="font-size:13px;padding:8px 18px;">
+        <span class="ms" style="font-size:16px;">person</span> Mon compte
       </a>
-      <a id="header-account-link" href="login.html" class="hidden md:inline-flex items-center gap-1 text-sm font-medium text-muted hover:text-primary no-underline transition-colors">
-        <span class="ms" style="font-size:18px;">person</span> Mon compte
-      </a>
-      <button class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl border border-border bg-white" onclick="toggleMenu()" aria-label="Menu">
+      <button class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl border border-border bg-white" onclick="toggleMenu()" id="menu-btn" aria-label="Menu" aria-expanded="false">
         <span class="ms">menu</span>
       </button>
     </div>
   </div>
   <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-white px-4 py-3">
-    <a href="catalogue.html" class="block py-2 text-sm font-medium text-muted hover:text-primary no-underline">Catalogue</a>
-    <div class="py-1">
-      <p class="text-xs font-semibold text-muted uppercase tracking-wide pt-1 pb-1">Annuaires</p>
-      <a href="annuaire-illustrateurs.html" class="block pl-2 py-1.5 text-sm text-muted hover:text-primary no-underline">✦ Illustrateurs</a>
-      <a href="annuaire-auteurs.html" class="block pl-2 py-1.5 text-sm text-muted hover:text-primary no-underline">✦ Auteurs</a>
-    </div>
-    <a href="ressources.html" class="block py-2 text-sm font-medium text-muted hover:text-primary no-underline">Ressources</a>
-    <a href="soumettre.html" class="block py-2 text-sm font-medium text-muted hover:text-primary no-underline">Soumettre un livre</a>
-    <a id="mobile-account-link" href="login.html" class="block py-2 text-sm font-medium text-primary no-underline">Mon compte</a>
+    <a href="ressources.html" class="block py-2.5 text-sm font-medium text-muted hover:text-teal no-underline">Boutique</a>
+    <a href="a-propos.html" class="block py-2.5 text-sm font-semibold no-underline" style="color:#5B9EAD;">À propos</a>
+    <a id="mobile-account-link" href="login.html" class="block py-2.5 text-sm font-medium no-underline" style="color:#5B9EAD;">Mon compte</a>
   </div>
 </header>
 
 
 <main class="max-w-3xl mx-auto px-4 pt-8 pb-28 md:pb-16">
 
-  <!-- Breadcrumb -->
-  <nav class="breadcrumb flex items-center mb-8 gap-1">
-    <a href="index.html">Accueil</a>
-    <span class="text-border mx-1">›</span>
-    <span class="text-text font-medium text-sm">À propos</span>
-  </nav>
 
-
-  <!-- HERO -->
-  <div class="text-center mb-14 fade-up">
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6" style="background:linear-gradient(135deg,#F5E8F0,#EEE8F5);">
-      <span class="ms" style="font-size:40px;color:#C96B8A;">auto_stories</span>
+  <!-- HERO TEAL -->
+  <section class="relative overflow-hidden rounded-3xl mb-14 fade-up" style="background:#5B9EAD;">
+    <div class="relative z-10 px-8 py-12 text-center">
+      <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:rgba(255,255,255,0.65);">✦ NOTRE HISTOIRE</p>
+      <h1 class="font-display font-black text-3xl md:text-4xl leading-tight mb-4" style="color:white;">
+        Des créations pensées<br>pour <em style="font-style:italic;color:#F2C4B2;">votre famille.</em>
+      </h1>
+      <p class="text-base max-w-lg mx-auto leading-relaxed" style="color:rgba(255,255,255,0.8);">
+        Jumua Time est née d'un besoin simple : avoir des ressources islamiques belles, illustrées, et conçues avec amour pour les enfants et les familles musulmanes.
+      </p>
     </div>
-    <p class="section-eyebrow mb-3">Notre histoire</p>
-    <h1 class="font-display text-3xl md:text-4xl font-bold leading-tight mb-4">
-      On fait le tour des librairies<br class="hidden sm:block"> pour vous.
-    </h1>
-    <p class="text-muted text-base leading-relaxed max-w-xl mx-auto">
-      Jumua Time est né d'un constat simple : trouver des livres de qualité relevant de l'éthique musulmane pour nos enfants est un vrai parcours du combattant. Nous l'avons fait à votre place.
-    </p>
-  </div>
+    <div class="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10" style="background:white;transform:translate(40%,-40%);"></div>
+    <div class="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10" style="background:#C49A5A;transform:translate(-30%,30%);"></div>
+  </section>
 
 
-  <div class="divider"></div>
-
-
-  <!-- JUMUA & ME -->
+  <!-- OUM SAFYA -->
   <section class="mb-14 fade-up delay-1">
-    <h2 class="font-display text-2xl font-bold mb-6">Un projet Jumua Time</h2>
-    <div class="flex gap-5 items-start flex-col sm:flex-row">
-      <a href="https://www.instagram.com/jumuatime" target="_blank" rel="noopener" class="w-20 h-20 rounded-2xl flex-shrink-0 overflow-hidden flex items-center justify-center no-underline" style="background:linear-gradient(135deg,#F5E8F0,#EEE8F5);">
-        <span class="ms" style="font-size:40px;color:#C96B8A;">brush</span>
-      </a>
-      <div class="prose flex-1">
-        <p>
-          <strong>Jumua & Me</strong> est une marque fondée par Facyne, illustratrice jeunesse et maman, passionnée par la création d'univers islamiques pour les plus petits. Jumua Time est son projet phare : un annuaire pensé pour les familles musulmanes francophones qui veulent offrir à leurs enfants des histoires qui leur ressemblent.
-        </p>
-        <p>
-          Tout est parti d'un constat personnel : dénicher des livres de qualité, adaptés à l'âge et à l'éthique islamique, demande un temps précieux que beaucoup de mamans n'ont pas. L'idée ? Faire ce travail une fois pour toutes — et le partager.
-        </p>
+    <p class="section-eyebrow mb-4">✦ QUI SUIS-JE</p>
+    <div class="flex gap-6 items-start flex-col sm:flex-row">
+      <div class="w-20 h-20 rounded-2xl flex-shrink-0 flex items-center justify-center overflow-hidden" style="background:#F2C4B2;">
+        <img src="Images/pres.png" alt="Oum Safya — Facyne" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'ms\' style=\'font-size:40px;color:#C96B8A;\'>person</span>'">
+      </div>
+      <div class="flex-1">
+        <h2 class="font-display text-2xl font-bold mb-1" style="color:#1A1208;">Oum Safya · Facyne</h2>
+        <p class="text-sm font-medium mb-4" style="color:#5B9EAD;">Illustratrice jeunesse & créatrice d'applications</p>
+        <div class="prose">
+          <p>
+            Derrière Jumua Time, il y a moi — maman, illustratrice, et créatrice d'applications.
+            Je crée des ressources que j'aurais aimé avoir pour mes enfants. Chaque illustration est
+            pensée avec soin, chaque ressource testée en famille.
+          </p>
+          <p>
+            <strong>Facyne</strong> est mon nom d'artiste. Je travaille dans l'illustration jeunesse depuis
+            plusieurs années, avec une passion particulière pour les univers islamiques colorés, doux et
+            accessibles aux plus petits.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3 mt-4">
+          <a href="https://www.instagram.com/jumuatime" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 text-sm font-semibold no-underline transition-colors hover:opacity-80" style="color:#5B9EAD;">
+            <span class="ms" style="font-size:18px;">photo_camera</span>
+            @jumuatime
+          </a>
+          <a href="https://facyne.com" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 text-sm font-semibold no-underline transition-colors hover:opacity-80" style="color:#C49A5A;">
+            <span class="ms" style="font-size:18px;">open_in_new</span>
+            facyne.com
+          </a>
+        </div>
       </div>
     </div>
-    <div class="mt-5">
-      <a href="https://www.instagram.com/jumuatime" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold no-underline transition-colors hover:opacity-80" style="color:#C96B8A;">
-        <span class="ms" style="font-size:18px;">photo_camera</span>
-        Suivre @jumuatime sur Instagram
-      </a>
-    </div>
   </section>
 
 
   <div class="divider"></div>
 
 
-  <!-- POURQUOI -->
-  <section class="mb-14 fade-up delay-1">
-    <h2 class="font-display text-2xl font-bold mb-6">Une bibliothèque, pas une librairie</h2>
-    <div class="prose">
-      <p>
-        En arabe, <strong>مكتبة (maktaba)</strong> désigne à la fois une bibliothèque et une librairie. Mais notre vision est plus proche de la bibliothèque : un espace de confiance, de sélection, de recommandation.
-      </p>
-      <p>
-        Nous ne vendons rien directement. Nous lisons, nous sélectionnons, nous expliquons. Chaque livre présent sur Jumua Time a été <strong>évalué selon des critères clairs</strong> : authenticité du contenu islamique, qualité de l'illustration, niveau de langue adapté à l'âge.
-      </p>
-      <p>
-        Pour les mamans débordées qui voudraient offrir de beaux livres à leurs enfants sans passer des heures à chercher — c'est pour elles que nous existons.
-      </p>
-    </div>
-  </section>
-
-
-  <!-- VALEURS -->
+  <!-- LA VISION -->
   <section class="mb-14 fade-up delay-2">
-    <h2 class="font-display text-2xl font-bold mb-8">Ce en quoi nous croyons</h2>
+    <p class="section-eyebrow mb-4">✦ LA VISION</p>
+    <h2 class="font-display text-2xl font-bold mb-6" style="color:#1A1208;">Pourquoi Jumua Time ?</h2>
     <div class="grid sm:grid-cols-2 gap-4">
 
       <div class="value-card">
-        <div class="value-icon" style="background:#F5E8F0;">
-          <span class="ms" style="color:#C96B8A;font-size:24px;">verified</span>
+        <div class="value-icon" style="background:#EBF5F7;">
+          <span class="ms" style="color:#5B9EAD;font-size:24px;">child_care</span>
         </div>
-        <h3 class="font-display font-semibold text-base mb-2">Contenu authentique</h3>
-        <p class="text-sm text-muted leading-relaxed">Chaque livre est vérifié. Nous refusons tout contenu théologiquement problématique ou de mauvaise qualité.</p>
+        <h3 class="font-display font-semibold text-base mb-2">Pour les enfants</h3>
+        <p class="text-sm leading-relaxed" style="color:#8B7A5A;">Des ressources pédagogiques illustrées, adaptées à chaque âge, pour apprendre en s'amusant.</p>
       </div>
 
       <div class="value-card">
-        <div class="value-icon" style="background:#EEE8F5;">
-          <span class="ms" style="color:#9B7FA6;font-size:24px;">groups</span>
+        <div class="value-icon" style="background:#F5EDE0;">
+          <span class="ms" style="color:#C49A5A;font-size:24px;">auto_stories</span>
         </div>
-        <h3 class="font-display font-semibold text-base mb-2">Communauté de mamans</h3>
-        <p class="text-sm text-muted leading-relaxed">Les avis viennent de vraies mamans. Leurs retours d'expérience valent mieux que n'importe quelle description marketing.</p>
+        <h3 class="font-display font-semibold text-base mb-2">Pour les parents</h3>
+        <p class="text-sm leading-relaxed" style="color:#8B7A5A;">Des outils prêts à l'emploi pour transmettre les valeurs islamiques au quotidien, sans se prendre la tête.</p>
       </div>
 
       <div class="value-card">
-        <div class="value-icon" style="background:#FFF0E8;">
-          <span class="ms" style="color:#C07040;font-size:24px;">palette</span>
+        <div class="value-icon" style="background:#F0EBF5;">
+          <span class="ms" style="color:#9B7FA6;font-size:24px;">palette</span>
         </div>
-        <h3 class="font-display font-semibold text-base mb-2">Transparence créative</h3>
-        <p class="text-sm text-muted leading-relaxed">Nous indiquons si le texte ou les illustrations ont été créés par un humain ou générés par IA — parce que ça compte.</p>
+        <h3 class="font-display font-semibold text-base mb-2">Créé avec amour</h3>
+        <p class="text-sm leading-relaxed" style="color:#8B7A5A;">Chaque ressource est illustrée à la main, testée en famille. Rien n'est généré en série.</p>
       </div>
 
       <div class="value-card">
-        <div class="value-icon" style="background:#E8F0E8;">
-          <span class="ms" style="color:#5B8A5F;font-size:24px;">store</span>
+        <div class="value-icon" style="background:#F7EDE8;">
+          <span class="ms" style="color:#C96B8A;font-size:24px;">favorite</span>
         </div>
-        <h3 class="font-display font-semibold text-base mb-2">Soutien aux auteurs</h3>
-        <p class="text-sm text-muted leading-relaxed">Nous mettons en avant les auto-édités et donnons de la visibilité à ceux qui créent pour notre communauté.</p>
+        <h3 class="font-display font-semibold text-base mb-2">Accessible à tous</h3>
+        <p class="text-sm leading-relaxed" style="color:#8B7A5A;">Format PDF imprimable — pas besoin de livraison. Vous recevez votre ressource par email immédiatement.</p>
       </div>
 
     </div>
@@ -238,49 +229,53 @@ tailwind.config = {
   <div class="divider"></div>
 
 
-  <!-- COMMENT ÇA MARCHE -->
+  <!-- L'ÉCOSYSTÈME -->
   <section class="mb-14 fade-up delay-3">
-    <h2 class="font-display text-2xl font-bold mb-6">Comment fonctionne Jumua Time</h2>
+    <p class="section-eyebrow mb-4">✦ L'ÉCOSYSTÈME</p>
+    <h2 class="font-display text-2xl font-bold mb-6" style="color:#1A1208;">Un projet, plusieurs outils</h2>
     <div class="space-y-4">
 
-      <div class="flex gap-4 items-start">
-        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="text-primary font-bold text-sm">1</span>
+      <div class="eco-card">
+        <div class="flex items-center gap-4">
+          <div class="eco-icon" style="background:#EBF5F7;">
+            <span class="ms" style="color:#5B9EAD;font-size:24px;">store</span>
+          </div>
+          <div>
+            <h3 class="font-display font-semibold text-base" style="color:#1A1208;">Jumua Time — La boutique</h3>
+            <p class="text-xs" style="color:#5B9EAD;">jumuatime.com — en ligne</p>
+          </div>
         </div>
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Les auteurs soumettent leurs livres</h3>
-          <p class="text-sm text-muted leading-relaxed">Via le formulaire de soumission, les auteurs et éditeurs proposent leurs ouvrages. Chaque soumission est examinée manuellement.</p>
-        </div>
+        <p class="text-sm leading-relaxed" style="color:#8B7A5A;">Ressources pédagogiques, décoration islamique et outils spirituels. Illustrés par Oum Safya, pensés pour toute la famille.</p>
       </div>
 
-      <div class="flex gap-4 items-start">
-        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="text-primary font-bold text-sm">2</span>
+      <div class="eco-card">
+        <div class="flex items-center gap-4">
+          <div class="eco-icon" style="background:#F5EDE0;">
+            <span class="ms" style="color:#C49A5A;font-size:24px;">menu_book</span>
+          </div>
+          <div>
+            <h3 class="font-display font-semibold text-base" style="color:#1A1208;">Tilawa Tour — L'application</h3>
+            <p class="text-xs" style="color:#C49A5A;">tilawatour.com — gratuite</p>
+          </div>
         </div>
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Nous évaluons selon nos critères</h3>
-          <p class="text-sm text-muted leading-relaxed">Contenu islamique, qualité d'illustration, pertinence pour l'âge indiqué, disponibilité à l'achat. Les livres qui ne passent pas la sélection sont refusés avec un retour motivé.</p>
-        </div>
+        <p class="text-sm leading-relaxed" style="color:#8B7A5A;">Cheminement coranique mois par mois. Une application de récitation qui vous accompagne tout au long de l'année.</p>
+        <a href="https://tilawatour.com" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-1 text-sm font-semibold no-underline" style="color:#C49A5A;">
+          Découvrir <span class="ms" style="font-size:16px;">arrow_forward</span>
+        </a>
       </div>
 
-      <div class="flex gap-4 items-start">
-        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="text-primary font-bold text-sm">3</span>
+      <div class="eco-card" style="opacity:0.6;">
+        <div class="flex items-center gap-4">
+          <div class="eco-icon" style="background:#F0EBF5;">
+            <span class="ms" style="color:#9B7FA6;font-size:24px;">translate</span>
+          </div>
+          <div>
+            <h3 class="font-display font-semibold text-base" style="color:#1A1208;">Lugha Tour — Bientôt</h3>
+            <p class="text-xs" style="color:#9B7FA6;">Apprentissage de l'arabe — en développement</p>
+          </div>
         </div>
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Les mamans partagent leur expérience</h3>
-          <p class="text-sm text-muted leading-relaxed">Les avis sont modérés avant publication. Seuls les comptes vérifiés peuvent écrire un avis.</p>
-        </div>
-      </div>
-
-      <div class="flex gap-4 items-start">
-        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <span class="text-primary font-bold text-sm">4</span>
-        </div>
-        <div>
-          <h3 class="font-semibold text-sm mb-1">Les liens Amazon sont affiliés</h3>
-          <p class="text-sm text-muted leading-relaxed">Quand tu achètes via nos liens Amazon, Jumua Time reçoit une petite commission. Le prix est exactement le même pour toi. C'est ce qui nous permet de maintenir la plateforme gratuitement.</p>
-        </div>
+        <p class="text-sm leading-relaxed" style="color:#8B7A5A;">Un outil pour apprendre l'arabe progressivement, en famille. Arrive bientôt dans l'écosystème.</p>
       </div>
 
     </div>
@@ -288,12 +283,15 @@ tailwind.config = {
 
 
   <!-- CTA -->
-  <div class="bg-white rounded-2xl border border-border p-8 text-center fade-up delay-4">
-    <h2 class="font-display text-2xl font-bold mb-3">Tu connais un livre qui devrait être ici ?</h2>
-    <p class="text-muted text-sm mb-6 max-w-sm mx-auto">Si tu es auteur ou si tu as découvert une pépite que tu veux partager avec la communauté, soumet-la — ça prend 2 minutes.</p>
-    <a href="soumettre.html" class="btn-primary">
-      <span class="ms" style="font-size:18px;">add_circle</span>
-      Soumettre un livre
+  <div class="rounded-3xl p-8 text-center fade-up delay-4" style="background:#5B9EAD;">
+    <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color:rgba(255,255,255,0.65);">✦ PRÊT·E À COMMENCER</p>
+    <h2 class="font-display text-2xl font-bold mb-3" style="color:white;">Découvrir la boutique</h2>
+    <p class="text-sm mb-6 max-w-sm mx-auto" style="color:rgba(255,255,255,0.75);">
+      Des ressources créées avec amour, pour des familles qui veulent transmettre.
+    </p>
+    <a href="ressources.html" class="btn-gold">
+      <span class="ms" style="font-size:18px;">store</span>
+      Voir les ressources
     </a>
   </div>
 
@@ -301,30 +299,64 @@ tailwind.config = {
 </main>
 
 
-<!-- FOOTER -->
-<footer class="border-t border-border bg-white py-6 text-center text-xs text-muted mt-4">
-  <p>© 2026 Jumua Time · Un projet <a href="https://www.instagram.com/jumuatime" target="_blank" rel="noopener" class="text-primary hover:underline no-underline">Jumua & Me</a></p>
-  <p class="mt-1">On fait le tour des bibliothèques pour toi.</p>
+<!-- ═══════════════════════════════════
+     FOOTER
+════════════════════════════════════ -->
+<footer class="py-12 px-4" style="background:#1C3540;">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <img src="Images/logo_version_white.png" alt="Jumua Time" class="h-10 w-auto object-contain mb-3">
+        <p class="text-sm" style="color:rgba(255,255,255,0.55);">Boutique islamique illustrée<br>par Oum Safya</p>
+        <a href="https://www.instagram.com/jumuatime" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-1 mt-3 text-sm no-underline" style="color:rgba(255,255,255,0.55);">
+          @jumuatime
+        </a>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:rgba(255,255,255,0.35);">Navigation</p>
+        <ul class="space-y-2 list-none p-0 m-0">
+          <li><a href="ressources.html" class="footer-link">Boutique</a></li>
+          <li><a href="https://tilawatour.com" target="_blank" rel="noopener" class="footer-link">Tilawa Tour</a></li>
+          <li><a href="a-propos.html" class="footer-link">À propos</a></li>
+          <li><a href="mailto:contact@jumuatime.com" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:rgba(255,255,255,0.35);">Légal</p>
+        <ul class="space-y-2 list-none p-0 m-0">
+          <li><a href="mentions.html" class="footer-link">Mentions légales</a></li>
+          <li><a href="cgv.html" class="footer-link">CGV</a></li>
+          <li><a href="confidentialite.html" class="footer-link">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-2"
+         style="border-color:rgba(255,255,255,0.07);">
+      <p class="text-xs" style="color:rgba(255,255,255,0.35);">© 2026 Jumua Time · Des créations qui ont du sens.</p>
+      <p class="text-xs" style="color:rgba(255,255,255,0.35);">jumuatime.com</p>
+    </div>
+  </div>
 </footer>
 
 
-<!-- BOTTOM NAV MOBILE -->
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-border md:hidden z-50" style="padding-bottom:max(0.75rem,env(safe-area-inset-bottom));">
-  <div class="grid grid-cols-5">
-    <a href="index.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
-      <span class="ms" style="font-size:20px;">home</span><span style="font-size:10px;">Accueil</span>
+<!-- ═══════════════════════════════════
+     BOTTOM NAV MOBILE (3 items)
+════════════════════════════════════ -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-border md:hidden z-50"
+     aria-label="Navigation mobile">
+  <div class="grid grid-cols-3">
+    <a href="index.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">home</span>
+      <span style="font-size:10px;">Accueil</span>
     </a>
-    <a href="catalogue.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
-      <span class="ms" style="font-size:20px;">auto_stories</span><span style="font-size:10px;">Catalogue</span>
+    <a href="ressources.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">store</span>
+      <span style="font-size:10px;">Boutique</span>
     </a>
-    <a href="annuaire-illustrateurs.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
-      <span class="ms" style="font-size:20px;">palette</span><span style="font-size:10px;">Annuaires</span>
-    </a>
-    <a href="ressources.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
-      <span class="ms" style="font-size:20px;">shopping_bag</span><span style="font-size:10px;">Ressources</span>
-    </a>
-    <a href="compte.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline text-muted">
-      <span class="ms" style="font-size:20px;">person</span><span style="font-size:10px;">Compte</span>
+    <a href="compte.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">person</span>
+      <span style="font-size:10px;">Compte</span>
     </a>
   </div>
 </nav>
@@ -341,25 +373,13 @@ async function init() {
   }
 }
 function toggleMenu() {
-  document.getElementById('mobile-menu').classList.toggle('hidden');
+  const menu = document.getElementById('mobile-menu');
+  const b = document.getElementById('menu-btn');
+  const open = !menu.classList.contains('hidden');
+  menu.classList.toggle('hidden');
+  b.setAttribute('aria-expanded', String(!open));
 }
-function toggleAnnuaires() {
-  const dd = document.getElementById('annuaires-dropdown');
-  const ch = document.getElementById('annuaires-chevron');
-  const btn = document.getElementById('annuaires-btn');
-  dd.classList.toggle('hidden');
-  const open = !dd.classList.contains('hidden');
-  ch.style.transform = open ? 'rotate(180deg)' : '';
-  if (btn) btn.setAttribute('aria-expanded', open);
-}
-document.addEventListener('click', function(e) {
-  const m = document.getElementById('annuaires-menu');
-  if (m && !m.contains(e.target)) {
-    document.getElementById('annuaires-dropdown')?.classList.add('hidden');
-    const ch = document.getElementById('annuaires-chevron');
-    if (ch) ch.style.transform = '';
-  }
-});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 init();
 </script>
 

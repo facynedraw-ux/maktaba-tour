@@ -613,7 +613,7 @@ function renderResourceCard(r) {
     : '';
 
   return `
-    <a href="ressource.html?id=${escHtml(r.id)}" class="resource-card">
+    <a href="ressource.html?slug=${escHtml(r.slug)}" class="resource-card">
       <div class="overflow-hidden" style="aspect-ratio:1/1;background:#FAF6F0;">${cover}</div>
       <div class="p-4">
         ${tagHtml ? `<div class="mb-2">${tagHtml}</div>` : ''}
@@ -628,7 +628,7 @@ async function loadResources() {
   const grid = document.getElementById('resources-grid');
   const { data } = await _supabase
     .from('resources')
-    .select('id, title, subtitle, cover_url, price, category')
+    .select('id, slug, title, subtitle, cover_url, price, category')
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(6);
