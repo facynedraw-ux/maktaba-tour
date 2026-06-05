@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Jumua Time — Ressources islamiques illustrées pour la famille</title>
-<meta name="description" content="Ressources pédagogiques, décoration et outils pour la famille musulmane — illustrés par Facyne. Boutique islamique francophone.">
-<meta property="og:title" content="Jumua Time — Ressources islamiques illustrées">
-<meta property="og:description" content="Ressources pédagogiques, décoration et outils pour la famille musulmane — illustrés par Facyne.">
+<title>Jumua Time — L'univers illustré de la famille musulmane</title>
+<meta name="description" content="Jumua Time, l'univers illustré de la famille musulmane. Ressources pédagogiques, décoration et outils islamiques créés par Facyne, illustratrice jeunesse.">
+<meta property="og:title" content="Jumua Time — L'univers illustré de la famille musulmane">
+<meta property="og:description" content="Jumua Time — L'univers illustré de la famille musulmane. Ressources pédagogiques et outils islamiques illustrés par Facyne.">
+<link rel="me" href="https://facyne.com" />
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://jumuatime.com/">
 <meta property="og:image" content="https://jumuatime.com/Images/logo_version_white.png">
@@ -15,13 +16,20 @@
 <meta name="twitter:image" content="https://jumuatime.com/Images/logo_version_white.png">
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"WebSite",
-  "name":"Jumua Time",
-  "url":"https://jumuatime.com",
-  "description":"Ressources pédagogiques, décoration et outils pour la famille musulmane — par Facyne",
-  "inLanguage":"fr",
-  "publisher":{"@type":"Organization","name":"Jumua Time","url":"https://www.instagram.com/jumuatime"}
+  "@context": "https://schema.org",
+  "@type": "Store",
+  "name": "Jumua Time",
+  "description": "L'univers illustré de la famille musulmane. Ressources pédagogiques et outils islamiques illustrés.",
+  "url": "https://jumuatime.com",
+  "founder": {
+    "@type": "Person",
+    "name": "Facyne",
+    "url": "https://facyne.com"
+  },
+  "sameAs": [
+    "https://www.instagram.com/jumuatime",
+    "https://facyne.com"
+  ]
 }
 </script>
 <link rel="manifest" href="manifest.json">
@@ -213,8 +221,8 @@ tailwind.config = {
       <!-- Sous-titre -->
       <p class="mb-8 leading-relaxed fade-up delay-3"
          style="color:rgba(255,255,255,0.78);max-width:420px;font-weight:300;font-size:clamp(1rem,2.5vw,1.125rem);">
-        Ressources pédagogiques, décoration et outils
-        pour la famille musulmane.
+        L'univers illustré de la famille musulmane.<br>
+        <em style="color:#F2C4B2;font-style:italic;">Des créations qui ont du sens.</em>
       </p>
 
       <!-- Boutons -->
@@ -410,27 +418,31 @@ tailwind.config = {
 
 
 <!-- ═══════════════════════════════════
-     OUM SAFYA — À PROPOS
+     FACYNE — PONT CRÉATIF
 ════════════════════════════════════ -->
-<section class="py-16 px-4 bg-white" style="border-top:1px solid #E2D4BC;border-bottom:1px solid #E2D4BC;">
-  <div class="max-w-xl mx-auto text-center">
+<section class="facyne-bridge py-16 px-4 bg-white" style="border-top:1px solid #E2D4BC;border-bottom:1px solid #E2D4BC;">
+  <div class="max-w-2xl mx-auto flex flex-col md:flex-row items-center gap-8">
 
     <!-- Avatar -->
-    <div class="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center overflow-hidden" style="background:#F7EDE8;">
-      <span class="ms" style="font-size:38px;color:#F2C4B2;font-variation-settings:'FILL' 1;">person</span>
+    <div class="w-24 h-24 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden" style="background:#F7EDE8;">
+      <img src="Images/pres.png" alt="Facyne" class="w-full h-full object-cover"
+           onerror="this.parentElement.innerHTML='<span class=\'ms\' style=\'font-size:40px;color:#F2C4B2;font-variation-settings:&quot;FILL&quot; 1;\'>person</span>'">
     </div>
 
-    <h3 class="font-display font-bold text-xl mb-1" style="color:#1A1208;">Facyne</h3>
-    <p class="text-sm mb-5 font-medium" style="color:#8B7A5A;">Illustratrice · Graphiste · Créatrice d'applications</p>
-
-    <p class="text-sm leading-relaxed mb-6" style="color:#8B7A5A;font-weight:300;max-width:480px;margin-left:auto;margin-right:auto;">
-      Jumua Time est une marque dédiée à la famille musulmane. Spécialisée dans la création de ressources pour revivifier la spiritualité au quotidien — pour les grands comme pour les petits. Objets essentiels, outils pédagogiques pour enfants, affiches, cadeaux originaux et ressources illustrées, pensés avec soin et testés en famille.
-    </p>
-
-    <a href="https://facyne.com" target="_blank" rel="noopener"
-       class="text-sm font-medium no-underline" style="color:#5B9EAD;">
-      Voir mon portfolio → facyne.com
-    </a>
+    <div class="text-center md:text-left">
+      <h3 class="font-display font-bold text-xl mb-1" style="color:#1A1208;"><a href="https://facyne.com" target="_blank" rel="author noopener" style="color:inherit;text-decoration:none;">Facyne</a></h3>
+      <p class="text-sm mb-4 font-medium" style="color:#8B7A5A;">Illustratrice · Graphiste · Développeuse d'applications web &amp; mobile</p>
+      <p class="text-sm leading-relaxed mb-5" style="color:#8B7A5A;font-weight:300;">
+        Jumua Time est né de mon univers créatif. Si tu cherches des illustrations
+        sur mesure, une identité visuelle ou une application — je travaille aussi en freelance.
+      </p>
+      <div class="flex flex-wrap gap-3 justify-center md:justify-start">
+        <a href="https://facyne.com" target="_blank" rel="noopener" class="btn-teal text-sm">Voir mon portfolio</a>
+        <a href="https://facyne.com#contact" target="_blank" rel="noopener"
+           class="text-sm font-semibold no-underline px-5 py-2 rounded-full border"
+           style="color:#5B9EAD;border-color:#5B9EAD;">Commander une illustration</a>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -448,7 +460,7 @@ tailwind.config = {
       <div>
         <img src="Images/logo_jumuatime.svg" alt="Jumua Time" class="h-10 w-auto object-contain mb-3" style="filter:brightness(0) invert(1);">
         <p class="text-xs leading-relaxed mb-1" style="color:rgba(255,255,255,0.6);font-weight:300;">
-          Ressources pédagogiques, décoration<br>et outils pour la famille musulmane.
+          L'univers illustré de la famille musulmane.
         </p>
         <p class="text-xs mb-4 font-medium" style="color:#C49A5A;">Des créations qui ont du sens.</p>
         <a href="https://www.instagram.com/jumuatime" target="_blank" rel="noopener"
