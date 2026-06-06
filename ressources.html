@@ -144,6 +144,9 @@ tailwind.config = {
       <button class="filter-pill cat-btn" onclick="setFilter('spiritualite', this)">Spiritualité</button>
       <button class="filter-pill cat-btn" onclick="setFilter('decoration', this)">Décoration</button>
       <button class="filter-pill cat-btn" onclick="setFilter('cadeaux', this)">Cadeaux</button>
+      <button class="filter-pill cat-btn" onclick="setFilter('__physique__', this)" style="border-color:#C49A5A;color:#8B6230;">
+        <span style="font-size:13px;">📦</span> Livré chez toi
+      </button>
     </div>
   </div>
 
@@ -168,12 +171,21 @@ tailwind.config = {
     <p class="text-sm" style="color:#8B7A5A;">Les premières créations arrivent bientôt !</p>
   </div>
 
-  <!-- Note de bas de page -->
-  <div class="mt-12 bg-white border border-border rounded-2xl p-6 flex gap-4 items-start fade-up">
-    <span class="ms flex-shrink-0" style="font-size:24px;color:#5B9EAD;margin-top:2px;">info</span>
-    <div>
-      <p class="font-semibold text-sm mb-1">Ressources gratuites et payantes.</p>
-      <p class="text-xs leading-relaxed" style="color:#8B7A5A;">Format PDF imprimable — à imprimer chez soi ou en reprographie. Livraison immédiate par email après paiement. Lien valable 24h.</p>
+  <!-- Notes de bas de page -->
+  <div class="mt-12 grid md:grid-cols-2 gap-4">
+    <div class="bg-white border border-border rounded-2xl p-5 flex gap-4 items-start">
+      <span class="ms flex-shrink-0" style="font-size:22px;color:#5B9EAD;margin-top:2px;">download</span>
+      <div>
+        <p class="font-semibold text-sm mb-1">Ressources numériques PDF</p>
+        <p class="text-xs leading-relaxed" style="color:#8B7A5A;">Format PDF imprimable — à imprimer chez soi ou en reprographie. Livraison immédiate par email après paiement. Lien valable 24h.</p>
+      </div>
+    </div>
+    <div class="bg-white border border-border rounded-2xl p-5 flex gap-4 items-start">
+      <span class="ms flex-shrink-0" style="font-size:22px;color:#C49A5A;margin-top:2px;">local_shipping</span>
+      <div>
+        <p class="font-semibold text-sm mb-1">Produits physiques livrés</p>
+        <p class="text-xs leading-relaxed" style="color:#8B7A5A;">Impression professionnelle via Gelato. Livraison en 5 à 7 jours ouvrés. L'adresse est collectée au moment du paiement.</p>
+      </div>
     </div>
   </div>
 
@@ -280,7 +292,7 @@ async function init() {
 
   const { data } = await _supabase
     .from('resources')
-    .select('id, slug, title, subtitle, cover_url, price, category')
+    .select('id, slug, title, subtitle, cover_url, price, category, type_produit')
     .eq('is_active', true)
     .order('created_at', { ascending: false });
 
@@ -301,7 +313,14 @@ async function init() {
 }
 
 function renderGrid() {
-  let list = activeCategory ? allResources.filter(r => r.category === activeCategory) : allResources;
+  let list;
+  if (activeCategory === '__physique__') {
+    list = allResources.filter(r => r.type_produit === 'physique');
+  } else if (activeCategory) {
+    list = allResources.filter(r => r.category === activeCategory && r.type_produit !== 'physique');
+  } else {
+    list = allResources;
+  }
   document.getElementById('results-count').textContent = list.length;
   const grid = document.getElementById('resource-grid');
   const empty = document.getElementById('empty-state');
@@ -315,25 +334,41 @@ function renderGrid() {
   grid.classList.remove('hidden');
 
   grid.innerHTML = list.map(r => {
+    const isPhysique = r.type_produit === 'physique';
+    const href = isPhysique
+      ? `produit-physique.html?id=${esc(r.id)}`
+      : `ressource.html?slug=${esc(r.slug)}`;
+
     const cs = CAT_STYLES[r.category] || null;
-    const tagHtml = cs
-      ? `<span class="badge" style="background:white;color:${cs.color};box-shadow:0 1px 4px rgba(0,0,0,0.08);">${cs.label}</span>`
-      : '';
     const cover = r.cover_url
       ? `<img src="${esc(r.cover_url)}" alt="${esc(r.title)}" class="w-full h-full object-cover" loading="lazy">`
-      : `<div class="w-full h-full flex items-center justify-center"><span class="ms" style="font-size:48px;color:#5B9EAD;opacity:0.2;">description</span></div>`;
-    const bg = cs ? cs.bg : '#FAF6F0';
+      : `<div class="w-full h-full flex items-center justify-center"><span class="ms" style="font-size:48px;color:#5B9EAD;opacity:0.2;">${isPhysique ? 'local_shipping' : 'description'}</span></div>`;
+    const bg = isPhysique ? '#EBF5F7' : (cs ? cs.bg : '#FAF6F0');
+
+    // Badge affiché en haut de l'image
+    let topBadge = '';
+    if (isPhysique) {
+      topBadge = `<span class="badge" style="background:white;color:#3D7A8A;box-shadow:0 1px 4px rgba(0,0,0,0.08);">📦 Livré chez toi</span>`;
+    } else if (cs) {
+      topBadge = `<span class="badge" style="background:white;color:${cs.color};box-shadow:0 1px 4px rgba(0,0,0,0.08);">${cs.label}</span>`;
+    }
+
+    // Sous-info sous le prix
+    const subInfo = isPhysique
+      ? `<p class="text-xs mt-0.5" style="color:#8B7A5A;">Expédié en 5–7 jours</p>`
+      : '';
 
     return `
-      <a href="ressource.html?slug=${esc(r.slug)}" class="resource-card">
+      <a href="${href}" class="resource-card">
         <div class="relative overflow-hidden" style="aspect-ratio:1/1;background:${bg};">
           ${cover}
-          ${tagHtml ? `<div class="absolute top-2 left-2">${tagHtml}</div>` : ''}
+          ${topBadge ? `<div class="absolute top-2 left-2">${topBadge}</div>` : ''}
         </div>
         <div class="p-3">
           <h3 class="font-semibold text-xs leading-snug mb-1.5" style="color:#1A1208;">${esc(r.title)}</h3>
           ${r.subtitle ? `<p class="text-xs leading-snug mb-1" style="color:#8B7A5A;">${esc(r.subtitle)}</p>` : ''}
           <p class="font-display font-bold text-base mt-1" style="color:#C49A5A;">${formatPrice(r.price)}</p>
+          ${subInfo}
         </div>
       </a>`;
   }).join('');
