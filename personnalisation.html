@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Personnalisation — Jumua Time</title>
+<meta name="description" content="Des créations personnalisées faites à la main par Oum Safya. Pochons lin, totebags — avec le prénom de votre enfant. Délai 3 à 5 jours ouvrés.">
+<meta property="og:title" content="Personnalisation — Jumua Time">
+<meta property="og:url" content="https://jumuatime.com/personnalisation.html">
+<meta property="og:image" content="https://jumuatime.com/Images/logo_version_white.png">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="theme-color" content="#5B9EAD">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jumua Time">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Amiri&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        teal:        '#5B9EAD',
+        'teal-light':'#EBF5F7',
+        'teal-dark': '#3D7A8A',
+        gold:        '#C49A5A',
+        'gold-light':'#F5EDE0',
+        dark:        '#1A1208',
+        bg:          '#FAF6F0',
+        border:      '#E2D4BC',
+        muted:       '#8B7A5A',
+      },
+      fontFamily: {
+        display: ['Playfair Display', 'serif'],
+        body:    ['DM Sans', 'sans-serif'],
+      },
+    }
+  }
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAF6F0; color: #1A1208; margin: 0; }
+  .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+  .ms { font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:20px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-smoothing:antialiased; }
+
+  .btn-teal { background:#5B9EAD;color:white;border:none;border-radius:20px;padding:10px 22px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none; }
+  .btn-teal:hover { background:#3D7A8A; }
+  .btn-teal:disabled { opacity:0.65;cursor:not-allowed; }
+
+  .btn-outline-teal { background:transparent;color:#5B9EAD;border:2px solid #5B9EAD;border-radius:20px;padding:9px 22px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none; }
+  .btn-outline-teal:hover { background:#5B9EAD;color:white; }
+
+  .section-eyebrow { font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C49A5A; }
+
+  /* Form elements */
+  .field-label { display:block;font-size:13px;font-weight:600;color:#1A1208;margin-bottom:6px; }
+  .field-input { width:100%;border:1.5px solid #E2D4BC;border-radius:12px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1A1208;background:white;transition:border-color 0.2s;outline:none; }
+  .field-input:focus { border-color:#5B9EAD;box-shadow:0 0 0 3px rgba(91,158,173,0.12); }
+  .field-select { appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B7A5A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px; }
+  .field-textarea { resize:vertical;min-height:80px; }
+
+  /* Product card */
+  .product-card { background:white;border:1px solid #E2D4BC;border-radius:20px;overflow:hidden;transition:box-shadow 0.2s; }
+  .product-card:hover { box-shadow:0 8px 24px rgba(91,158,173,0.12); }
+  .product-card.selected { border:2px solid #5B9EAD;box-shadow:0 0 0 4px rgba(91,158,173,0.12); }
+
+  /* Preview name */
+  .preview-box { background:#F5F0E8;border:1.5px dashed #C49A5A;border-radius:14px;padding:16px;text-align:center;min-height:60px;display:flex;align-items:center;justify-content:center;transition:all 0.2s; }
+  .preview-name-fr { font-family:'Playfair Display',serif;font-size:1.4rem;color:#3D7A8A;font-style:italic; }
+  .preview-name-ar { font-family:'Amiri',serif;font-size:1.6rem;color:#3D7A8A;direction:rtl; }
+
+  /* Step marker */
+  .step-label { display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#5B9EAD;color:white;font-size:12px;font-weight:700;flex-shrink:0; }
+
+  /* Radio lang */
+  .radio-lang { display:none; }
+  .radio-lang + label { display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:1.5px solid #E2D4BC;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;background:white; }
+  .radio-lang:checked + label { background:#5B9EAD;color:white;border-color:#5B9EAD; }
+
+  /* Toast */
+  #toast { position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1A1208;color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;opacity:0;transition:all 0.3s;z-index:200;pointer-events:none;white-space:nowrap; }
+  #toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+  #toast.error { background:#C0392B; }
+
+  .footer-link { color:rgba(255,255,255,0.55);font-size:14px;text-decoration:none;transition:color 0.2s; }
+  .footer-link:hover { color:white; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .fade-up { animation:fadeUp 0.45s ease both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { animation:none !important;opacity:1 !important; }
+  }
+</style>
+</head>
+<body class="bg-bg font-body text-dark">
+
+<!-- ═══ HEADER ═══ -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-border">
+  <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2 no-underline">
+      <img src="Images/logo_jumuatime.svg" alt="Jumua Time" class="h-9 w-auto object-contain">
+    </a>
+    <nav class="hidden md:flex items-center gap-5" aria-label="Navigation principale">
+      <a href="ressources.html" class="text-sm font-medium text-muted hover:text-teal transition-colors no-underline">Boutique</a>
+      <a href="personnalisation.html" class="text-sm font-semibold no-underline" style="color:#5B9EAD;">Personnalisation</a>
+      <a href="a-propos.html" class="text-sm font-medium text-muted hover:text-teal transition-colors no-underline">À propos</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a id="header-account-link" href="login.html" class="btn-teal hidden md:inline-flex" style="font-size:13px;padding:8px 18px;">
+        <span class="ms" style="font-size:16px;">person</span> Mon compte
+      </a>
+      <button class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl border border-border bg-white" onclick="toggleMenu()" id="menu-btn" aria-label="Menu" aria-expanded="false">
+        <span class="ms">menu</span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-white px-4 py-3">
+    <a href="ressources.html" class="block py-2.5 text-sm font-medium text-muted no-underline">Boutique</a>
+    <a href="personnalisation.html" class="block py-2.5 text-sm font-semibold no-underline" style="color:#5B9EAD;">Personnalisation</a>
+    <a href="a-propos.html" class="block py-2.5 text-sm font-medium text-muted no-underline">À propos</a>
+    <a id="mobile-account-link" href="login.html" class="block py-2.5 text-sm font-medium no-underline" style="color:#5B9EAD;">Mon compte</a>
+  </div>
+</header>
+
+
+<!-- ═══ HERO ═══ -->
+<section style="background:#5B9EAD;padding:56px 24px 64px;">
+  <div class="max-w-5xl mx-auto text-center fade-up">
+    <p class="section-eyebrow mb-4" style="color:rgba(255,255,255,0.75);">✦ FAIT MAIN · SUR COMMANDE</p>
+    <h1 class="font-display text-3xl md:text-5xl font-bold text-white mb-4" style="line-height:1.2;">
+      Des créations <em style="font-style:italic;color:#F5EDE0;">personnalisées</em><br>avec amour.
+    </h1>
+    <p class="text-base md:text-lg max-w-xl mx-auto leading-relaxed" style="color:rgba(255,255,255,0.80);">
+      Chaque produit est fabriqué à la main par Oum Safya, avec sa machine Cricut.<br>
+      Délai de fabrication : <strong style="color:white;">3 à 5 jours ouvrés.</strong>
+    </p>
+  </div>
+</section>
+
+
+<main class="max-w-3xl mx-auto px-4 pt-10 pb-28 md:pb-16">
+
+  <!-- ═══ PRODUITS ═══ -->
+  <div class="mb-10 fade-up">
+    <p class="section-eyebrow mb-2">Nos créations</p>
+    <h2 class="font-display text-2xl font-bold mb-6" style="color:#1A1208;">Choisissez votre produit</h2>
+
+    <div class="grid md:grid-cols-2 gap-5">
+
+      <!-- Pochon lin -->
+      <div class="product-card cursor-pointer" id="card-pochon" onclick="selectProduct('pochon')">
+        <div class="aspect-square bg-teal-light flex items-center justify-center" style="background:#EBF5F7;">
+          <div class="text-center p-6">
+            <span class="ms text-5xl" style="color:#5B9EAD;font-size:48px;">shopping_bag</span>
+            <p class="text-xs text-muted mt-2">Photo bientôt disponible</p>
+          </div>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <h3 class="font-display text-lg font-bold" style="color:#1A1208;">Pochon lin — Eid Mubarak</h3>
+            <span class="text-lg font-bold flex-shrink-0" style="color:#5B9EAD;">PRIX_POCHON €</span>
+          </div>
+          <p class="text-sm leading-relaxed mb-3" style="color:#8B7A5A;">
+            Pochon en lin naturel avec calligraphie Eid Mubarak. Personnalisable avec le prénom de l'enfant en arabe ou en français.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1 rounded-full" style="background:#EBF5F7;color:#3D7A8A;">Motif : Noir / Or / Blanc</span>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:#F5EDE0;color:#8B6230;">Prénom inclus</span>
+          </div>
+          <p class="text-xs mt-3" style="color:#8B7A5A;">⏱ 3 à 5 jours ouvrés · Fabriqué à la main en France</p>
+        </div>
+        <div class="border-t border-border px-5 py-3 flex items-center justify-between" style="background:#FAFAFA;">
+          <span id="select-pochon" class="text-sm font-semibold" style="color:#5B9EAD;">Sélectionner →</span>
+          <span id="check-pochon" class="ms hidden" style="color:#5B9EAD;font-size:22px;">check_circle</span>
+        </div>
+      </div>
+
+      <!-- Totebag -->
+      <div class="product-card cursor-pointer" id="card-totebag" onclick="selectProduct('totebag')">
+        <div class="aspect-square flex items-center justify-center" style="background:#F5EDE0;">
+          <div class="text-center p-6">
+            <span class="ms text-5xl" style="color:#C49A5A;font-size:48px;">local_mall</span>
+            <p class="text-xs text-muted mt-2">Photo bientôt disponible</p>
+          </div>
+        </div>
+        <div class="p-5">
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <h3 class="font-display text-lg font-bold" style="color:#1A1208;">Totebag Jumua &amp; Kids</h3>
+            <span class="text-lg font-bold flex-shrink-0" style="color:#5B9EAD;">PRIX_TOTEBAG €</span>
+          </div>
+          <p class="text-sm leading-relaxed mb-3" style="color:#8B7A5A;">
+            Totebag en coton avec motif islamique. Personnalisable avec le prénom ou un message.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1 rounded-full" style="background:#EBF5F7;color:#3D7A8A;">Sac : Naturel / Noir / Teal</span>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:#F5EDE0;color:#8B6230;">Prénom inclus</span>
+          </div>
+          <p class="text-xs mt-3" style="color:#8B7A5A;">⏱ 3 à 5 jours ouvrés · Fabriqué à la main en France</p>
+        </div>
+        <div class="border-t border-border px-5 py-3 flex items-center justify-between" style="background:#FAFAFA;">
+          <span id="select-totebag" class="text-sm font-semibold" style="color:#5B9EAD;">Sélectionner →</span>
+          <span id="check-totebag" class="ms hidden" style="color:#5B9EAD;font-size:22px;">check_circle</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══ FORMULAIRE DE COMMANDE ═══ -->
+  <div class="bg-white border border-border rounded-2xl p-6 md:p-8 fade-up" id="order-form-section">
+    <h2 class="font-display text-xl font-bold mb-6" style="color:#1A1208;">Ma commande personnalisée</h2>
+
+    <!-- ÉTAPE 1 — Produit -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="step-label">1</span>
+        <h3 class="font-semibold text-base">Produit choisi</h3>
+      </div>
+      <div class="field-input" style="cursor:default;background:#FAFAFA;color:#8B7A5A;" id="product-display">
+        ← Sélectionnez un produit ci-dessus
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 — Options -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="step-label">2</span>
+        <h3 class="font-semibold text-base">Personnalisation</h3>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <!-- Couleur (se met à jour selon le produit) -->
+        <div>
+          <label for="couleur" class="field-label">Couleur du motif</label>
+          <select id="couleur" class="field-input field-select">
+            <option value="">— Choisir —</option>
+            <option value="noir">Noir</option>
+            <option value="or">Or</option>
+            <option value="blanc">Blanc</option>
+          </select>
+        </div>
+
+        <!-- Quantité -->
+        <div>
+          <label for="quantite" class="field-label">Quantité</label>
+          <input type="number" id="quantite" class="field-input" min="1" max="10" value="1" aria-label="Quantité">
+        </div>
+
+        <!-- Prénom -->
+        <div class="md:col-span-2">
+          <label for="prenom-input" class="field-label">Prénom à inscrire <span style="color:#8B7A5A;font-weight:400;">(max 15 caractères)</span></label>
+          <input type="text" id="prenom-input" class="field-input" maxlength="15" placeholder="Ex : Safya" autocomplete="off" aria-label="Prénom à inscrire">
+        </div>
+
+        <!-- Langue prénom -->
+        <div class="md:col-span-2">
+          <p class="field-label mb-2">Langue du prénom</p>
+          <div class="flex gap-3 flex-wrap">
+            <div>
+              <input type="radio" name="langue_prenom" id="lang-fr" value="fr" class="radio-lang" checked>
+              <label for="lang-fr">🇫🇷 Français</label>
+            </div>
+            <div>
+              <input type="radio" name="langue_prenom" id="lang-ar" value="ar" class="radio-lang">
+              <label for="lang-ar">🇸🇦 Arabe</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aperçu prénom -->
+        <div class="md:col-span-2">
+          <p class="field-label mb-2">Aperçu du prénom</p>
+          <div class="preview-box">
+            <span id="preview-text" class="preview-name-fr" style="color:#C49A5A;font-style:italic;opacity:0.5;">Votre prénom apparaîtra ici…</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 — Livraison -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="step-label">3</span>
+        <h3 class="font-semibold text-base">Informations de livraison</h3>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label for="nom-client" class="field-label">Prénom et nom</label>
+          <input type="text" id="nom-client" class="field-input" placeholder="Safya Dupont" autocomplete="name">
+        </div>
+        <div>
+          <label for="email-client" class="field-label">Email <span style="color:#8B7A5A;font-weight:400;">(pour le suivi)</span></label>
+          <input type="email" id="email-client" class="field-input" placeholder="votre@email.com" autocomplete="email">
+        </div>
+        <div class="md:col-span-2">
+          <label for="adresse" class="field-label">Adresse complète</label>
+          <input type="text" id="adresse" class="field-input" placeholder="12 rue des Lilas, Apt 3" autocomplete="street-address">
+        </div>
+        <div>
+          <label for="code-postal" class="field-label">Code postal</label>
+          <input type="text" id="code-postal" class="field-input" placeholder="75001" autocomplete="postal-code">
+        </div>
+        <div>
+          <label for="ville" class="field-label">Ville</label>
+          <input type="text" id="ville" class="field-input" placeholder="Paris" autocomplete="address-level2">
+        </div>
+        <div class="md:col-span-2">
+          <label for="pays" class="field-label">Pays</label>
+          <select id="pays" class="field-input field-select" autocomplete="country">
+            <option value="france">France</option>
+            <option value="belgique">Belgique</option>
+            <option value="suisse">Suisse</option>
+            <option value="canada">Canada</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 4 — Message -->
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="step-label">4</span>
+        <h3 class="font-semibold text-base">Message pour Oum Safya <span style="color:#8B7A5A;font-weight:400;">(optionnel)</span></h3>
+      </div>
+      <textarea id="message" class="field-input field-textarea" placeholder="Ex : C'est pour offrir, pouvez-vous emballer ? Avez-vous une attention particulière ?"></textarea>
+    </div>
+
+    <!-- RÉCAP DÉLAI -->
+    <div class="flex items-start gap-3 p-4 rounded-xl mb-6" style="background:#EBF5F7;">
+      <span class="ms flex-shrink-0" style="color:#5B9EAD;">schedule</span>
+      <div>
+        <p class="text-sm font-semibold" style="color:#3D7A8A;">Délai de fabrication : 3 à 5 jours ouvrés</p>
+        <p class="text-xs mt-0.5" style="color:#5B9EAD;">Vous recevrez un email de confirmation puis un email d'expédition avec votre numéro de suivi.</p>
+      </div>
+    </div>
+
+    <!-- BOUTON COMMANDE -->
+    <button id="order-btn" class="btn-teal w-full justify-center py-3 text-base" onclick="startCheckout()">
+      <span class="ms" style="font-size:18px;">lock</span>
+      Passer ma commande →
+    </button>
+    <p class="text-xs text-center mt-3" style="color:#8B7A5A;">Paiement sécurisé par Stripe · Vous serez redirigé vers la page de paiement</p>
+
+  </div>
+
+</main>
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="py-12 px-4 hidden md:block" style="background:#1C3540;">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <img src="Images/logo_jumuatime.svg" alt="Jumua Time" class="h-10 w-auto object-contain mb-3" style="filter:brightness(0) invert(1);">
+        <p class="text-sm" style="color:rgba(255,255,255,0.55);">Créations faites à la main<br>pour la famille musulmane.</p>
+        <a href="https://www.instagram.com/jumuatime" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-1 mt-3 text-sm no-underline" style="color:rgba(255,255,255,0.55);">@jumuatime</a>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:rgba(255,255,255,0.35);">Navigation</p>
+        <ul class="space-y-2 list-none p-0 m-0">
+          <li><a href="ressources.html" class="footer-link">Boutique</a></li>
+          <li><a href="personnalisation.html" class="footer-link">Personnalisation</a></li>
+          <li><a href="https://tilawatour.pages.dev/" target="_blank" rel="noopener" class="footer-link">Tilawa Tour</a></li>
+          <li><a href="a-propos.html" class="footer-link">À propos</a></li>
+          <li><a href="mailto:contact@jumuatime.com" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:rgba(255,255,255,0.35);">Légal</p>
+        <ul class="space-y-2 list-none p-0 m-0">
+          <li><a href="mentions.html" class="footer-link">Mentions légales</a></li>
+          <li><a href="cgv.html" class="footer-link">CGV</a></li>
+          <li><a href="confidentialite.html" class="footer-link">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-2"
+         style="border-color:rgba(255,255,255,0.07);">
+      <p class="text-xs" style="color:rgba(255,255,255,0.35);">© 2026 Jumua Time · Des créations qui ont du sens.</p>
+      <p class="text-xs" style="color:rgba(255,255,255,0.35);">jumuatime.com</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══ BOTTOM NAV MOBILE ═══ -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-border md:hidden z-50"
+     style="padding-bottom:max(0.5rem,env(safe-area-inset-bottom));"
+     aria-label="Navigation mobile">
+  <div class="grid grid-cols-4">
+    <a href="index.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">home</span>
+      <span style="font-size:10px;">Accueil</span>
+    </a>
+    <a href="ressources.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">store</span>
+      <span style="font-size:10px;">Boutique</span>
+    </a>
+    <a href="personnalisation.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#5B9EAD;">
+      <span class="ms" style="font-size:20px;font-variation-settings:'FILL' 1;">brush</span>
+      <span style="font-size:10px;font-weight:600;">Perso</span>
+    </a>
+    <a href="compte.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">person</span>
+      <span style="font-size:10px;">Compte</span>
+    </a>
+  </div>
+</nav>
+
+<div id="toast" role="alert" aria-live="polite"></div>
+
+<script>
+// ── État formulaire ──
+let selectedProduct = null;
+
+const PRODUCTS = {
+  pochon: {
+    name: 'Pochon lin — Eid Mubarak',
+    price: 'PRIX_POCHON',
+    price_cents: 0, // à définir par Oum Safya
+    colors: ['Noir', 'Or', 'Blanc'],
+  },
+  totebag: {
+    name: 'Totebag Jumua & Kids',
+    price: 'PRIX_TOTEBAG',
+    price_cents: 0, // à définir par Oum Safya
+    colors: ['Naturel', 'Noir', 'Teal'],
+  },
+};
+
+function selectProduct(key) {
+  selectedProduct = key;
+
+  // Visuels cartes
+  ['pochon','totebag'].forEach(k => {
+    document.getElementById('card-' + k).classList.toggle('selected', k === key);
+    document.getElementById('select-' + k).classList.toggle('hidden', k === key);
+    document.getElementById('check-' + k).classList.toggle('hidden', k !== key);
+  });
+
+  // Mise à jour affichage produit dans le form
+  document.getElementById('product-display').textContent = PRODUCTS[key].name;
+  document.getElementById('product-display').style.color = '#1A1208';
+
+  // Mise à jour options couleur
+  const couleurSel = document.getElementById('couleur');
+  couleurSel.innerHTML = '<option value="">— Choisir —</option>';
+  PRODUCTS[key].colors.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.toLowerCase();
+    opt.textContent = c;
+    couleurSel.appendChild(opt);
+  });
+
+  // Scroll vers le form
+  document.getElementById('order-form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Aperçu prénom en live ──
+const prenomInput = document.getElementById('prenom-input');
+const previewText = document.getElementById('preview-text');
+
+function updatePreview() {
+  const val = prenomInput.value.trim();
+  const lang = document.querySelector('input[name="langue_prenom"]:checked').value;
+  if (!val) {
+    previewText.textContent = 'Votre prénom apparaîtra ici…';
+    previewText.className = 'preview-name-fr';
+    previewText.style.opacity = '0.5';
+    previewText.style.fontStyle = 'italic';
+    previewText.style.color = '#C49A5A';
+    return;
+  }
+  previewText.textContent = val;
+  previewText.style.opacity = '1';
+  previewText.style.fontStyle = '';
+  previewText.style.color = '#3D7A8A';
+  if (lang === 'ar') {
+    previewText.className = 'preview-name-ar';
+    previewText.setAttribute('dir', 'rtl');
+  } else {
+    previewText.className = 'preview-name-fr';
+    previewText.removeAttribute('dir');
+  }
+}
+
+prenomInput.addEventListener('input', updatePreview);
+document.querySelectorAll('input[name="langue_prenom"]').forEach(r => r.addEventListener('change', updatePreview));
+
+
+// ── Validation ──
+function validateForm() {
+  if (!selectedProduct) { showToast('Veuillez sélectionner un produit.', 'error'); return false; }
+  const couleur = document.getElementById('couleur').value;
+  if (!couleur) { showToast('Veuillez choisir une couleur.', 'error'); return false; }
+  const prenom = prenomInput.value.trim();
+  if (!prenom) { showToast('Veuillez renseigner le prénom à inscrire.', 'error'); return false; }
+  const nom = document.getElementById('nom-client').value.trim();
+  if (!nom) { showToast('Veuillez renseigner votre nom.', 'error'); return false; }
+  const email = document.getElementById('email-client').value.trim();
+  if (!email || !email.includes('@')) { showToast('Email invalide.', 'error'); return false; }
+  const adresse = document.getElementById('adresse').value.trim();
+  if (!adresse) { showToast('Veuillez renseigner votre adresse.', 'error'); return false; }
+  const cp = document.getElementById('code-postal').value.trim();
+  if (!cp) { showToast('Veuillez renseigner votre code postal.', 'error'); return false; }
+  const ville = document.getElementById('ville').value.trim();
+  if (!ville) { showToast('Veuillez renseigner votre ville.', 'error'); return false; }
+  return true;
+}
+
+
+// ── Checkout Stripe ──
+async function startCheckout() {
+  if (!validateForm()) return;
+
+  const btn = document.getElementById('order-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ms" style="font-size:18px;animation:spin 1s linear infinite;">progress_activity</span> Chargement…';
+
+  const product = PRODUCTS[selectedProduct];
+  const quantite = parseInt(document.getElementById('quantite').value) || 1;
+  const langue = document.querySelector('input[name="langue_prenom"]:checked').value;
+
+  const orderData = {
+    type:          'physical_product',
+    product_name:  product.name,
+    price_cents:   product.price_cents,
+    quantity:      quantite,
+    customization: `Couleur: ${document.getElementById('couleur').value} | Prénom: ${prenomInput.value.trim()} (${langue})`,
+    prenom:        prenomInput.value.trim(),
+    langue_prenom: langue,
+    couleur:       document.getElementById('couleur').value,
+    nom_client:    document.getElementById('nom-client').value.trim(),
+    adresse:       `${document.getElementById('adresse').value.trim()}, ${document.getElementById('code-postal').value.trim()} ${document.getElementById('ville').value.trim()}, ${document.getElementById('pays').value}`,
+    email_client:  document.getElementById('email-client').value.trim(),
+    message:       document.getElementById('message').value.trim(),
+    origin:        window.location.origin,
+  };
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/stripe-checkout`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` },
+      body:    JSON.stringify(orderData),
+    });
+    const { url, error } = await res.json();
+    if (error) throw new Error(error);
+    if (!url)  throw new Error('Impossible de créer la session de paiement.');
+    window.location.href = url;
+  } catch (err) {
+    showToast('Erreur : ' + (err.message || 'Réessayez.'), 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<span class="ms" style="font-size:18px;">lock</span> Passer ma commande →';
+  }
+}
+
+
+// ── Toast ──
+let toastTimer;
+function showToast(msg, type = 'default') {
+  const t = document.getElementById('toast');
+  clearTimeout(toastTimer);
+  t.textContent = msg;
+  t.className = type === 'error' ? 'show error' : 'show';
+  toastTimer = setTimeout(() => { t.className = ''; }, 3500);
+}
+
+
+// ── Menu mobile ──
+function toggleMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.getElementById('menu-btn');
+  const open = !menu.classList.contains('hidden');
+  menu.classList.toggle('hidden');
+  btn.setAttribute('aria-expanded', String(!open));
+}
+
+
+// ── Compte header ──
+(async () => {
+  try {
+    const session = await getSession();
+    if (session) {
+      ['header-account-link','mobile-account-link'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.href = 'compte.html'; el.innerHTML = el.innerHTML.replace('Mon compte', 'Mon compte'); }
+      });
+    }
+  } catch {}
+})();
+</script>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+</body>
+</html>

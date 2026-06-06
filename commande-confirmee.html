@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Commande confirmée — Jumua Time</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="theme-color" content="#5B9EAD">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script>
+tailwind.config = {
+  theme: { extend: { colors: { teal:'#5B9EAD','teal-light':'#EBF5F7','teal-dark':'#3D7A8A',gold:'#C49A5A',bg:'#FAF6F0',border:'#E2D4BC',muted:'#8B7A5A' }, fontFamily: { display:['Playfair Display','serif'], body:['DM Sans','sans-serif'] } } }
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #FAF6F0; color: #1A1208; margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+  .ms { font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:20px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-smoothing:antialiased; }
+  .btn-teal { background:#5B9EAD;color:white;border:none;border-radius:20px;padding:11px 26px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none; }
+  .btn-teal:hover { background:#3D7A8A; }
+  .detail-row { display:flex;gap:8px;padding:10px 0;border-bottom:1px solid #E2D4BC; }
+  .detail-row:last-child { border-bottom:none; }
+  .skeleton { background:linear-gradient(90deg,#E2D4BC 25%,#F5EDE0 50%,#E2D4BC 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;height:18px; }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  @keyframes bounceIn { 0%{transform:scale(0.5);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+  .bounce-in { animation: bounceIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both; }
+</style>
+</head>
+<body class="bg-bg font-body">
+
+<!-- Header minimal -->
+<header class="bg-white/90 border-b border-border px-4 h-14 flex items-center justify-between">
+  <a href="index.html" class="no-underline">
+    <img src="Images/logo_jumuatime.svg" alt="Jumua Time" class="h-8 w-auto object-contain">
+  </a>
+</header>
+
+<main class="flex-1 flex items-center justify-center px-4 py-12">
+  <div class="max-w-md w-full text-center">
+
+    <!-- Icône succès -->
+    <div class="bounce-in w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style="background:#E8F5EB;">
+      <span class="ms" style="font-size:40px;color:#5B8A5F;font-variation-settings:'FILL' 1;">check_circle</span>
+    </div>
+
+    <h1 class="font-display text-2xl md:text-3xl font-bold mb-3" style="color:#1A1208;">
+      Commande confirmée !
+    </h1>
+    <p class="text-base leading-relaxed mb-2" style="color:#8B7A5A;">
+      Barak Allahou fikoum pour votre commande.<br>
+      Vous allez recevoir un email de confirmation d'ici quelques minutes.
+    </p>
+    <p class="text-sm mb-8" style="color:#5B9EAD;">
+      ⏱ Délai de fabrication : <strong>3 à 5 jours ouvrés</strong>
+    </p>
+
+    <!-- Récapitulatif -->
+    <div class="bg-white border border-border rounded-2xl p-6 text-left mb-8" id="order-summary">
+      <h2 class="font-semibold text-base mb-4" style="color:#1A1208;">Récapitulatif de commande</h2>
+      <div id="summary-content">
+        <div class="space-y-2">
+          <div class="skeleton w-3/4"></div>
+          <div class="skeleton w-1/2"></div>
+          <div class="skeleton w-2/3"></div>
+          <div class="skeleton w-1/3"></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="ressources.html" class="btn-teal mx-auto">
+      <span class="ms" style="font-size:18px;">store</span>
+      Retour à la boutique
+    </a>
+
+  </div>
+</main>
+
+<!-- Bottom nav mobile -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-border md:hidden z-50"
+     style="padding-bottom:max(0.5rem,env(safe-area-inset-bottom));">
+  <div class="grid grid-cols-4">
+    <a href="index.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">home</span>
+      <span style="font-size:10px;">Accueil</span>
+    </a>
+    <a href="ressources.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">store</span>
+      <span style="font-size:10px;">Boutique</span>
+    </a>
+    <a href="personnalisation.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">brush</span>
+      <span style="font-size:10px;">Perso</span>
+    </a>
+    <a href="compte.html" class="flex flex-col items-center py-2.5 gap-0.5 no-underline" style="color:#8B7A5A;">
+      <span class="ms" style="font-size:20px;">person</span>
+      <span style="font-size:10px;">Compte</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  const container = document.getElementById('summary-content');
+
+  if (!sessionId) {
+    container.innerHTML = '<p class="text-sm text-muted">Aucun détail de commande disponible.</p>';
+    return;
+  }
+
+  try {
+    const { data, error } = await _supabase
+      .from('orders')
+      .select('product_name, customization, quantity, amount, nom_client, adresse, email_client, created_at')
+      .eq('stripe_session_id', sessionId)
+      .single();
+
+    if (error || !data) throw new Error('Commande introuvable');
+
+    const date = (() => {
+      const d = new Date(data.created_at);
+      return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+    })();
+
+    container.innerHTML = `
+      <div class="detail-row">
+        <span class="text-sm text-muted w-32 flex-shrink-0">Produit</span>
+        <span class="text-sm font-medium">${data.product_name}</span>
+      </div>
+      <div class="detail-row">
+        <span class="text-sm text-muted w-32 flex-shrink-0">Personnalisation</span>
+        <span class="text-sm font-medium">${data.customization || '—'}</span>
+      </div>
+      <div class="detail-row">
+        <span class="text-sm text-muted w-32 flex-shrink-0">Quantité</span>
+        <span class="text-sm font-medium">${data.quantity}</span>
+      </div>
+      ${data.amount ? `<div class="detail-row"><span class="text-sm text-muted w-32 flex-shrink-0">Total</span><span class="text-sm font-bold" style="color:#5B9EAD;">${(data.amount / 100).toFixed(2)} €</span></div>` : ''}
+      <div class="detail-row">
+        <span class="text-sm text-muted w-32 flex-shrink-0">Livraison</span>
+        <span class="text-sm">${data.adresse || '—'}</span>
+      </div>
+      <div class="detail-row">
+        <span class="text-sm text-muted w-32 flex-shrink-0">Date</span>
+        <span class="text-sm">${date}</span>
+      </div>
+    `;
+  } catch {
+    container.innerHTML = '<p class="text-sm" style="color:#8B7A5A;">Les détails seront envoyés par email.</p>';
+  }
+})();
+</script>
+
+</body>
+</html>
